@@ -9,9 +9,9 @@ const Home: React.FC = () => {
   return (
     <div className="home-container">
       <Card>
-        <Title level={2}>JiaPass 加密工具</Title>
+        <Title level={2}>青云盾加密宝</Title>
         <Paragraph>
-          JiaPass 是一个安全的文本和链接加密工具，使用多种加密算法保护您的敏感信息。
+          青云盾加密宝是一个安全的文本和链接加密工具，使用多种加密算法保护您的敏感信息。
           生成的密钥具有干扰因子，使通用解密工具难以破解您的加密内容。
         </Paragraph>
         

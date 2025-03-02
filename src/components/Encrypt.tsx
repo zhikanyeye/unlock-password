@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
-import { Card, Input, Button, Select, Typography, message, Space, Radio, Tooltip } from 'antd';
-import { CopyOutlined, LockOutlined, LinkOutlined } from '@ant-design/icons';
+import React, { useState, useRef } from 'react';
+import { Card, Input, Button, Select, Typography, message, Space, Radio, Tooltip, Divider } from 'antd';
+import { CopyOutlined, LockOutlined, LinkOutlined, QrcodeOutlined, DownloadOutlined } from '@ant-design/icons';
 import { encrypt, generateRandomKey, generateFullKey, EncryptionType } from '../utils/cryptoUtils';
+import { QRCodeSVG } from 'qrcode.react';
 
 const { Title, Text, Paragraph } = Typography;
 const { TextArea } = Input;
@@ -14,6 +15,9 @@ const Encrypt: React.FC = () => {
   const [secretKey, setSecretKey] = useState('');
   const [inputType, setInputType] = useState<'text' | 'url'>('text');
   const [keyLength, setKeyLength] = useState<number>(16);
+  const [decryptUrl, setDecryptUrl] = useState('');
+  const [showQrCode, setShowQrCode] = useState(false);
+  const qrCodeRef = useRef<HTMLDivElement>(null);
   
   // 处理加密操作
   const handleEncrypt = () => {
@@ -36,12 +40,13 @@ const Encrypt: React.FC = () => {
       
       // 构建解密链接
       const currentUrl = window.location.origin;
-      const decryptUrl = `${currentUrl}/decrypt?data=${encodeURIComponent(encrypted)}`;
+      const newDecryptUrl = `${currentUrl}/decrypt?data=${encodeURIComponent(encrypted)}`;
+      setDecryptUrl(newDecryptUrl);
       
       message.success('加密成功！');
       
       // 将解密链接和密钥复制到剪贴板
-      navigator.clipboard.writeText(`解密链接: ${decryptUrl}\n解密密钥: ${fullKey}`)
+      navigator.clipboard.writeText(`解密链接: ${newDecryptUrl}\n解密密钥: ${fullKey}`)
         .then(() => message.info('解密链接和密钥已复制到剪贴板'));
         
     } catch (error) {
@@ -74,20 +79,73 @@ const Encrypt: React.FC = () => {
   
   // 复制解密链接
   const copyDecryptLink = () => {
-    if (!encryptedText) {
+    if (!decryptUrl) {
       message.warning('请先加密内容');
       return;
     }
-    
-    const currentUrl = window.location.origin;
-    const decryptUrl = `${currentUrl}/decrypt?data=${encodeURIComponent(encryptedText)}`;
     
     navigator.clipboard.writeText(decryptUrl)
       .then(() => message.success('解密链接已复制到剪贴板'));
   };
   
+  // 生成并显示二维码
+  const generateQRCode = () => {
+    if (!decryptUrl) {
+      message.warning('请先加密内容');
+      return;
+    }
+    
+    setShowQrCode(true);
+  };
+  
+  // 下载二维码图片
+  const downloadQRCode = () => {
+    if (!qrCodeRef.current || !decryptUrl) {
+      message.warning('二维码不可用');
+      return;
+    }
+    
+    const svg = qrCodeRef.current.querySelector('svg');
+    if (!svg) {
+      message.error('无法获取二维码图像');
+      return;
+    }
+    
+    // 创建Canvas元素
+    const canvas = document.createElement('canvas');
+    const ctx = canvas.getContext('2d');
+    const svgData = new XMLSerializer().serializeToString(svg);
+    const img = new Image();
+    
+    // 设置Canvas大小
+    canvas.width = 300;
+    canvas.height = 300;
+    
+    // 将SVG转换为图像并绘制到Canvas
+    img.onload = () => {
+      if (ctx) {
+        ctx.fillStyle = 'white';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+        
+        // 创建下载链接
+        const dataUrl = canvas.toDataURL('image/png');
+        const a = document.createElement('a');
+        a.href = dataUrl;
+        a.download = '青云盾加密宝-解密二维码.png';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        
+        message.success('二维码已下载');
+      }
+    };
+    
+    img.src = 'data:image/svg+xml;base64,' + btoa(svgData);
+  };
+  
   return (
-    <Card className="encrypt-card">
+    <Card className="encrypt-card" style={{ maxWidth: '800px', margin: '0 auto', boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }}>
       <Title level={3}><LockOutlined /> 加密内容</Title>
       
       <Space direction="vertical" style={{ width: '100%' }}>
@@ -118,7 +176,7 @@ const Encrypt: React.FC = () => {
           />
         )}
         
-        <Space>
+        <Space style={{ marginTop: '16px' }}>
           <Select 
             defaultValue={EncryptionType.AES} 
             style={{ width: 120 }}
@@ -147,17 +205,21 @@ const Encrypt: React.FC = () => {
         
         {encryptedText && (
           <>
+            <Divider />
             <Paragraph>
               <Text strong>加密结果：</Text>
               <TextArea 
                 rows={3} 
                 value={encryptedText} 
                 readOnly 
+                style={{ marginTop: '8px' }}
               />
               <Button 
                 icon={<CopyOutlined />} 
                 onClick={copyEncryptedText}
                 style={{ marginTop: '8px' }}
+                type="primary"
+                ghost
               >
                 复制加密内容
               </Button>
@@ -169,30 +231,68 @@ const Encrypt: React.FC = () => {
                 <Input 
                   value={secretKey} 
                   readOnly 
-                  style={{ width: '80%' }}
+                  style={{ width: '80%', marginTop: '8px' }}
                 />
               </Tooltip>
               <Button 
                 icon={<CopyOutlined />} 
                 onClick={copySecretKey}
                 style={{ marginLeft: '8px' }}
+                type="primary"
+                ghost
               >
                 复制密钥
               </Button>
             </Paragraph>
             
             <Paragraph>
-              <Button 
-                type="dashed" 
-                icon={<LinkOutlined />} 
-                onClick={copyDecryptLink}
-              >
-                复制解密链接
-              </Button>
-              <Text type="secondary" style={{ marginLeft: '8px' }}>
+              <Space>
+                <Button 
+                  type="primary" 
+                  icon={<LinkOutlined />} 
+                  onClick={copyDecryptLink}
+                >
+                  复制解密链接
+                </Button>
+                <Button 
+                  type="primary" 
+                  icon={<QrcodeOutlined />} 
+                  onClick={generateQRCode}
+                >
+                  生成二维码
+                </Button>
+              </Space>
+              <Text type="secondary" style={{ display: 'block', marginTop: '8px' }}>
                 将链接和密钥分享给需要查看内容的人
               </Text>
             </Paragraph>
+            
+            {showQrCode && (
+              <div style={{ textAlign: 'center', marginTop: '16px', padding: '16px', border: '1px dashed #d9d9d9', borderRadius: '4px' }}>
+                <Text strong>解密链接二维码：</Text>
+                <div ref={qrCodeRef} style={{ margin: '16px auto' }}>
+                  <QRCodeSVG 
+                    value={decryptUrl} 
+                    size={200}
+                    level="H"
+                    includeMargin={true}
+                    imageSettings={{
+                      src: '/vite.svg',
+                      excavate: true,
+                      width: 40,
+                      height: 40,
+                    }}
+                  />
+                </div>
+                <Button 
+                  type="primary" 
+                  icon={<DownloadOutlined />} 
+                  onClick={downloadQRCode}
+                >
+                  下载二维码
+                </Button>
+              </div>
+            )}
           </>
         )}
       </Space>
