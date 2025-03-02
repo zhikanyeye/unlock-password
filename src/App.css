@@ -1,0 +1,42 @@
+#root {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem;
+  text-align: center;
+}
+
+/* 主页样式 */
+.home-container {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.feature-card {
+  height: 100%;
+  text-align: center;
+  transition: all 0.3s;
+}
+
+.feature-card:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  transform: translateY(-5px);
+}
+
+/* 加密和解密卡片样式 */
+.encrypt-card,
+.decrypt-card {
+  max-width: 800px;
+  margin: 0 auto;
+  box-shadow: 0 1px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* 响应式调整 */
+@media (max-width: 576px) {
+  #root {
+    padding: 1rem;
+  }
+  
+  .ant-card {
+    margin-bottom: 16px;
+  }
+}
