@@ -1,11 +1,20 @@
-# React + TypeScript + Vite
+# JiaPass | 加密分享工具
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+[English](#english) | [中文](#chinese)
 
-Currently, two official plugins are available:
+<h2 id="english">English</h2>
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Overview
+JiaPass is a secure text and URL encryption tool that allows users to encrypt sensitive information and share it safely with others. It supports multiple encryption algorithms and features a unique interference mechanism to prevent common decryption tools from breaking the encryption.
+
+## Key Features
+- Multiple encryption algorithms support (AES, DES, TripleDES, Rabbit, RC4)
+- Random key generation with customizable length
+- Client-side encryption for maximum security
+- Interference mechanism to enhance encryption strength
+- Easy-to-use interface for both encryption and decryption
+- Support for both text and URL encryption
+- One-click copying of encrypted content, key, and decryption link
 
 ## Expanding the ESLint configuration
 
