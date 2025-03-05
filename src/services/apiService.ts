@@ -25,8 +25,8 @@ const ADMIN_PASSWORD = import.meta.env.VITE_ADMIN_PASSWORD;
  */
 const compressData = (text: string): string => {
   try {
-    const compressed = pako.deflate(text, { to: 'string' });
-    return btoa(compressed);
+    const compressed = pako.deflate(new TextEncoder().encode(text));
+    return btoa(String.fromCharCode.apply(null, Array.from(compressed)));
   } catch (error) {
     console.error('压缩数据失败:', error);
     return text; // 如果压缩失败，返回原始文本
@@ -41,8 +41,12 @@ const compressData = (text: string): string => {
 const decompressData = (compressedText: string): string => {
   try {
     const binaryString = atob(compressedText);
-    const decompressed = pako.inflate(binaryString, { to: 'string' });
-    return decompressed;
+    const uint8Array = new Uint8Array(binaryString.length);
+    for (let i = 0; i < binaryString.length; i++) {
+      uint8Array[i] = binaryString.charCodeAt(i);
+    }
+    const decompressed = pako.inflate(uint8Array);
+    return new TextDecoder().decode(decompressed);
   } catch (error) {
     console.error('解压缩数据失败:', error);
     return compressedText; // 如果解压缩失败，返回原始文本

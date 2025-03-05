@@ -2,6 +2,7 @@ import React, { useState, useRef } from 'react';
 import { Card, Input, Button, Select, Typography, message, Space, Radio, Tooltip, Divider } from 'antd';
 import { CopyOutlined, LockOutlined, LinkOutlined, QrcodeOutlined, DownloadOutlined } from '@ant-design/icons';
 import { encrypt, generateRandomKey, generateFullKey, EncryptionType } from '../utils/cryptoUtils';
+import { storeEncryptedContent } from '../services/apiService';
 import { QRCodeSVG } from 'qrcode.react';
 
 const { Title, Text, Paragraph } = Typography;
@@ -21,7 +22,7 @@ const Encrypt: React.FC = () => {
   const qrCodeRef = useRef<HTMLDivElement>(null);
   
   // 处理加密操作
-  const handleEncrypt = () => {
+  const handleEncrypt = async () => {
     if (!inputText) {
       message.error('请输入需要加密的内容');
       return;
@@ -106,9 +107,8 @@ const Encrypt: React.FC = () => {
     
     setShowQrCode(true);
   };
-  
   // 下载二维码图片
-  const downloadQRCode = () => {
+  const downloadQRCode = async () => {
     if (!qrCodeRef.current || !decryptUrl) {
       message.warning('二维码不可用');
       return;
@@ -131,26 +131,29 @@ const Encrypt: React.FC = () => {
     canvas.height = 300;
     
     // 将SVG转换为图像并绘制到Canvas
-    img.onload = () => {
-      if (ctx) {
-        ctx.fillStyle = 'white';
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
-        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-        
-        // 创建下载链接
-        const dataUrl = canvas.toDataURL('image/png');
-        const a = document.createElement('a');
-        a.href = dataUrl;
-        a.download = '青云盾加密宝-解密二维码.png';
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-        
-        message.success('二维码已下载');
-      }
-    };
-    
-    img.src = 'data:image/svg+xml;base64,' + btoa(svgData);
+    return new Promise<void>((resolve) => {
+      img.onload = () => {
+        if (ctx) {
+          ctx.fillStyle = 'white';
+          ctx.fillRect(0, 0, canvas.width, canvas.height);
+          ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+          
+          // 创建下载链接
+          const dataUrl = canvas.toDataURL('image/png');
+          const a = document.createElement('a');
+          a.href = dataUrl;
+          a.download = '青云盾加密宝-解密二维码.png';
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
+          
+          message.success('二维码已下载');
+          resolve();
+        }
+      };
+      
+      img.src = 'data:image/svg+xml;base64,' + btoa(svgData);
+    });
   };
   
   return (
