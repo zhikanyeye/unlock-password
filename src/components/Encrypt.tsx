@@ -17,6 +17,7 @@ const Encrypt: React.FC = () => {
   const [keyLength, setKeyLength] = useState<number>(16);
   const [decryptUrl, setDecryptUrl] = useState('');
   const [showQrCode, setShowQrCode] = useState(false);
+  const [adminPassword, setAdminPassword] = useState('');
   const qrCodeRef = useRef<HTMLDivElement>(null);
   
   // 处理加密操作
@@ -35,15 +36,23 @@ const Encrypt: React.FC = () => {
       const encrypted = encrypt(inputText, encryptionType, key);
       setEncryptedText(encrypted);
       
+      // 存储加密内容
+      const { id, expirationTime } = await storeEncryptedContent(encrypted, encryptionType, adminPassword);
+      
       // 生成完整密钥（包含加密类型）
       const fullKey = generateFullKey(encryptionType, key);
       
+      // 显示过期时间信息
+      const expirationMessage = expirationTime === -1 
+        ? '永久不过期' 
+        : `将在 ${new Date(Date.now() + expirationTime).toLocaleString()} 过期`;
+      
       // 构建解密链接
       const currentUrl = window.location.origin;
-      const newDecryptUrl = `${currentUrl}/decrypt?data=${encodeURIComponent(encrypted)}`;
+      const newDecryptUrl = `${currentUrl}/decrypt?id=${id}`;
       setDecryptUrl(newDecryptUrl);
       
-      message.success('加密成功！');
+      message.success(`加密成功！${expirationMessage}`);
       
       // 将解密链接和密钥复制到剪贴板
       navigator.clipboard.writeText(`解密链接: ${newDecryptUrl}\n解密密钥: ${fullKey}`)
@@ -199,6 +208,13 @@ const Encrypt: React.FC = () => {
             <Option value={24}>24位密钥</Option>
             <Option value={32}>32位密钥</Option>
           </Select>
+          
+          <Input.Password
+            placeholder="管理员密码（可选）"
+            value={adminPassword}
+            onChange={(e) => setAdminPassword(e.target.value)}
+            style={{ width: 200 }}
+          />
           
           <Button type="primary" onClick={handleEncrypt}>加密</Button>
         </Space>

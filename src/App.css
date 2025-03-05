@@ -6,8 +6,10 @@
 }
 
 body {
-  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  background: linear-gradient(135deg, #a8c0ff 0%, #3f2b96 100%);
   min-height: 100vh;
+  background-attachment: fixed;
+  background-size: cover;
 }
 
 /* 主页样式 */
@@ -20,30 +22,34 @@ body {
 .feature-card {
   height: 100%;
   text-align: center;
-  transition: all 0.3s;
-  background: rgba(255, 255, 255, 0.9);
-  border-radius: 12px;
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  transition: all 0.3s ease;
+  background: rgba(255, 255, 255, 0.75);
+  border-radius: 16px;
+  backdrop-filter: blur(15px);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  box-shadow: 0 10px 30px rgba(31, 38, 135, 0.1);
   animation: slideUp 0.5s ease-out;
+  padding: 1.5rem;
 }
 
 .feature-card:hover {
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
-  transform: translateY(-8px);
+  box-shadow: 0 15px 30px rgba(31, 38, 135, 0.2);
+  transform: translateY(-10px);
+  border: 1px solid rgba(255, 255, 255, 0.6);
 }
 
 /* 加密和解密卡片样式 */
 .encrypt-card,
 .decrypt-card {
   max-width: 800px;
-  margin: 0 auto;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
-  background: rgba(255, 255, 255, 0.9);
-  border-radius: 12px;
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  margin: 0 auto 2rem;
+  box-shadow: 0 10px 30px rgba(31, 38, 135, 0.12);
+  background: rgba(255, 255, 255, 0.75);
+  border-radius: 16px;
+  backdrop-filter: blur(15px);
+  border: 1px solid rgba(255, 255, 255, 0.4);
   animation: fadeIn 0.8s ease-in-out;
+  padding: 1.5rem;
 }
 
 /* 按钮动画效果 */
@@ -53,7 +59,8 @@ button.ant-btn {
 
 button.ant-btn:hover {
   transform: scale(1.05);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 8px 16px rgba(31, 38, 135, 0.2);
+  background-color: rgba(100, 108, 255, 0.1);
 }
 
 /* 输入框动画效果 */
@@ -73,8 +80,25 @@ button.ant-btn:hover {
 }
 
 @keyframes slideUp {
-  from { opacity: 0; transform: translateY(20px); }
+  from { opacity: 0; transform: translateY(30px); }
   to { opacity: 1; transform: translateY(0); }
+}
+
+/* 添加页面过渡效果 */
+.page-transition {
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+/* 卡片内容样式增强 */
+.card-content {
+  padding: 1rem;
+  transition: all 0.3s ease;
+}
+
+/* 增强表单元素样式 */
+.ant-form-item {
+  margin-bottom: 1.5rem;
+  transition: all 0.3s ease;
 }
 
 /* 响应式调整 */

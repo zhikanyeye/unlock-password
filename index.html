@@ -4,10 +4,34 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="青云盾加密宝 - 安全的文本加密分享工具" />
+    <meta name="theme-color" content="#1890ff" />
+    <link rel="manifest" href="/manifest.json" />
     <title>青云盾🔐</title>
+    <!-- 预加载关键资源 -->
+    <link rel="preload" href="/src/main.tsx" as="script" type="module" />
+    <!-- 注册Service Worker -->
+    <script>
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+          navigator.serviceWorker.register('/service-worker.js')
+            .then(registration => {
+              console.log('Service Worker 注册成功:', registration.scope);
+            })
+            .catch(error => {
+              console.error('Service Worker 注册失败:', error);
+            });
+        });
+      }
+    </script>
   </head>
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
+    <noscript>
+      <div style="text-align: center; padding: 20px;">
+        请启用JavaScript以使用青云盾加密宝
+      </div>
+    </noscript>
   </body>
 </html>

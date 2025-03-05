@@ -1,0 +1,21 @@
+{
+  "name": "青云盾加密宝",
+  "short_name": "青云盾",
+  "description": "安全的文本加密分享工具",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#1890ff",
+  "icons": [
+    {
+      "src": "/vite.svg",
+      "sizes": "192x192",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
+  "orientation": "portrait",
+  "categories": ["utilities", "security"],
+  "lang": "zh-CN",
+  "prefer_related_applications": false
+}
