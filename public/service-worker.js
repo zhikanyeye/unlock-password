@@ -1,16 +1,20 @@
 // 缓存名称和版本
-const CACHE_NAME = 'jiapass-cache-v1';
+const CACHE_NAME = 'jiapass-cache-v2';
 
 // 需要缓存的资源列表
 const urlsToCache = [
   '/',
   '/index.html',
   '/vite.svg',
+  '/manifest.json',
+  '/assets/vendor-*.js',
+  '/assets/ui-*.js',
+  '/assets/crypto-*.js',
   '/assets/index-*.js',
   '/assets/index-*.css'
 ];
 
-// 安装 Service Worker
+// 预缓存静态资源
 self.addEventListener('install', (event) => {
   event.waitUntil(
     caches.open(CACHE_NAME)
@@ -22,7 +26,7 @@ self.addEventListener('install', (event) => {
   );
 });
 
-// 激活 Service Worker
+// 激活 Service Worker 并清理旧缓存
 self.addEventListener('activate', (event) => {
   const cacheWhitelist = [CACHE_NAME];
   event.waitUntil(
@@ -39,36 +43,58 @@ self.addEventListener('activate', (event) => {
   );
 });
 
-// 拦截网络请求
+// 拦截网络请求 - 使用缓存优先策略
 self.addEventListener('fetch', (event) => {
-  event.respondWith(
-    caches.match(event.request)
-      .then((response) => {
-        // 如果在缓存中找到响应，则返回缓存的响应
-        if (response) {
-          return response;
-        }
-        
-        // 否则发起网络请求
-        return fetch(event.request).then(
-          (response) => {
-            // 检查是否收到有效响应
-            if (!response || response.status !== 200 || response.type !== 'basic') {
-              return response;
-            }
-            
-            // 克隆响应，因为响应是流，只能使用一次
-            const responseToCache = response.clone();
-            
-            caches.open(CACHE_NAME)
-              .then((cache) => {
-                // 将响应添加到缓存中
-                cache.put(event.request, responseToCache);
-              });
-              
-            return response;
-          }
-        );
-      })
-  );
+  // 对 API 请求使用网络优先策略
+  if (event.request.url.includes('api.jiapass.workers.dev')) {
+    event.respondWith(networkFirst(event.request));
+    return;
+  }
+  
+  // 对静态资源使用缓存优先策略
+  event.respondWith(cacheFirst(event.request));
 });
+
+// 缓存优先策略
+async function cacheFirst(request) {
+  const cachedResponse = await caches.match(request);
+  if (cachedResponse) {
+    return cachedResponse;
+  }
+  
+  try {
+    const networkResponse = await fetch(request);
+    // 只缓存成功的响应
+    if (networkResponse && networkResponse.status === 200) {
+      const cache = await caches.open(CACHE_NAME);
+      cache.put(request, networkResponse.clone());
+    }
+    return networkResponse;
+  } catch (error) {
+    // 如果网络请求失败，尝试返回任何可能的缓存
+    const cachedResponse = await caches.match(request);
+    return cachedResponse || new Response('Network error happened', {
+      status: 408,
+      headers: { 'Content-Type': 'text/plain' }
+    });
+  }
+}
+
+// 网络优先策略
+async function networkFirst(request) {
+  try {
+    const networkResponse = await fetch(request);
+    // 只缓存成功的响应
+    if (networkResponse && networkResponse.status === 200) {
+      const cache = await caches.open(CACHE_NAME);
+      cache.put(request, networkResponse.clone());
+    }
+    return networkResponse;
+  } catch (error) {
+    const cachedResponse = await caches.match(request);
+    return cachedResponse || new Response('Network error happened', {
+      status: 408,
+      headers: { 'Content-Type': 'text/plain' }
+    });
+  }
+}

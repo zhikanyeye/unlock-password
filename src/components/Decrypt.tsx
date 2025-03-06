@@ -15,9 +15,13 @@ const Decrypt: React.FC = () => {
   const [errorMessage, setErrorMessage] = useState('');
   
   useEffect(() => {
+    const id = searchParams.get('id');
     const data = searchParams.get('data');
     if (data) {
       setEncryptedText(decodeURIComponent(data));
+    } else if (id) {
+      // 如果有id参数，从URL中获取加密内容
+      setEncryptedText(id);
     }
   }, [searchParams]);
   
@@ -64,7 +68,7 @@ const Decrypt: React.FC = () => {
   };
   
   return (
-    <Card className="decrypt-card" style={{ maxWidth: '800px', margin: '0 auto', boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }}>
+    <Card className="decrypt-card">
       <Title level={3}><LockOutlined /> 解密内容</Title>
       
       <Space direction="vertical" style={{ width: '100%' }}>

@@ -14,8 +14,27 @@ export default defineConfig({
   build: {
     rollupOptions: {
       output: {
-        manualChunks: undefined
+        // 启用代码分割
+        manualChunks: {
+          vendor: ['react', 'react-dom', 'react-router-dom'],
+          ui: ['antd', '@ant-design/icons'],
+          crypto: ['crypto-js', 'pako']
+        }
       }
-    }
+    },
+    // 启用资源压缩
+    minify: 'terser',
+    terserOptions: {
+      compress: {
+        drop_console: true,
+        drop_debugger: true
+      }
+    },
+    // 启用 CSS 代码分割
+    cssCodeSplit: true,
+    // 生成 source map
+    sourcemap: false,
+    // 设置块大小警告限制
+    chunkSizeWarningLimit: 1000
   }
 })

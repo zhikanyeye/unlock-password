@@ -188,10 +188,10 @@ const Encrypt: React.FC = () => {
           />
         )}
         
-        <Space style={{ marginTop: '16px' }}>
+        <Space style={{ marginTop: '16px', flexWrap: 'wrap' }}>
           <Select 
             defaultValue={EncryptionType.AES} 
-            style={{ width: 120 }}
+            style={{ width: 120, marginBottom: '8px' }}
             onChange={(value) => setEncryptionType(value)}
           >
             <Option value={EncryptionType.AES}>AES</Option>
@@ -203,7 +203,7 @@ const Encrypt: React.FC = () => {
           
           <Select
             defaultValue={16}
-            style={{ width: 150 }}
+            style={{ width: 150, marginBottom: '8px' }}
             onChange={(value) => setKeyLength(value)}
           >
             <Option value={8}>8位密钥</Option>
@@ -216,7 +216,7 @@ const Encrypt: React.FC = () => {
             placeholder="管理员密码（可选）"
             value={adminPassword}
             onChange={(e) => setAdminPassword(e.target.value)}
-            style={{ width: 200 }}
+            style={{ width: 200, marginBottom: '8px' }}
           />
           
           <Button type="primary" onClick={handleEncrypt}>加密</Button>

@@ -1,7 +1,7 @@
 #root {
-  max-width: 1280px;
+  max-width: 85%;
   margin: 0 auto;
-  padding: 2rem;
+  padding: 1rem;
   text-align: center;
 }
 
@@ -14,8 +14,10 @@ body {
 
 /* 主页样式 */
 .home-container {
-  max-width: 900px;
+  width: 100%;
+  max-width: 1200px;
   margin: 0 auto;
+  padding: 0 1rem;
   animation: fadeIn 0.8s ease-in-out;
 }
 
@@ -27,29 +29,27 @@ body {
   border-radius: 16px;
   backdrop-filter: blur(15px);
   border: 1px solid rgba(255, 255, 255, 0.4);
-  box-shadow: 0 10px 30px rgba(31, 38, 135, 0.1);
   animation: slideUp 0.5s ease-out;
   padding: 1.5rem;
 }
 
 .feature-card:hover {
-  box-shadow: 0 15px 30px rgba(31, 38, 135, 0.2);
-  transform: translateY(-10px);
+  transform: translateY(-5px);
   border: 1px solid rgba(255, 255, 255, 0.6);
 }
 
 /* 加密和解密卡片样式 */
 .encrypt-card,
 .decrypt-card {
-  max-width: 800px;
-  margin: 0 auto 2rem;
-  box-shadow: 0 10px 30px rgba(31, 38, 135, 0.12);
+  width: 100%;
+  max-width: 1000px;
+  margin: 1rem auto;
   background: rgba(255, 255, 255, 0.75);
   border-radius: 16px;
   backdrop-filter: blur(15px);
   border: 1px solid rgba(255, 255, 255, 0.4);
   animation: fadeIn 0.8s ease-in-out;
-  padding: 1.5rem;
+  padding: 2rem;
 }
 
 /* 按钮动画效果 */
@@ -58,9 +58,47 @@ button.ant-btn {
 }
 
 button.ant-btn:hover {
-  transform: scale(1.05);
-  box-shadow: 0 8px 16px rgba(31, 38, 135, 0.2);
-  background-color: rgba(100, 108, 255, 0.1);
+  transform: scale(1.02);
+}
+
+/* 响应式布局 */
+@media (max-width: 768px) {
+  #root {
+    padding: 0.5rem;
+    max-width: 95%;
+  }
+  
+  .encrypt-card,
+  .decrypt-card {
+    padding: 1rem;
+    margin: 0.5rem auto;
+  }
+  
+  .feature-card {
+    margin-bottom: 1rem;
+  }
+
+  .ant-space {
+    flex-wrap: wrap !important;
+  }
+
+  .ant-space-item {
+    width: 100% !important;
+    margin-right: 0 !important;
+  }
+
+  .ant-input-group {
+    flex-wrap: wrap !important;
+  }
+
+  .ant-input-group > * {
+    width: 100% !important;
+    margin-bottom: 8px !important;
+  }
+
+  .ant-input-group .ant-input-group-addon {
+    width: auto !important;
+  }
 }
 
 /* 输入框动画效果 */
@@ -104,7 +142,8 @@ button.ant-btn:hover {
 /* 响应式调整 */
 @media (max-width: 576px) {
   #root {
-    padding: 1rem;
+    padding: 0.5rem;
+    max-width: 100%;
   }
   
   .ant-card {
