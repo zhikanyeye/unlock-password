@@ -157,7 +157,7 @@ const Encrypt: React.FC = () => {
   };
   
   return (
-    <Card className="encrypt-card" style={{ maxWidth: '800px', margin: '0 auto', boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }}>
+    <Card className="encrypt-card" style={{ maxWidth: '800px', margin: '0 auto' }}>
       <Title level={3}><LockOutlined /> 加密内容</Title>
       
       <Space direction="vertical" style={{ width: '100%' }}>
@@ -216,7 +216,7 @@ const Encrypt: React.FC = () => {
             placeholder="管理员密码（可选）"
             value={adminPassword}
             onChange={(e) => setAdminPassword(e.target.value)}
-            style={{ width: 200, marginBottom: '8px' }}
+            style={{ width: '100%', marginBottom: '8px' }}
           />
           
           <Button type="primary" onClick={handleEncrypt}>加密</Button>

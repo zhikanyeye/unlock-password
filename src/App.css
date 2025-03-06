@@ -30,12 +30,11 @@ body {
   backdrop-filter: blur(10px);
   animation: slideUp 0.5s ease-out;
   padding: 2rem;
-  box-shadow: none;
 }
 
 .feature-card:hover {
-  transform: translateY(-5px);
-  background: rgba(255, 255, 255, 0.9);
+  transform: translateY(-2px);
+  background: rgba(255, 255, 255, 0.95);
 }
 
 /* 加密和解密卡片样式 */
@@ -49,7 +48,6 @@ body {
   backdrop-filter: blur(10px);
   animation: fadeIn 0.8s ease-in-out;
   padding: 3rem;
-  box-shadow: none;
 }
 
 /* 按钮动画效果 */
@@ -83,12 +81,14 @@ button.ant-btn:hover {
   
   .encrypt-card,
   .decrypt-card {
-    padding: 2rem;
+    padding: 1.5rem;
     margin: 1rem auto;
+    max-width: 100%;
   }
   
   .feature-card {
     margin-bottom: 1.5rem;
+    padding: 1.5rem;
   }
 
   .ant-space {
@@ -96,8 +96,12 @@ button.ant-btn:hover {
   }
 
   .ant-space-item {
-    width: 100% !important;
     margin-right: 0 !important;
+  }
+
+  .ant-space-item .ant-input-password {
+    width: 100% !important;
+    margin-bottom: 8px !important;
   }
 
   .ant-input-group {
@@ -138,8 +142,9 @@ button.ant-btn:hover {
 
 .ant-input:focus,
 .ant-input-affix-wrapper:focus {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transform: translateY(-1px);
+  box-shadow: none;
+  border-color: #1890ff;
 }
 
 /* 定义动画关键帧 */
