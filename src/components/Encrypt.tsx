@@ -309,3 +309,28 @@ const Encrypt: React.FC = () => {
                 <Text strong>解密链接二维码：</Text>
                 <div ref={qrCodeRef} style={{ margin: '16px auto' }}>
                   <QRCodeSVG
+                    value={decryptUrl}
+                    size={200}
+                    level="H"
+                    includeMargin={true}
+                    style={{ display: 'block', margin: '0 auto' }}
+                  />
+                </div>
+                <Button
+                  type="primary"
+                  icon={<DownloadOutlined />}
+                  onClick={downloadQRCode}
+                  style={{ marginTop: '16px' }}
+                >
+                  下载二维码
+                </Button>
+              </div>
+            )}
+          </>
+        )}
+      </Space>
+    </Card>
+  );
+};
+
+export default Encrypt;
