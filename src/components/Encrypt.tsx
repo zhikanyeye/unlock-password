@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react';
-import { Card, Input, Button, Select, Typography, message, Space, Radio, Tooltip, Divider } from 'antd';
-import { CopyOutlined, LockOutlined, LinkOutlined, QrcodeOutlined, DownloadOutlined } from '@ant-design/icons';
+import { Card, Input, Button, Select, Typography, message, Space, Radio, Tooltip, Divider, Row, Col } from 'antd';
+import { CopyOutlined, LockOutlined, LinkOutlined, QrcodeOutlined, DownloadOutlined, KeyOutlined } from '@ant-design/icons';
 import { encrypt, generateRandomKey, generateFullKey, EncryptionType } from '../utils/cryptoUtils';
 import { storeEncryptedContent } from '../services/apiService';
 import { QRCodeSVG } from 'qrcode.react';
@@ -107,6 +107,7 @@ const Encrypt: React.FC = () => {
     
     setShowQrCode(true);
   };
+  
   // 下载二维码图片
   const downloadQRCode = async () => {
     if (!qrCodeRef.current || !decryptUrl) {
@@ -188,39 +189,50 @@ const Encrypt: React.FC = () => {
           />
         )}
         
-        <Space style={{ marginTop: '16px', flexWrap: 'wrap' }}>
-          <Select 
-            defaultValue={EncryptionType.AES} 
-            style={{ width: 120, marginBottom: '8px' }}
-            onChange={(value) => setEncryptionType(value)}
-          >
-            <Option value={EncryptionType.AES}>AES</Option>
-            <Option value={EncryptionType.DES}>DES</Option>
-            <Option value={EncryptionType.TripleDES}>3DES</Option>
-            <Option value={EncryptionType.Rabbit}>Rabbit</Option>
-            <Option value={EncryptionType.RC4}>RC4</Option>
-          </Select>
+        <Row gutter={[16, 16]} style={{ marginTop: '16px' }}>
+          <Col xs={24} sm={8}>
+            <Select 
+              defaultValue={EncryptionType.AES} 
+              style={{ width: '100%' }}
+              onChange={(value) => setEncryptionType(value)}
+            >
+              <Option value={EncryptionType.AES}>AES</Option>
+              <Option value={EncryptionType.DES}>DES</Option>
+              <Option value={EncryptionType.TripleDES}>3DES</Option>
+              <Option value={EncryptionType.Rabbit}>Rabbit</Option>
+              <Option value={EncryptionType.RC4}>RC4</Option>
+            </Select>
+          </Col>
           
-          <Select
-            defaultValue={16}
-            style={{ width: 150, marginBottom: '8px' }}
-            onChange={(value) => setKeyLength(value)}
-          >
-            <Option value={8}>8位密钥</Option>
-            <Option value={16}>16位密钥</Option>
-            <Option value={24}>24位密钥</Option>
-            <Option value={32}>32位密钥</Option>
-          </Select>
+          <Col xs={24} sm={8}>
+            <Select
+              defaultValue={16}
+              style={{ width: '100%' }}
+              onChange={(value) => setKeyLength(value)}
+            >
+              <Option value={8}>8位密钥</Option>
+              <Option value={16}>16位密钥</Option>
+              <Option value={24}>24位密钥</Option>
+              <Option value={32}>32位密钥</Option>
+            </Select>
+          </Col>
           
-          <Input.Password
-            placeholder="管理员密码（可选）"
-            value={adminPassword}
-            onChange={(e) => setAdminPassword(e.target.value)}
-            style={{ width: '100%', marginBottom: '8px' }}
-          />
-          
-          <Button type="primary" onClick={handleEncrypt}>加密</Button>
-        </Space>
+          <Col xs={24} sm={8}>
+            <Input.Password
+              placeholder="管理员密码（可选）"
+              value={adminPassword}
+              onChange={(e) => setAdminPassword(e.target.value)}
+              prefix={<KeyOutlined />}
+              style={{ width: '100%' }}
+            />
+          </Col>
+        </Row>
+        
+        <Tooltip title="使用管理员密码可设置永久有效期">
+          <Button type="primary" onClick={handleEncrypt} style={{ marginTop: '16px' }} block>
+            加密
+          </Button>
+        </Tooltip>
         
         {encryptedText && (
           <>
@@ -264,59 +276,36 @@ const Encrypt: React.FC = () => {
               </Button>
             </Paragraph>
             
-            <Paragraph>
-              <Space>
+            <Row gutter={[16, 16]}>
+              <Col xs={24} sm={12}>
                 <Button 
                   type="primary" 
                   icon={<LinkOutlined />} 
                   onClick={copyDecryptLink}
+                  block
                 >
                   复制解密链接
                 </Button>
+              </Col>
+              <Col xs={24} sm={12}>
                 <Button 
                   type="primary" 
                   icon={<QrcodeOutlined />} 
                   onClick={generateQRCode}
+                  block
+                  style={{ background: 'var(--secondary-color)', borderColor: 'var(--secondary-color)' }}
                 >
                   生成二维码
                 </Button>
-              </Space>
-              <Text type="secondary" style={{ display: 'block', marginTop: '8px' }}>
-                将链接和密钥分享给需要查看内容的人
-              </Text>
-            </Paragraph>
+              </Col>
+            </Row>
+            
+            <Text type="secondary" style={{ display: 'block', marginTop: '8px', textAlign: 'center' }}>
+              将链接和密钥分享给需要查看内容的人
+            </Text>
             
             {showQrCode && (
-              <div style={{ textAlign: 'center', marginTop: '16px', padding: '16px', border: '1px dashed #d9d9d9', borderRadius: '4px' }}>
+              <div style={{ textAlign: 'center', marginTop: '16px', padding: '16px', border: '1px dashed rgba(0, 195, 255, 0.3)', borderRadius: '8px' }}>
                 <Text strong>解密链接二维码：</Text>
                 <div ref={qrCodeRef} style={{ margin: '16px auto' }}>
-                  <QRCodeSVG 
-                    value={decryptUrl} 
-                    size={200}
-                    level="H"
-                    includeMargin={true}
-                    imageSettings={{
-                      src: '/vite.svg',
-                      excavate: true,
-                      width: 40,
-                      height: 40,
-                    }}
-                  />
-                </div>
-                <Button 
-                  type="primary" 
-                  icon={<DownloadOutlined />} 
-                  onClick={downloadQRCode}
-                >
-                  下载二维码
-                </Button>
-              </div>
-            )}
-          </>
-        )}
-      </Space>
-    </Card>
-  );
-};
-
-export default Encrypt;
+                  <QRCodeSVG

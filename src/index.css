@@ -1,11 +1,11 @@
 :root {
-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+  font-family: 'Inter', 'SF Pro Display', system-ui, sans-serif;
   line-height: 1.5;
   font-weight: 400;
 
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
+  color-scheme: dark;
+  color: var(--text-primary);
+  background-color: var(--dark-bg);
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -15,11 +15,13 @@
 
 a {
   font-weight: 500;
-  color: #646cff;
+  color: var(--primary-color);
   text-decoration: inherit;
+  transition: color var(--transition-speed) ease;
 }
 a:hover {
-  color: #535bf2;
+  color: var(--accent-color);
+  text-shadow: 0 0 8px rgba(0, 255, 179, 0.4);
 }
 
 body {
@@ -27,6 +29,7 @@ body {
   display: block;
   min-width: 320px;
   min-height: 100vh;
+  font-family: 'Inter', 'SF Pro Display', system-ui, sans-serif;
 }
 
 h1 {
@@ -35,33 +38,38 @@ h1 {
 }
 
 button {
-  border-radius: 8px;
+  border-radius: 6px;
   border: 1px solid transparent;
   padding: 0.6em 1.2em;
   font-size: 1em;
   font-weight: 500;
   font-family: inherit;
-  background-color: #1a1a1a;
+  background-color: rgba(16, 36, 59, 0.8);
+  color: var(--text-primary);
   cursor: pointer;
-  transition: border-color 0.25s;
+  transition: all var(--transition-speed) ease;
 }
 button:hover {
-  border-color: #646cff;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 12px rgba(0, 195, 255, 0.3);
+  transform: translateY(-2px);
 }
 button:focus,
 button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
+  outline: 2px solid var(--primary-color);
+  outline-offset: 2px;
 }
 
+/* 强制使用暗色主题，不考虑系统偏好 */
 @media (prefers-color-scheme: light) {
   :root {
-    color: #213547;
-    background-color: #ffffff;
+    color: var(--text-primary);
+    background-color: var(--dark-bg);
   }
   a:hover {
-    color: #747bff;
+    color: var(--accent-color);
   }
   button {
-    background-color: #f9f9f9;
+    background-color: rgba(16, 36, 59, 0.8);
   }
 }
