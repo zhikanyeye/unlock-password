@@ -48,9 +48,10 @@ const Encrypt: React.FC = () => {
         ? '永久不过期' 
         : `将在 ${new Date(Date.now() + expirationTime).toLocaleString()} 过期`;
       
-      // 构建解密链接
-      const currentUrl = window.location.origin;
-      const newDecryptUrl = `${currentUrl}/decrypt?id=${id}`;
+      // 构建解密链接 - 确保包含完整URL格式
+      const protocol = window.location.protocol;
+      const host = window.location.host;
+      const newDecryptUrl = `${protocol}//${host}/decrypt?id=${id}`;
       setDecryptUrl(newDecryptUrl);
       
       message.success(`加密成功！${expirationMessage}`);
@@ -224,6 +225,7 @@ const Encrypt: React.FC = () => {
               onChange={(e) => setAdminPassword(e.target.value)}
               prefix={<KeyOutlined />}
               style={{ width: '100%' }}
+              className="admin-password-input"
             />
           </Col>
         </Row>

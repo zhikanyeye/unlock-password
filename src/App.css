@@ -236,92 +236,9 @@ body::before {
   transition: all var(--transition-speed) ease !important;
 }
 
-.ant-input:hover, .ant-input-affix-wrapper:hover, .ant-select-selector:hover {
-  border-color: var(--primary-color) !important;
-  box-shadow: 0 0 0 2px rgba(0, 195, 255, 0.1) !important;
-}
-
-.ant-input:focus, .ant-input-affix-wrapper-focused, .ant-select-focused .ant-select-selector {
-  border-color: var(--primary-color) !important;
-  box-shadow: 0 0 0 2px rgba(0, 195, 255, 0.2) !important;
-}
-
-/* 响应式布局 */
-@media (max-width: 1200px) {
-  #root,
-  .home-container,
-  .encrypt-card,
-  .decrypt-card {
-    max-width: 90%;
-  }
-}
-
-@media (max-width: 768px) {
-  #root {
-    padding: 1rem;
-  }
-  
-  .home-container {
-    padding: 0 1rem;
-  }
-  
-  .encrypt-card,
-  .decrypt-card {
-    padding: 1.5rem;
-    margin: 1rem auto;
-  }
-}
-
-@media (max-width: 768px) {
-  #root {
-    max-width: 100%;
-    padding: 0.5rem;
-  }
-  
-  .home-container {
-    max-width: 100%;
-    padding: 0 0.5rem;
-  }
-  
-  .ant-card {
-    margin: 0.5rem 0;
-  }
-}
-
-/* 输入框和按钮样式 */
-.ant-input,
-.ant-input-password,
-.ant-btn {
-  border-radius: 6px !important;
-  transition: all var(--transition-speed) ease !important;
-}
-
-.ant-input:focus,
-.ant-input-password:focus {
-  border-color: var(--primary-color) !important;
-  box-shadow: 0 0 0 2px rgba(0, 195, 255, 0.1) !important;
-}
-
-.ant-btn:hover {
-  transform: translateY(-2px) !important;
-}
-
-/* 文本区域样式 */
-.ant-typography {
-  color: var(--text-primary) !important;
-}
-
-.ant-typography-secondary {
-  color: var(--text-secondary) !important;
-}
-
-/* 输入框样式 */
-.ant-input, .ant-input-affix-wrapper, .ant-select-selector {
-  background: rgba(16, 36, 59, 0.5) !important;
-  border: 1px solid rgba(0, 195, 255, 0.2) !important;
-  color: var(--text-primary) !important;
-  border-radius: var(--border-radius) !important;
-  transition: all var(--transition-speed) ease !important;
+/* 管理员密码输入框placeholder颜色 */
+.admin-password-input .ant-input::placeholder {
+  color: white !important;
 }
 
 .ant-input:hover, .ant-input-affix-wrapper:hover, .ant-select-selector:hover {
@@ -412,92 +329,9 @@ body::before {
   transition: all var(--transition-speed) ease !important;
 }
 
-.ant-input:hover, .ant-input-affix-wrapper:hover, .ant-select-selector:hover {
-  border-color: var(--primary-color) !important;
-  box-shadow: 0 0 0 2px rgba(0, 195, 255, 0.1) !important;
-}
-
-.ant-input:focus, .ant-input-affix-wrapper-focused, .ant-select-focused .ant-select-selector {
-  border-color: var(--primary-color) !important;
-  box-shadow: 0 0 0 2px rgba(0, 195, 255, 0.2) !important;
-}
-
-/* 响应式布局 */
-@media (max-width: 1200px) {
-  #root,
-  .home-container,
-  .encrypt-card,
-  .decrypt-card {
-    max-width: 90%;
-  }
-}
-
-@media (max-width: 768px) {
-  #root {
-    padding: 1rem;
-  }
-  
-  .home-container {
-    padding: 0 1rem;
-  }
-  
-  .encrypt-card,
-  .decrypt-card {
-    padding: 1.5rem;
-    margin: 1rem auto;
-  }
-}
-
-@media (max-width: 768px) {
-  #root {
-    max-width: 100%;
-    padding: 0.5rem;
-  }
-  
-  .home-container {
-    max-width: 100%;
-    padding: 0 0.5rem;
-  }
-  
-  .ant-card {
-    margin: 0.5rem 0;
-  }
-}
-
-/* 输入框和按钮样式 */
-.ant-input,
-.ant-input-password,
-.ant-btn {
-  border-radius: 6px !important;
-  transition: all var(--transition-speed) ease !important;
-}
-
-.ant-input:focus,
-.ant-input-password:focus {
-  border-color: var(--primary-color) !important;
-  box-shadow: 0 0 0 2px rgba(0, 195, 255, 0.1) !important;
-}
-
-.ant-btn:hover {
-  transform: translateY(-2px) !important;
-}
-
-/* 文本区域样式 */
-.ant-typography {
-  color: var(--text-primary) !important;
-}
-
-.ant-typography-secondary {
-  color: var(--text-secondary) !important;
-}
-
-/* 输入框样式 */
-.ant-input, .ant-input-affix-wrapper, .ant-select-selector {
-  background: rgba(16, 36, 59, 0.5) !important;
-  border: 1px solid rgba(0, 195, 255, 0.2) !important;
-  color: var(--text-primary) !important;
-  border-radius: var(--border-radius) !important;
-  transition: all var(--transition-speed) ease !important;
+/* 管理员密码输入框placeholder颜色 */
+.admin-password-input .ant-input::placeholder {
+  color: white !important;
 }
 
 .ant-input:hover, .ant-input-affix-wrapper:hover, .ant-select-selector:hover {
@@ -588,92 +422,9 @@ body::before {
   transition: all var(--transition-speed) ease !important;
 }
 
-.ant-input:hover, .ant-input-affix-wrapper:hover, .ant-select-selector:hover {
-  border-color: var(--primary-color) !important;
-  box-shadow: 0 0 0 2px rgba(0, 195, 255, 0.1) !important;
-}
-
-.ant-input:focus, .ant-input-affix-wrapper-focused, .ant-select-focused .ant-select-selector {
-  border-color: var(--primary-color) !important;
-  box-shadow: 0 0 0 2px rgba(0, 195, 255, 0.2) !important;
-}
-
-/* 响应式布局 */
-@media (max-width: 1200px) {
-  #root,
-  .home-container,
-  .encrypt-card,
-  .decrypt-card {
-    max-width: 90%;
-  }
-}
-
-@media (max-width: 768px) {
-  #root {
-    padding: 1rem;
-  }
-  
-  .home-container {
-    padding: 0 1rem;
-  }
-  
-  .encrypt-card,
-  .decrypt-card {
-    padding: 1.5rem;
-    margin: 1rem auto;
-  }
-}
-
-@media (max-width: 768px) {
-  #root {
-    max-width: 100%;
-    padding: 0.5rem;
-  }
-  
-  .home-container {
-    max-width: 100%;
-    padding: 0 0.5rem;
-  }
-  
-  .ant-card {
-    margin: 0.5rem 0;
-  }
-}
-
-/* 输入框和按钮样式 */
-.ant-input,
-.ant-input-password,
-.ant-btn {
-  border-radius: 6px !important;
-  transition: all var(--transition-speed) ease !important;
-}
-
-.ant-input:focus,
-.ant-input-password:focus {
-  border-color: var(--primary-color) !important;
-  box-shadow: 0 0 0 2px rgba(0, 195, 255, 0.1) !important;
-}
-
-.ant-btn:hover {
-  transform: translateY(-2px) !important;
-}
-
-/* 文本区域样式 */
-.ant-typography {
-  color: var(--text-primary) !important;
-}
-
-.ant-typography-secondary {
-  color: var(--text-secondary) !important;
-}
-
-/* 输入框样式 */
-.ant-input, .ant-input-affix-wrapper, .ant-select-selector {
-  background: rgba(16, 36, 59, 0.5) !important;
-  border: 1px solid rgba(0, 195, 255, 0.2) !important;
-  color: var(--text-primary) !important;
-  border-radius: var(--border-radius) !important;
-  transition: all var(--transition-speed) ease !important;
+/* 管理员密码输入框placeholder颜色 */
+.admin-password-input .ant-input::placeholder {
+  color: white !important;
 }
 
 .ant-input:hover, .ant-input-affix-wrapper:hover, .ant-select-selector:hover {
@@ -764,92 +515,9 @@ body::before {
   transition: all var(--transition-speed) ease !important;
 }
 
-.ant-input:hover, .ant-input-affix-wrapper:hover, .ant-select-selector:hover {
-  border-color: var(--primary-color) !important;
-  box-shadow: 0 0 0 2px rgba(0, 195, 255, 0.1) !important;
-}
-
-.ant-input:focus, .ant-input-affix-wrapper-focused, .ant-select-focused .ant-select-selector {
-  border-color: var(--primary-color) !important;
-  box-shadow: 0 0 0 2px rgba(0, 195, 255, 0.2) !important;
-}
-
-/* 响应式布局 */
-@media (max-width: 1200px) {
-  #root,
-  .home-container,
-  .encrypt-card,
-  .decrypt-card {
-    max-width: 90%;
-  }
-}
-
-@media (max-width: 768px) {
-  #root {
-    padding: 1rem;
-  }
-  
-  .home-container {
-    padding: 0 1rem;
-  }
-  
-  .encrypt-card,
-  .decrypt-card {
-    padding: 1.5rem;
-    margin: 1rem auto;
-  }
-}
-
-@media (max-width: 768px) {
-  #root {
-    max-width: 100%;
-    padding: 0.5rem;
-  }
-  
-  .home-container {
-    max-width: 100%;
-    padding: 0 0.5rem;
-  }
-  
-  .ant-card {
-    margin: 0.5rem 0;
-  }
-}
-
-/* 输入框和按钮样式 */
-.ant-input,
-.ant-input-password,
-.ant-btn {
-  border-radius: 6px !important;
-  transition: all var(--transition-speed) ease !important;
-}
-
-.ant-input:focus,
-.ant-input-password:focus {
-  border-color: var(--primary-color) !important;
-  box-shadow: 0 0 0 2px rgba(0, 195, 255, 0.1) !important;
-}
-
-.ant-btn:hover {
-  transform: translateY(-2px) !important;
-}
-
-/* 文本区域样式 */
-.ant-typography {
-  color: var(--text-primary) !important;
-}
-
-.ant-typography-secondary {
-  color: var(--text-secondary) !important;
-}
-
-/* 输入框样式 */
-.ant-input, .ant-input-affix-wrapper, .ant-select-selector {
-  background: rgba(16, 36, 59, 0.5) !important;
-  border: 1px solid rgba(0, 195, 255, 0.2) !important;
-  color: var(--text-primary) !important;
-  border-radius: var(--border-radius) !important;
-  transition: all var(--transition-speed) ease !important;
+/* 管理员密码输入框placeholder颜色 */
+.admin-password-input .ant-input::placeholder {
+  color: white !important;
 }
 
 .ant-input:hover, .ant-input-affix-wrapper:hover, .ant-select-selector:hover {
@@ -940,92 +608,9 @@ body::before {
   transition: all var(--transition-speed) ease !important;
 }
 
-.ant-input:hover, .ant-input-affix-wrapper:hover, .ant-select-selector:hover {
-  border-color: var(--primary-color) !important;
-  box-shadow: 0 0 0 2px rgba(0, 195, 255, 0.1) !important;
-}
-
-.ant-input:focus, .ant-input-affix-wrapper-focused, .ant-select-focused .ant-select-selector {
-  border-color: var(--primary-color) !important;
-  box-shadow: 0 0 0 2px rgba(0, 195, 255, 0.2) !important;
-}
-
-/* 响应式布局 */
-@media (max-width: 1200px) {
-  #root,
-  .home-container,
-  .encrypt-card,
-  .decrypt-card {
-    max-width: 90%;
-  }
-}
-
-@media (max-width: 768px) {
-  #root {
-    padding: 1rem;
-  }
-  
-  .home-container {
-    padding: 0 1rem;
-  }
-  
-  .encrypt-card,
-  .decrypt-card {
-    padding: 1.5rem;
-    margin: 1rem auto;
-  }
-}
-
-@media (max-width: 768px) {
-  #root {
-    max-width: 100%;
-    padding: 0.5rem;
-  }
-  
-  .home-container {
-    max-width: 100%;
-    padding: 0 0.5rem;
-  }
-  
-  .ant-card {
-    margin: 0.5rem 0;
-  }
-}
-
-/* 输入框和按钮样式 */
-.ant-input,
-.ant-input-password,
-.ant-btn {
-  border-radius: 6px !important;
-  transition: all var(--transition-speed) ease !important;
-}
-
-.ant-input:focus,
-.ant-input-password:focus {
-  border-color: var(--primary-color) !important;
-  box-shadow: 0 0 0 2px rgba(0, 195, 255, 0.1) !important;
-}
-
-.ant-btn:hover {
-  transform: translateY(-2px) !important;
-}
-
-/* 文本区域样式 */
-.ant-typography {
-  color: var(--text-primary) !important;
-}
-
-.ant-typography-secondary {
-  color: var(--text-secondary) !important;
-}
-
-/* 输入框样式 */
-.ant-input, .ant-input-affix-wrapper, .ant-select-selector {
-  background: rgba(16, 36, 59, 0.5) !important;
-  border: 1px solid rgba(0, 195, 255, 0.2) !important;
-  color: var(--text-primary) !important;
-  border-radius: var(--border-radius) !important;
-  transition: all var(--transition-speed) ease !important;
+/* 管理员密码输入框placeholder颜色 */
+.admin-password-input .ant-input::placeholder {
+  color: white !important;
 }
 
 .ant-input:hover, .ant-input-affix-wrapper:hover, .ant-select-selector:hover {
@@ -1116,92 +701,9 @@ body::before {
   transition: all var(--transition-speed) ease !important;
 }
 
-.ant-input:hover, .ant-input-affix-wrapper:hover, .ant-select-selector:hover {
-  border-color: var(--primary-color) !important;
-  box-shadow: 0 0 0 2px rgba(0, 195, 255, 0.1) !important;
-}
-
-.ant-input:focus, .ant-input-affix-wrapper-focused, .ant-select-focused .ant-select-selector {
-  border-color: var(--primary-color) !important;
-  box-shadow: 0 0 0 2px rgba(0, 195, 255, 0.2) !important;
-}
-
-/* 响应式布局 */
-@media (max-width: 1200px) {
-  #root,
-  .home-container,
-  .encrypt-card,
-  .decrypt-card {
-    max-width: 90%;
-  }
-}
-
-@media (max-width: 768px) {
-  #root {
-    padding: 1rem;
-  }
-  
-  .home-container {
-    padding: 0 1rem;
-  }
-  
-  .encrypt-card,
-  .decrypt-card {
-    padding: 1.5rem;
-    margin: 1rem auto;
-  }
-}
-
-@media (max-width: 768px) {
-  #root {
-    max-width: 100%;
-    padding: 0.5rem;
-  }
-  
-  .home-container {
-    max-width: 100%;
-    padding: 0 0.5rem;
-  }
-  
-  .ant-card {
-    margin: 0.5rem 0;
-  }
-}
-
-/* 输入框和按钮样式 */
-.ant-input,
-.ant-input-password,
-.ant-btn {
-  border-radius: 6px !important;
-  transition: all var(--transition-speed) ease !important;
-}
-
-.ant-input:focus,
-.ant-input-password:focus {
-  border-color: var(--primary-color) !important;
-  box-shadow: 0 0 0 2px rgba(0, 195, 255, 0.1) !important;
-}
-
-.ant-btn:hover {
-  transform: translateY(-2px) !important;
-}
-
-/* 文本区域样式 */
-.ant-typography {
-  color: var(--text-primary) !important;
-}
-
-.ant-typography-secondary {
-  color: var(--text-secondary) !important;
-}
-
-/* 输入框样式 */
-.ant-input, .ant-input-affix-wrapper, .ant-select-selector {
-  background: rgba(16, 36, 59, 0.5) !important;
-  border: 1px solid rgba(0, 195, 255, 0.2) !important;
-  color: var(--text-primary) !important;
-  border-radius: var(--border-radius) !important;
-  transition: all var(--transition-speed) ease !important;
+/* 管理员密码输入框placeholder颜色 */
+.admin-password-input .ant-input::placeholder {
+  color: white !important;
 }
 
 .ant-input:hover, .ant-input-affix-wrapper:hover, .ant-select-selector:hover {
@@ -1292,92 +794,9 @@ body::before {
   transition: all var(--transition-speed) ease !important;
 }
 
-.ant-input:hover, .ant-input-affix-wrapper:hover, .ant-select-selector:hover {
-  border-color: var(--primary-color) !important;
-  box-shadow: 0 0 0 2px rgba(0, 195, 255, 0.1) !important;
-}
-
-.ant-input:focus, .ant-input-affix-wrapper-focused, .ant-select-focused .ant-select-selector {
-  border-color: var(--primary-color) !important;
-  box-shadow: 0 0 0 2px rgba(0, 195, 255, 0.2) !important;
-}
-
-/* 响应式布局 */
-@media (max-width: 1200px) {
-  #root,
-  .home-container,
-  .encrypt-card,
-  .decrypt-card {
-    max-width: 90%;
-  }
-}
-
-@media (max-width: 768px) {
-  #root {
-    padding: 1rem;
-  }
-  
-  .home-container {
-    padding: 0 1rem;
-  }
-  
-  .encrypt-card,
-  .decrypt-card {
-    padding: 1.5rem;
-    margin: 1rem auto;
-  }
-}
-
-@media (max-width: 768px) {
-  #root {
-    max-width: 100%;
-    padding: 0.5rem;
-  }
-  
-  .home-container {
-    max-width: 100%;
-    padding: 0 0.5rem;
-  }
-  
-  .ant-card {
-    margin: 0.5rem 0;
-  }
-}
-
-/* 输入框和按钮样式 */
-.ant-input,
-.ant-input-password,
-.ant-btn {
-  border-radius: 6px !important;
-  transition: all var(--transition-speed) ease !important;
-}
-
-.ant-input:focus,
-.ant-input-password:focus {
-  border-color: var(--primary-color) !important;
-  box-shadow: 0 0 0 2px rgba(0, 195, 255, 0.1) !important;
-}
-
-.ant-btn:hover {
-  transform: translateY(-2px) !important;
-}
-
-/* 文本区域样式 */
-.ant-typography {
-  color: var(--text-primary) !important;
-}
-
-.ant-typography-secondary {
-  color: var(--text-secondary) !important;
-}
-
-/* 输入框样式 */
-.ant-input, .ant-input-affix-wrapper, .ant-select-selector {
-  background: rgba(16, 36, 59, 0.5) !important;
-  border: 1px solid rgba(0, 195, 255, 0.2) !important;
-  color: var(--text-primary) !important;
-  border-radius: var(--border-radius) !important;
-  transition: all var(--transition-speed) ease !important;
+/* 管理员密码输入框placeholder颜色 */
+.admin-password-input .ant-input::placeholder {
+  color: white !important;
 }
 
 .ant-input:hover, .ant-input-affix-wrapper:hover, .ant-select-selector:hover {
@@ -1468,92 +887,9 @@ body::before {
   transition: all var(--transition-speed) ease !important;
 }
 
-.ant-input:hover, .ant-input-affix-wrapper:hover, .ant-select-selector:hover {
-  border-color: var(--primary-color) !important;
-  box-shadow: 0 0 0 2px rgba(0, 195, 255, 0.1) !important;
-}
-
-.ant-input:focus, .ant-input-affix-wrapper-focused, .ant-select-focused .ant-select-selector {
-  border-color: var(--primary-color) !important;
-  box-shadow: 0 0 0 2px rgba(0, 195, 255, 0.2) !important;
-}
-
-/* 响应式布局 */
-@media (max-width: 1200px) {
-  #root,
-  .home-container,
-  .encrypt-card,
-  .decrypt-card {
-    max-width: 90%;
-  }
-}
-
-@media (max-width: 768px) {
-  #root {
-    padding: 1rem;
-  }
-  
-  .home-container {
-    padding: 0 1rem;
-  }
-  
-  .encrypt-card,
-  .decrypt-card {
-    padding: 1.5rem;
-    margin: 1rem auto;
-  }
-}
-
-@media (max-width: 768px) {
-  #root {
-    max-width: 100%;
-    padding: 0.5rem;
-  }
-  
-  .home-container {
-    max-width: 100%;
-    padding: 0 0.5rem;
-  }
-  
-  .ant-card {
-    margin: 0.5rem 0;
-  }
-}
-
-/* 输入框和按钮样式 */
-.ant-input,
-.ant-input-password,
-.ant-btn {
-  border-radius: 6px !important;
-  transition: all var(--transition-speed) ease !important;
-}
-
-.ant-input:focus,
-.ant-input-password:focus {
-  border-color: var(--primary-color) !important;
-  box-shadow: 0 0 0 2px rgba(0, 195, 255, 0.1) !important;
-}
-
-.ant-btn:hover {
-  transform: translateY(-2px) !important;
-}
-
-/* 文本区域样式 */
-.ant-typography {
-  color: var(--text-primary) !important;
-}
-
-.ant-typography-secondary {
-  color: var(--text-secondary) !important;
-}
-
-/* 输入框样式 */
-.ant-input, .ant-input-affix-wrapper, .ant-select-selector {
-  background: rgba(16, 36, 59, 0.5) !important;
-  border: 1px solid rgba(0, 195, 255, 0.2) !important;
-  color: var(--text-primary) !important;
-  border-radius: var(--border-radius) !important;
-  transition: all var(--transition-speed) ease !important;
+/* 管理员密码输入框placeholder颜色 */
+.admin-password-input .ant-input::placeholder {
+  color: white !important;
 }
 
 .ant-input:hover, .ant-input-affix-wrapper:hover, .ant-select-selector:hover {
@@ -1644,92 +980,9 @@ body::before {
   transition: all var(--transition-speed) ease !important;
 }
 
-.ant-input:hover, .ant-input-affix-wrapper:hover, .ant-select-selector:hover {
-  border-color: var(--primary-color) !important;
-  box-shadow: 0 0 0 2px rgba(0, 195, 255, 0.1) !important;
-}
-
-.ant-input:focus, .ant-input-affix-wrapper-focused, .ant-select-focused .ant-select-selector {
-  border-color: var(--primary-color) !important;
-  box-shadow: 0 0 0 2px rgba(0, 195, 255, 0.2) !important;
-}
-
-/* 响应式布局 */
-@media (max-width: 1200px) {
-  #root,
-  .home-container,
-  .encrypt-card,
-  .decrypt-card {
-    max-width: 90%;
-  }
-}
-
-@media (max-width: 768px) {
-  #root {
-    padding: 1rem;
-  }
-  
-  .home-container {
-    padding: 0 1rem;
-  }
-  
-  .encrypt-card,
-  .decrypt-card {
-    padding: 1.5rem;
-    margin: 1rem auto;
-  }
-}
-
-@media (max-width: 768px) {
-  #root {
-    max-width: 100%;
-    padding: 0.5rem;
-  }
-  
-  .home-container {
-    max-width: 100%;
-    padding: 0 0.5rem;
-  }
-  
-  .ant-card {
-    margin: 0.5rem 0;
-  }
-}
-
-/* 输入框和按钮样式 */
-.ant-input,
-.ant-input-password,
-.ant-btn {
-  border-radius: 6px !important;
-  transition: all var(--transition-speed) ease !important;
-}
-
-.ant-input:focus,
-.ant-input-password:focus {
-  border-color: var(--primary-color) !important;
-  box-shadow: 0 0 0 2px rgba(0, 195, 255, 0.1) !important;
-}
-
-.ant-btn:hover {
-  transform: translateY(-2px) !important;
-}
-
-/* 文本区域样式 */
-.ant-typography {
-  color: var(--text-primary) !important;
-}
-
-.ant-typography-secondary {
-  color: var(--text-secondary) !important;
-}
-
-/* 输入框样式 */
-.ant-input, .ant-input-affix-wrapper, .ant-select-selector {
-  background: rgba(16, 36, 59, 0.5) !important;
-  border: 1px solid rgba(0, 195, 255, 0.2) !important;
-  color: var(--text-primary) !important;
-  border-radius: var(--border-radius) !important;
-  transition: all var(--transition-speed) ease !important;
+/* 管理员密码输入框placeholder颜色 */
+.admin-password-input .ant-input::placeholder {
+  color: white !important;
 }
 
 .ant-input:hover, .ant-input-affix-wrapper:hover, .ant-select-selector:hover {
@@ -1820,92 +1073,9 @@ body::before {
   transition: all var(--transition-speed) ease !important;
 }
 
-.ant-input:hover, .ant-input-affix-wrapper:hover, .ant-select-selector:hover {
-  border-color: var(--primary-color) !important;
-  box-shadow: 0 0 0 2px rgba(0, 195, 255, 0.1) !important;
-}
-
-.ant-input:focus, .ant-input-affix-wrapper-focused, .ant-select-focused .ant-select-selector {
-  border-color: var(--primary-color) !important;
-  box-shadow: 0 0 0 2px rgba(0, 195, 255, 0.2) !important;
-}
-
-/* 响应式布局 */
-@media (max-width: 1200px) {
-  #root,
-  .home-container,
-  .encrypt-card,
-  .decrypt-card {
-    max-width: 90%;
-  }
-}
-
-@media (max-width: 768px) {
-  #root {
-    padding: 1rem;
-  }
-  
-  .home-container {
-    padding: 0 1rem;
-  }
-  
-  .encrypt-card,
-  .decrypt-card {
-    padding: 1.5rem;
-    margin: 1rem auto;
-  }
-}
-
-@media (max-width: 768px) {
-  #root {
-    max-width: 100%;
-    padding: 0.5rem;
-  }
-  
-  .home-container {
-    max-width: 100%;
-    padding: 0 0.5rem;
-  }
-  
-  .ant-card {
-    margin: 0.5rem 0;
-  }
-}
-
-/* 输入框和按钮样式 */
-.ant-input,
-.ant-input-password,
-.ant-btn {
-  border-radius: 6px !important;
-  transition: all var(--transition-speed) ease !important;
-}
-
-.ant-input:focus,
-.ant-input-password:focus {
-  border-color: var(--primary-color) !important;
-  box-shadow: 0 0 0 2px rgba(0, 195, 255, 0.1) !important;
-}
-
-.ant-btn:hover {
-  transform: translateY(-2px) !important;
-}
-
-/* 文本区域样式 */
-.ant-typography {
-  color: var(--text-primary) !important;
-}
-
-.ant-typography-secondary {
-  color: var(--text-secondary) !important;
-}
-
-/* 输入框样式 */
-.ant-input, .ant-input-affix-wrapper, .ant-select-selector {
-  background: rgba(16, 36, 59, 0.5) !important;
-  border: 1px solid rgba(0, 195, 255, 0.2) !important;
-  color: var(--text-primary) !important;
-  border-radius: var(--border-radius) !important;
-  transition: all var(--transition-speed) ease !important;
+/* 管理员密码输入框placeholder颜色 */
+.admin-password-input .ant-input::placeholder {
+  color: white !important;
 }
 
 .ant-input:hover, .ant-input-affix-wrapper:hover, .ant-select-selector:hover {
@@ -1996,6 +1166,11 @@ body::before {
   transition: all var(--transition-speed) ease !important;
 }
 
+/* 管理员密码输入框placeholder颜色 */
+.admin-password-input .ant-input::placeholder {
+  color: white !important;
+}
+
 .ant-input:hover, .ant-input-affix-wrapper:hover, .ant-select-selector:hover {
   border-color: var(--primary-color) !important;
   box-shadow: 0 0 0 2px rgba(0, 195, 255, 0.1) !important;
@@ -2082,6 +1257,941 @@ body::before {
   color: var(--text-primary) !important;
   border-radius: var(--border-radius) !important;
   transition: all var(--transition-speed) ease !important;
+}
+
+/* 管理员密码输入框placeholder颜色 */
+.admin-password-input .ant-input::placeholder {
+  color: white !important;
+}
+
+.ant-input:hover, .ant-input-affix-wrapper:hover, .ant-select-selector:hover {
+  border-color: var(--primary-color) !important;
+  box-shadow: 0 0 0 2px rgba(0, 195, 255, 0.1) !important;
+}
+
+.ant-input:focus, .ant-input-affix-wrapper-focused, .ant-select-focused .ant-select-selector {
+  border-color: var(--primary-color) !important;
+  box-shadow: 0 0 0 2px rgba(0, 195, 255, 0.2) !important;
+}
+
+/* 响应式布局 */
+@media (max-width: 1200px) {
+  #root,
+  .home-container,
+  .encrypt-card,
+  .decrypt-card {
+    max-width: 90%;
+  }
+}
+
+@media (max-width: 768px) {
+  #root {
+    padding: 1rem;
+  }
+  
+  .home-container {
+    padding: 0 1rem;
+  }
+  
+  .encrypt-card,
+  .decrypt-card {
+    padding: 1.5rem;
+    margin: 1rem auto;
+  }
+}
+
+@media (max-width: 768px) {
+  #root {
+    max-width: 100%;
+    padding: 0.5rem;
+  }
+  
+  .home-container {
+    max-width: 100%;
+    padding: 0 0.5rem;
+  }
+  
+  .ant-card {
+    margin: 0.5rem 0;
+  }
+}
+
+/* 输入框和按钮样式 */
+.ant-input,
+.ant-input-password,
+.ant-btn {
+  border-radius: 6px !important;
+  transition: all var(--transition-speed) ease !important;
+}
+
+.ant-input:focus,
+.ant-input-password:focus {
+  border-color: var(--primary-color) !important;
+  box-shadow: 0 0 0 2px rgba(0, 195, 255, 0.1) !important;
+}
+
+.ant-btn:hover {
+  transform: translateY(-2px) !important;
+}
+
+/* 文本区域样式 */
+.ant-typography {
+  color: var(--text-primary) !important;
+}
+
+.ant-typography-secondary {
+  color: var(--text-secondary) !important;
+}
+
+/* 输入框样式 */
+.ant-input, .ant-input-affix-wrapper, .ant-select-selector {
+  background: rgba(16, 36, 59, 0.5) !important;
+  border: 1px solid rgba(0, 195, 255, 0.2) !important;
+  color: var(--text-primary) !important;
+  border-radius: var(--border-radius) !important;
+  transition: all var(--transition-speed) ease !important;
+}
+
+/* 管理员密码输入框placeholder颜色 */
+.admin-password-input .ant-input::placeholder {
+  color: white !important;
+}
+
+.ant-input:hover, .ant-input-affix-wrapper:hover, .ant-select-selector:hover {
+  border-color: var(--primary-color) !important;
+  box-shadow: 0 0 0 2px rgba(0, 195, 255, 0.1) !important;
+}
+
+.ant-input:focus, .ant-input-affix-wrapper-focused, .ant-select-focused .ant-select-selector {
+  border-color: var(--primary-color) !important;
+  box-shadow: 0 0 0 2px rgba(0, 195, 255, 0.2) !important;
+}
+
+/* 响应式布局 */
+@media (max-width: 1200px) {
+  #root,
+  .home-container,
+  .encrypt-card,
+  .decrypt-card {
+    max-width: 90%;
+  }
+}
+
+@media (max-width: 768px) {
+  #root {
+    padding: 1rem;
+  }
+  
+  .home-container {
+    padding: 0 1rem;
+  }
+  
+  .encrypt-card,
+  .decrypt-card {
+    padding: 1.5rem;
+    margin: 1rem auto;
+  }
+}
+
+@media (max-width: 768px) {
+  #root {
+    max-width: 100%;
+    padding: 0.5rem;
+  }
+  
+  .home-container {
+    max-width: 100%;
+    padding: 0 0.5rem;
+  }
+  
+  .ant-card {
+    margin: 0.5rem 0;
+  }
+}
+
+/* 输入框和按钮样式 */
+.ant-input,
+.ant-input-password,
+.ant-btn {
+  border-radius: 6px !important;
+  transition: all var(--transition-speed) ease !important;
+}
+
+.ant-input:focus,
+.ant-input-password:focus {
+  border-color: var(--primary-color) !important;
+  box-shadow: 0 0 0 2px rgba(0, 195, 255, 0.1) !important;
+}
+
+.ant-btn:hover {
+  transform: translateY(-2px) !important;
+}
+
+/* 文本区域样式 */
+.ant-typography {
+  color: var(--text-primary) !important;
+}
+
+.ant-typography-secondary {
+  color: var(--text-secondary) !important;
+}
+
+/* 输入框样式 */
+.ant-input, .ant-input-affix-wrapper, .ant-select-selector {
+  background: rgba(16, 36, 59, 0.5) !important;
+  border: 1px solid rgba(0, 195, 255, 0.2) !important;
+  color: var(--text-primary) !important;
+  border-radius: var(--border-radius) !important;
+  transition: all var(--transition-speed) ease !important;
+}
+
+/* 管理员密码输入框placeholder颜色 */
+.admin-password-input .ant-input::placeholder {
+  color: white !important;
+}
+
+.ant-input:hover, .ant-input-affix-wrapper:hover, .ant-select-selector:hover {
+  border-color: var(--primary-color) !important;
+  box-shadow: 0 0 0 2px rgba(0, 195, 255, 0.1) !important;
+}
+
+.ant-input:focus, .ant-input-affix-wrapper-focused, .ant-select-focused .ant-select-selector {
+  border-color: var(--primary-color) !important;
+  box-shadow: 0 0 0 2px rgba(0, 195, 255, 0.2) !important;
+}
+
+/* 响应式布局 */
+@media (max-width: 1200px) {
+  #root,
+  .home-container,
+  .encrypt-card,
+  .decrypt-card {
+    max-width: 90%;
+  }
+}
+
+@media (max-width: 768px) {
+  #root {
+    padding: 1rem;
+  }
+  
+  .home-container {
+    padding: 0 1rem;
+  }
+  
+  .encrypt-card,
+  .decrypt-card {
+    padding: 1.5rem;
+    margin: 1rem auto;
+  }
+}
+
+@media (max-width: 768px) {
+  #root {
+    max-width: 100%;
+    padding: 0.5rem;
+  }
+  
+  .home-container {
+    max-width: 100%;
+    padding: 0 0.5rem;
+  }
+  
+  .ant-card {
+    margin: 0.5rem 0;
+  }
+}
+
+/* 输入框和按钮样式 */
+.ant-input,
+.ant-input-password,
+.ant-btn {
+  border-radius: 6px !important;
+  transition: all var(--transition-speed) ease !important;
+}
+
+.ant-input:focus,
+.ant-input-password:focus {
+  border-color: var(--primary-color) !important;
+  box-shadow: 0 0 0 2px rgba(0, 195, 255, 0.1) !important;
+}
+
+.ant-btn:hover {
+  transform: translateY(-2px) !important;
+}
+
+/* 文本区域样式 */
+.ant-typography {
+  color: var(--text-primary) !important;
+}
+
+.ant-typography-secondary {
+  color: var(--text-secondary) !important;
+}
+
+/* 输入框样式 */
+.ant-input, .ant-input-affix-wrapper, .ant-select-selector {
+  background: rgba(16, 36, 59, 0.5) !important;
+  border: 1px solid rgba(0, 195, 255, 0.2) !important;
+  color: var(--text-primary) !important;
+  border-radius: var(--border-radius) !important;
+  transition: all var(--transition-speed) ease !important;
+}
+
+/* 管理员密码输入框placeholder颜色 */
+.admin-password-input .ant-input::placeholder {
+  color: white !important;
+}
+
+.ant-input:hover, .ant-input-affix-wrapper:hover, .ant-select-selector:hover {
+  border-color: var(--primary-color) !important;
+  box-shadow: 0 0 0 2px rgba(0, 195, 255, 0.1) !important;
+}
+
+.ant-input:focus, .ant-input-affix-wrapper-focused, .ant-select-focused .ant-select-selector {
+  border-color: var(--primary-color) !important;
+  box-shadow: 0 0 0 2px rgba(0, 195, 255, 0.2) !important;
+}
+
+/* 响应式布局 */
+@media (max-width: 1200px) {
+  #root,
+  .home-container,
+  .encrypt-card,
+  .decrypt-card {
+    max-width: 90%;
+  }
+}
+
+@media (max-width: 768px) {
+  #root {
+    padding: 1rem;
+  }
+  
+  .home-container {
+    padding: 0 1rem;
+  }
+  
+  .encrypt-card,
+  .decrypt-card {
+    padding: 1.5rem;
+    margin: 1rem auto;
+  }
+}
+
+@media (max-width: 768px) {
+  #root {
+    max-width: 100%;
+    padding: 0.5rem;
+  }
+  
+  .home-container {
+    max-width: 100%;
+    padding: 0 0.5rem;
+  }
+  
+  .ant-card {
+    margin: 0.5rem 0;
+  }
+}
+
+/* 输入框和按钮样式 */
+.ant-input,
+.ant-input-password,
+.ant-btn {
+  border-radius: 6px !important;
+  transition: all var(--transition-speed) ease !important;
+}
+
+.ant-input:focus,
+.ant-input-password:focus {
+  border-color: var(--primary-color) !important;
+  box-shadow: 0 0 0 2px rgba(0, 195, 255, 0.1) !important;
+}
+
+.ant-btn:hover {
+  transform: translateY(-2px) !important;
+}
+
+/* 文本区域样式 */
+.ant-typography {
+  color: var(--text-primary) !important;
+}
+
+.ant-typography-secondary {
+  color: var(--text-secondary) !important;
+}
+
+/* 输入框样式 */
+.ant-input, .ant-input-affix-wrapper, .ant-select-selector {
+  background: rgba(16, 36, 59, 0.5) !important;
+  border: 1px solid rgba(0, 195, 255, 0.2) !important;
+  color: var(--text-primary) !important;
+  border-radius: var(--border-radius) !important;
+  transition: all var(--transition-speed) ease !important;
+}
+
+/* 管理员密码输入框placeholder颜色 */
+.admin-password-input .ant-input::placeholder {
+  color: white !important;
+}
+
+.ant-input:hover, .ant-input-affix-wrapper:hover, .ant-select-selector:hover {
+  border-color: var(--primary-color) !important;
+  box-shadow: 0 0 0 2px rgba(0, 195, 255, 0.1) !important;
+}
+
+.ant-input:focus, .ant-input-affix-wrapper-focused, .ant-select-focused .ant-select-selector {
+  border-color: var(--primary-color) !important;
+  box-shadow: 0 0 0 2px rgba(0, 195, 255, 0.2) !important;
+}
+
+/* 响应式布局 */
+@media (max-width: 1200px) {
+  #root,
+  .home-container,
+  .encrypt-card,
+  .decrypt-card {
+    max-width: 90%;
+  }
+}
+
+@media (max-width: 768px) {
+  #root {
+    padding: 1rem;
+  }
+  
+  .home-container {
+    padding: 0 1rem;
+  }
+  
+  .encrypt-card,
+  .decrypt-card {
+    padding: 1.5rem;
+    margin: 1rem auto;
+  }
+}
+
+@media (max-width: 768px) {
+  #root {
+    max-width: 100%;
+    padding: 0.5rem;
+  }
+  
+  .home-container {
+    max-width: 100%;
+    padding: 0 0.5rem;
+  }
+  
+  .ant-card {
+    margin: 0.5rem 0;
+  }
+}
+
+/* 输入框和按钮样式 */
+.ant-input,
+.ant-input-password,
+.ant-btn {
+  border-radius: 6px !important;
+  transition: all var(--transition-speed) ease !important;
+}
+
+.ant-input:focus,
+.ant-input-password:focus {
+  border-color: var(--primary-color) !important;
+  box-shadow: 0 0 0 2px rgba(0, 195, 255, 0.1) !important;
+}
+
+.ant-btn:hover {
+  transform: translateY(-2px) !important;
+}
+
+/* 文本区域样式 */
+.ant-typography {
+  color: var(--text-primary) !important;
+}
+
+.ant-typography-secondary {
+  color: var(--text-secondary) !important;
+}
+
+/* 输入框样式 */
+.ant-input, .ant-input-affix-wrapper, .ant-select-selector {
+  background: rgba(16, 36, 59, 0.5) !important;
+  border: 1px solid rgba(0, 195, 255, 0.2) !important;
+  color: var(--text-primary) !important;
+  border-radius: var(--border-radius) !important;
+  transition: all var(--transition-speed) ease !important;
+}
+
+/* 管理员密码输入框placeholder颜色 */
+.admin-password-input .ant-input::placeholder {
+  color: white !important;
+}
+
+.ant-input:hover, .ant-input-affix-wrapper:hover, .ant-select-selector:hover {
+  border-color: var(--primary-color) !important;
+  box-shadow: 0 0 0 2px rgba(0, 195, 255, 0.1) !important;
+}
+
+.ant-input:focus, .ant-input-affix-wrapper-focused, .ant-select-focused .ant-select-selector {
+  border-color: var(--primary-color) !important;
+  box-shadow: 0 0 0 2px rgba(0, 195, 255, 0.2) !important;
+}
+
+/* 响应式布局 */
+@media (max-width: 1200px) {
+  #root,
+  .home-container,
+  .encrypt-card,
+  .decrypt-card {
+    max-width: 90%;
+  }
+}
+
+@media (max-width: 768px) {
+  #root {
+    padding: 1rem;
+  }
+  
+  .home-container {
+    padding: 0 1rem;
+  }
+  
+  .encrypt-card,
+  .decrypt-card {
+    padding: 1.5rem;
+    margin: 1rem auto;
+  }
+}
+
+@media (max-width: 768px) {
+  #root {
+    max-width: 100%;
+    padding: 0.5rem;
+  }
+  
+  .home-container {
+    max-width: 100%;
+    padding: 0 0.5rem;
+  }
+  
+  .ant-card {
+    margin: 0.5rem 0;
+  }
+}
+
+/* 输入框和按钮样式 */
+.ant-input,
+.ant-input-password,
+.ant-btn {
+  border-radius: 6px !important;
+  transition: all var(--transition-speed) ease !important;
+}
+
+.ant-input:focus,
+.ant-input-password:focus {
+  border-color: var(--primary-color) !important;
+  box-shadow: 0 0 0 2px rgba(0, 195, 255, 0.1) !important;
+}
+
+.ant-btn:hover {
+  transform: translateY(-2px) !important;
+}
+
+/* 文本区域样式 */
+.ant-typography {
+  color: var(--text-primary) !important;
+}
+
+.ant-typography-secondary {
+  color: var(--text-secondary) !important;
+}
+
+/* 输入框样式 */
+.ant-input, .ant-input-affix-wrapper, .ant-select-selector {
+  background: rgba(16, 36, 59, 0.5) !important;
+  border: 1px solid rgba(0, 195, 255, 0.2) !important;
+  color: var(--text-primary) !important;
+  border-radius: var(--border-radius) !important;
+  transition: all var(--transition-speed) ease !important;
+}
+
+/* 管理员密码输入框placeholder颜色 */
+.admin-password-input .ant-input::placeholder {
+  color: white !important;
+}
+
+.ant-input:hover, .ant-input-affix-wrapper:hover, .ant-select-selector:hover {
+  border-color: var(--primary-color) !important;
+  box-shadow: 0 0 0 2px rgba(0, 195, 255, 0.1) !important;
+}
+
+.ant-input:focus, .ant-input-affix-wrapper-focused, .ant-select-focused .ant-select-selector {
+  border-color: var(--primary-color) !important;
+  box-shadow: 0 0 0 2px rgba(0, 195, 255, 0.2) !important;
+}
+
+/* 响应式布局 */
+@media (max-width: 1200px) {
+  #root,
+  .home-container,
+  .encrypt-card,
+  .decrypt-card {
+    max-width: 90%;
+  }
+}
+
+@media (max-width: 768px) {
+  #root {
+    padding: 1rem;
+  }
+  
+  .home-container {
+    padding: 0 1rem;
+  }
+  
+  .encrypt-card,
+  .decrypt-card {
+    padding: 1.5rem;
+    margin: 1rem auto;
+  }
+}
+
+@media (max-width: 768px) {
+  #root {
+    max-width: 100%;
+    padding: 0.5rem;
+  }
+  
+  .home-container {
+    max-width: 100%;
+    padding: 0 0.5rem;
+  }
+  
+  .ant-card {
+    margin: 0.5rem 0;
+  }
+}
+
+/* 输入框和按钮样式 */
+.ant-input,
+.ant-input-password,
+.ant-btn {
+  border-radius: 6px !important;
+  transition: all var(--transition-speed) ease !important;
+}
+
+.ant-input:focus,
+.ant-input-password:focus {
+  border-color: var(--primary-color) !important;
+  box-shadow: 0 0 0 2px rgba(0, 195, 255, 0.1) !important;
+}
+
+.ant-btn:hover {
+  transform: translateY(-2px) !important;
+}
+
+/* 文本区域样式 */
+.ant-typography {
+  color: var(--text-primary) !important;
+}
+
+.ant-typography-secondary {
+  color: var(--text-secondary) !important;
+}
+
+/* 输入框样式 */
+.ant-input, .ant-input-affix-wrapper, .ant-select-selector {
+  background: rgba(16, 36, 59, 0.5) !important;
+  border: 1px solid rgba(0, 195, 255, 0.2) !important;
+  color: var(--text-primary) !important;
+  border-radius: var(--border-radius) !important;
+  transition: all var(--transition-speed) ease !important;
+}
+
+/* 管理员密码输入框placeholder颜色 */
+.admin-password-input .ant-input::placeholder {
+  color: white !important;
+}
+
+.ant-input:hover, .ant-input-affix-wrapper:hover, .ant-select-selector:hover {
+  border-color: var(--primary-color) !important;
+  box-shadow: 0 0 0 2px rgba(0, 195, 255, 0.1) !important;
+}
+
+.ant-input:focus, .ant-input-affix-wrapper-focused, .ant-select-focused .ant-select-selector {
+  border-color: var(--primary-color) !important;
+  box-shadow: 0 0 0 2px rgba(0, 195, 255, 0.2) !important;
+}
+
+/* 响应式布局 */
+@media (max-width: 1200px) {
+  #root,
+  .home-container,
+  .encrypt-card,
+  .decrypt-card {
+    max-width: 90%;
+  }
+}
+
+@media (max-width: 768px) {
+  #root {
+    padding: 1rem;
+  }
+  
+  .home-container {
+    padding: 0 1rem;
+  }
+  
+  .encrypt-card,
+  .decrypt-card {
+    padding: 1.5rem;
+    margin: 1rem auto;
+  }
+}
+
+@media (max-width: 768px) {
+  #root {
+    max-width: 100%;
+    padding: 0.5rem;
+  }
+  
+  .home-container {
+    max-width: 100%;
+    padding: 0 0.5rem;
+  }
+  
+  .ant-card {
+    margin: 0.5rem 0;
+  }
+}
+
+/* 输入框和按钮样式 */
+.ant-input,
+.ant-input-password,
+.ant-btn {
+  border-radius: 6px !important;
+  transition: all var(--transition-speed) ease !important;
+}
+
+.ant-input:focus,
+.ant-input-password:focus {
+  border-color: var(--primary-color) !important;
+  box-shadow: 0 0 0 2px rgba(0, 195, 255, 0.1) !important;
+}
+
+.ant-btn:hover {
+  transform: translateY(-2px) !important;
+}
+
+/* 文本区域样式 */
+.ant-typography {
+  color: var(--text-primary) !important;
+}
+
+.ant-typography-secondary {
+  color: var(--text-secondary) !important;
+}
+
+/* 输入框样式 */
+.ant-input, .ant-input-affix-wrapper, .ant-select-selector {
+  background: rgba(16, 36, 59, 0.5) !important;
+  border: 1px solid rgba(0, 195, 255, 0.2) !important;
+  color: var(--text-primary) !important;
+  border-radius: var(--border-radius) !important;
+  transition: all var(--transition-speed) ease !important;
+}
+
+/* 管理员密码输入框placeholder颜色 */
+.admin-password-input .ant-input::placeholder {
+  color: white !important;
+}
+
+.ant-input:hover, .ant-input-affix-wrapper:hover, .ant-select-selector:hover {
+  border-color: var(--primary-color) !important;
+  box-shadow: 0 0 0 2px rgba(0, 195, 255, 0.1) !important;
+}
+
+.ant-input:focus, .ant-input-affix-wrapper-focused, .ant-select-focused .ant-select-selector {
+  border-color: var(--primary-color) !important;
+  box-shadow: 0 0 0 2px rgba(0, 195, 255, 0.2) !important;
+}
+
+/* 响应式布局 */
+@media (max-width: 1200px) {
+  #root,
+  .home-container,
+  .encrypt-card,
+  .decrypt-card {
+    max-width: 90%;
+  }
+}
+
+@media (max-width: 768px) {
+  #root {
+    padding: 1rem;
+  }
+  
+  .home-container {
+    padding: 0 1rem;
+  }
+  
+  .encrypt-card,
+  .decrypt-card {
+    padding: 1.5rem;
+    margin: 1rem auto;
+  }
+}
+
+@media (max-width: 768px) {
+  #root {
+    max-width: 100%;
+    padding: 0.5rem;
+  }
+  
+  .home-container {
+    max-width: 100%;
+    padding: 0 0.5rem;
+  }
+  
+  .ant-card {
+    margin: 0.5rem 0;
+  }
+}
+
+/* 输入框和按钮样式 */
+.ant-input,
+.ant-input-password,
+.ant-btn {
+  border-radius: 6px !important;
+  transition: all var(--transition-speed) ease !important;
+}
+
+.ant-input:focus,
+.ant-input-password:focus {
+  border-color: var(--primary-color) !important;
+  box-shadow: 0 0 0 2px rgba(0, 195, 255, 0.1) !important;
+}
+
+.ant-btn:hover {
+  transform: translateY(-2px) !important;
+}
+
+/* 文本区域样式 */
+.ant-typography {
+  color: var(--text-primary) !important;
+}
+
+.ant-typography-secondary {
+  color: var(--text-secondary) !important;
+}
+
+/* 输入框样式 */
+.ant-input, .ant-input-affix-wrapper, .ant-select-selector {
+  background: rgba(16, 36, 59, 0.5) !important;
+  border: 1px solid rgba(0, 195, 255, 0.2) !important;
+  color: var(--text-primary) !important;
+  border-radius: var(--border-radius) !important;
+  transition: all var(--transition-speed) ease !important;
+}
+
+/* 管理员密码输入框placeholder颜色 */
+.admin-password-input .ant-input::placeholder {
+  color: white !important;
+}
+
+.ant-input:hover, .ant-input-affix-wrapper:hover, .ant-select-selector:hover {
+  border-color: var(--primary-color) !important;
+  box-shadow: 0 0 0 2px rgba(0, 195, 255, 0.1) !important;
+}
+
+.ant-input:focus, .ant-input-affix-wrapper-focused, .ant-select-focused .ant-select-selector {
+  border-color: var(--primary-color) !important;
+  box-shadow: 0 0 0 2px rgba(0, 195, 255, 0.2) !important;
+}
+
+/* 响应式布局 */
+@media (max-width: 1200px) {
+  #root,
+  .home-container,
+  .encrypt-card,
+  .decrypt-card {
+    max-width: 90%;
+  }
+}
+
+@media (max-width: 768px) {
+  #root {
+    padding: 1rem;
+  }
+  
+  .home-container {
+    padding: 0 1rem;
+  }
+  
+  .encrypt-card,
+  .decrypt-card {
+    padding: 1.5rem;
+    margin: 1rem auto;
+  }
+}
+
+@media (max-width: 768px) {
+  #root {
+    max-width: 100%;
+    padding: 0.5rem;
+  }
+  
+  .home-container {
+    max-width: 100%;
+    padding: 0 0.5rem;
+  }
+  
+  .ant-card {
+    margin: 0.5rem 0;
+  }
+}
+
+/* 输入框和按钮样式 */
+.ant-input,
+.ant-input-password,
+.ant-btn {
+  border-radius: 6px !important;
+  transition: all var(--transition-speed) ease !important;
+}
+
+.ant-input:focus,
+.ant-input-password:focus {
+  border-color: var(--primary-color) !important;
+  box-shadow: 0 0 0 2px rgba(0, 195, 255, 0.1) !important;
+}
+
+.ant-btn:hover {
+  transform: translateY(-2px) !important;
+}
+
+/* 文本区域样式 */
+.ant-typography {
+  color: var(--text-primary) !important;
+}
+
+.ant-typography-secondary {
+  color: var(--text-secondary) !important;
+}
+
+/* 输入框样式 */
+.ant-input, .ant-input-affix-wrapper, .ant-select-selector {
+  background: rgba(16, 36, 59, 0.5) !important;
+  border: 1px solid rgba(0, 195, 255, 0.2) !important;
+  color: var(--text-primary) !important;
+  border-radius: var(--border-radius) !important;
+  transition: all var(--transition-speed) ease !important;
+}
+
+/* 管理员密码输入框placeholder颜色 */
+.admin-password-input .ant-input::placeholder {
+  color: white !important;
 }
 
 .ant-input:hover, .ant-input-affix-wrapper:hover, .ant-select-selector:hover {
