@@ -1,48 +1,13 @@
 <!doctype html>
-<html lang="zh-CN">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-    <meta name="description" content="青云盾加密宝 - 安全的文本加密分享工具" />
-    <meta name="theme-color" content="#0a1929" />
-    <link rel="manifest" href="/manifest.json" />
-    
-    <!-- DNS预解析 -->
-    <link rel="dns-prefetch" href="https://api.jiapass.workers.dev" />
-    
-    <!-- 预加载关键资源 -->
-    <link rel="preload" href="/src/main.tsx" as="script" type="module" />
-    <link rel="preload" href="/assets/vendor.js" as="script" />
-    <link rel="preload" href="/assets/index.css" as="style" />
-    
-    <!-- 缓存控制 -->
-    <meta http-equiv="Cache-Control" content="public, max-age=86400" />
-    
-    <title>青云盾加密宝🔐</title>
-    
-    <!-- 注册Service Worker -->
-    <script>
-      if ('serviceWorker' in navigator) {
-        window.addEventListener('load', () => {
-          navigator.serviceWorker.register('/service-worker.js')
-            .then(registration => {
-              console.log('Service Worker 注册成功:', registration.scope);
-            })
-            .catch(error => {
-              console.error('Service Worker 注册失败:', error);
-            });
-        });
-      }
-    </script>
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vite + React + TS</title>
   </head>
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
-    <noscript>
-      <div style="text-align: center; padding: 20px;">
-        请启用JavaScript以使用青云盾加密宝
-      </div>
-    </noscript>
   </body>
 </html>

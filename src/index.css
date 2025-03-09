@@ -1,11 +1,11 @@
 :root {
-  font-family: 'Inter', 'SF Pro Display', system-ui, sans-serif;
+  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
 
-  color-scheme: dark;
-  color: var(--text-primary);
-  background-color: var(--dark-bg);
+  color-scheme: light dark;
+  color: rgba(255, 255, 255, 0.87);
+  background-color: #242424;
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -15,21 +15,19 @@
 
 a {
   font-weight: 500;
-  color: var(--primary-color);
+  color: #646cff;
   text-decoration: inherit;
-  transition: color var(--transition-speed) ease;
 }
 a:hover {
-  color: var(--accent-color);
-  text-shadow: 0 0 8px rgba(0, 255, 179, 0.4);
+  color: #535bf2;
 }
 
 body {
   margin: 0;
-  display: block;
+  display: flex;
+  place-items: center;
   min-width: 320px;
   min-height: 100vh;
-  font-family: 'Inter', 'SF Pro Display', system-ui, sans-serif;
 }
 
 h1 {
@@ -38,38 +36,33 @@ h1 {
 }
 
 button {
-  border-radius: 6px;
+  border-radius: 8px;
   border: 1px solid transparent;
   padding: 0.6em 1.2em;
   font-size: 1em;
   font-weight: 500;
   font-family: inherit;
-  background-color: rgba(16, 36, 59, 0.8);
-  color: var(--text-primary);
+  background-color: #1a1a1a;
   cursor: pointer;
-  transition: all var(--transition-speed) ease;
+  transition: border-color 0.25s;
 }
 button:hover {
-  border-color: var(--primary-color);
-  box-shadow: 0 0 12px rgba(0, 195, 255, 0.3);
-  transform: translateY(-2px);
+  border-color: #646cff;
 }
 button:focus,
 button:focus-visible {
-  outline: 2px solid var(--primary-color);
-  outline-offset: 2px;
+  outline: 4px auto -webkit-focus-ring-color;
 }
 
-/* 强制使用暗色主题，不考虑系统偏好 */
 @media (prefers-color-scheme: light) {
   :root {
-    color: var(--text-primary);
-    background-color: var(--dark-bg);
+    color: #213547;
+    background-color: #ffffff;
   }
   a:hover {
-    color: var(--accent-color);
+    color: #747bff;
   }
   button {
-    background-color: rgba(16, 36, 59, 0.8);
+    background-color: #f9f9f9;
   }
 }
