@@ -1,37 +1,74 @@
 import React, { useState, useEffect } from 'react';
-import { Card, Input, Button, Typography, message, Space, Alert } from 'antd';
-import { LockOutlined, KeyOutlined } from '@ant-design/icons';
-import { decrypt, parseFullKey } from '../utils/cryptoUtils';
-import { useSearchParams } from 'react-router-dom';
+import { Card, Input, Button, Typography, message, Space, Divider, Result } from 'antd';
+import { UnlockOutlined, KeyOutlined, CopyOutlined, LinkOutlined } from '@ant-design/icons';
+import { useLocation } from 'react-router-dom';
+import { decrypt, parseFullKey, EncryptionType } from '../utils/cryptoUtils';
+import { getEncryptedContent } from '../services/apiService';
 
 const { Title, Text, Paragraph } = Typography;
 const { TextArea } = Input;
 
 const Decrypt: React.FC = () => {
-  const [searchParams] = useSearchParams();
-  const [encryptedText, setEncryptedText] = useState('');
-  const [decryptedText, setDecryptedText] = useState('');
-  const [secretKey, setSecretKey] = useState('');
-  const [errorMessage, setErrorMessage] = useState('');
+  const [encryptedId, setEncryptedId] = useState<string>('');
+  const [secretKey, setSecretKey] = useState<string>('');
+  const [encryptedText, setEncryptedText] = useState<string>('');
+  const [decryptedText, setDecryptedText] = useState<string>('');
+  const [encryptionType, setEncryptionType] = useState<EncryptionType>(EncryptionType.AES);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [error, setError] = useState<string>('');
+  const [expirationTime, setExpirationTime] = useState<number | null>(null);
+  const [isExpired, setIsExpired] = useState<boolean>(false);
+  const [isDecrypted, setIsDecrypted] = useState<boolean>(false);
   
+  const location = useLocation();
+  
+  // 从URL参数中获取加密内容ID
   useEffect(() => {
+    const searchParams = new URLSearchParams(location.search);
     const id = searchParams.get('id');
-    const data = searchParams.get('data');
-    if (data) {
-      setEncryptedText(decodeURIComponent(data));
-    } else if (id) {
-      // 如果有id参数，从URL中获取加密内容
-      setEncryptedText(id);
+    
+    if (id) {
+      setEncryptedId(id);
+      fetchEncryptedContent(id);
     }
-  }, [searchParams]);
+  }, [location]);
+  
+  // 获取加密内容
+  const fetchEncryptedContent = async (id: string) => {
+    setLoading(true);
+    setError('');
+    
+    try {
+      const data = await getEncryptedContent(id);
+      setEncryptedText(data.text);
+      setEncryptionType(data.type);
+      
+      // 检查过期时间
+      if (data.expirationTime !== -1) {
+        const expireDate = new Date(data.timestamp + data.expirationTime);
+        setExpirationTime(expireDate.getTime());
+        
+        // 检查是否已过期
+        if (Date.now() > expireDate.getTime()) {
+          setIsExpired(true);
+          setError('此加密内容已过期');
+        }
+      } else {
+        // 永不过期
+        setExpirationTime(-1);
+      }
+    } catch (error) {
+      setError((error as Error).message);
+      setIsExpired(true);
+    } finally {
+      setLoading(false);
+    }
+  };
   
   // 处理解密操作
   const handleDecrypt = () => {
-    setErrorMessage('');
-    setDecryptedText('');
-    
     if (!encryptedText) {
-      message.error('请输入需要解密的内容');
+      message.error('没有可解密的内容');
       return;
     }
     
@@ -41,18 +78,24 @@ const Decrypt: React.FC = () => {
     }
     
     try {
-      // 从完整密钥中解析出加密类型和实际密钥
-      const { type, key } = parseFullKey(secretKey);
+      // 解析完整密钥（包含加密类型和密钥）
+      let type = encryptionType;
+      let key = secretKey;
+      
+      // 检查是否是完整密钥格式（如 AES:xxxx）
+      if (secretKey.includes(':')) {
+        const parsedKey = parseFullKey(secretKey);
+        type = parsedKey.type;
+        key = parsedKey.key;
+      }
       
       // 解密文本
       const decrypted = decrypt(encryptedText, type, key);
       setDecryptedText(decrypted);
-      
+      setIsDecrypted(true);
       message.success('解密成功！');
     } catch (error) {
-      const errorMsg = (error as Error).message;
-      setErrorMessage(errorMsg);
-      message.error('解密失败，请检查密钥格式和内容是否正确');
+      message.error('解密失败: ' + (error as Error).message);
     }
   };
   
@@ -67,69 +110,120 @@ const Decrypt: React.FC = () => {
       .then(() => message.success('解密内容已复制到剪贴板'));
   };
   
+  // 检查解密后的文本是否是URL
+  const isURL = (text: string): boolean => {
+    try {
+      new URL(text);
+      return true;
+    } catch (e) {
+      return false;
+    }
+  };
+  
+  // 打开解密后的URL
+  const openDecryptedURL = () => {
+    if (!decryptedText || !isURL(decryptedText)) {
+      message.warning('解密内容不是有效的URL');
+      return;
+    }
+    
+    window.open(decryptedText, '_blank');
+  };
+  
   return (
-    <Card className="decrypt-card">
-      <Title level={3}><LockOutlined /> 解密内容</Title>
+    <Card className="decrypt-card" style={{ maxWidth: '800px', margin: '0 auto' }}>
+      <Title level={3}><UnlockOutlined /> 解密内容</Title>
       
-      <Space direction="vertical" style={{ width: '100%' }}>
-        {errorMessage && (
-          <Alert
-            message="解密失败"
-            description={errorMessage}
-            type="error"
-            showIcon
-            closable
-            onClose={() => setErrorMessage('')}
-          />
-        )}
-        
-        <Paragraph>
-          <Text strong>加密内容：</Text>
-          <TextArea 
-            rows={4} 
-            value={encryptedText}
-            onChange={(e) => setEncryptedText(e.target.value)}
-            placeholder="请输入需要解密的内容"
-            style={{ marginTop: '8px' }}
-          />
-        </Paragraph>
-        
-        <Paragraph>
-          <Text strong>解密密钥：</Text>
-          <Input 
-            prefix={<KeyOutlined />}
-            value={secretKey}
-            onChange={(e) => setSecretKey(e.target.value)}
-            placeholder="请输入解密密钥"
-            style={{ width: '100%', marginTop: '8px' }}
-          />
-        </Paragraph>
-        
-        <Button type="primary" onClick={handleDecrypt} size="large" block>
-          解密
-        </Button>
-        
-        {decryptedText && (
-          <Paragraph style={{ marginTop: '16px' }}>
-            <Text strong>解密结果：</Text>
-            <TextArea 
-              rows={4} 
-              value={decryptedText} 
-              readOnly 
-              style={{ marginTop: '8px' }}
-            />
-            <Button 
-              onClick={copyDecryptedText}
-              style={{ marginTop: '8px' }}
-              type="primary"
-              ghost
-              block
-            >
-              复制解密内容
-            </Button>
-          </Paragraph>
-        )}
-      </Space>
+      {error && isExpired ? (
+        <Result
+          status="warning"
+          title="无法获取加密内容"
+          subTitle={error}
+        />
+      ) : (
+        <Space direction="vertical" style={{ width: '100%' }}>
+          {!encryptedId && (
+            <Paragraph>
+              <Text type="secondary">请使用完整的解密链接访问此页面，或者联系分享者获取正确的链接。</Text>
+            </Paragraph>
+          )}
+          
+          {encryptedText && (
+            <>
+              <Paragraph>
+                <Text strong>密钥：</Text>
+                <Input
+                  prefix={<KeyOutlined />}
+                  placeholder="请输入解密密钥"
+                  value={secretKey}
+                  onChange={(e) => setSecretKey(e.target.value)}
+                  style={{ marginTop: '8px' }}
+                />
+              </Paragraph>
+              
+              {expirationTime && expirationTime !== -1 && (
+                <Paragraph>
+                  <Text type="secondary">
+                    此加密内容将在 {new Date(expirationTime).toLocaleString()} 过期
+                  </Text>
+                </Paragraph>
+              )}
+              
+              {expirationTime === -1 && (
+                <Paragraph>
+                  <Text type="secondary">此加密内容永久有效</Text>
+                </Paragraph>
+              )}
+              
+              <Button 
+                type="primary" 
+                onClick={handleDecrypt} 
+                loading={loading}
+                style={{ marginTop: '16px' }}
+                block
+              >
+                解密
+              </Button>
+              
+              {isDecrypted && decryptedText && (
+                <>
+                  <Divider />
+                  <Paragraph>
+                    <Text strong>解密结果：</Text>
+                    <TextArea 
+                      rows={4} 
+                      value={decryptedText} 
+                      readOnly 
+                      style={{ marginTop: '8px' }}
+                    />
+                    <Space style={{ marginTop: '16px' }}>
+                      <Button 
+                        icon={<CopyOutlined />} 
+                        onClick={copyDecryptedText}
+                        type="primary"
+                        ghost
+                      >
+                        复制内容
+                      </Button>
+                      
+                      {isURL(decryptedText) && (
+                        <Button 
+                          icon={<LinkOutlined />} 
+                          onClick={openDecryptedURL}
+                          type="primary"
+                          style={{ background: 'var(--accent-color)', borderColor: 'var(--accent-color)' }}
+                        >
+                          打开链接
+                        </Button>
+                      )}
+                    </Space>
+                  </Paragraph>
+                </>
+              )}
+            </>
+          )}
+        </Space>
+      )}
     </Card>
   );
 };
