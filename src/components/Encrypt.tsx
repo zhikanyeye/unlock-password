@@ -48,10 +48,12 @@ const Encrypt: React.FC = () => {
         ? '永久不过期' 
         : `将在 ${new Date(Date.now() + expirationTime).toLocaleString()} 过期`;
       
-      // 构建解密链接 - 确保包含完整URL格式
+      // 构建解密链接
       const protocol = window.location.protocol;
-      const host = window.location.host;
-      const newDecryptUrl = `${protocol}//${host}/decrypt?id=${id}`;
+      const hostname = window.location.hostname;
+      const port = window.location.port ? `:${window.location.port}` : '';
+      const currentUrl = `${protocol}//${hostname}${port}`;
+      const newDecryptUrl = `${currentUrl}/decrypt?id=${id}`;
       setDecryptUrl(newDecryptUrl);
       
       message.success(`加密成功！${expirationMessage}`);
