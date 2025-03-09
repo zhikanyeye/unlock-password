@@ -158,7 +158,7 @@ const Encrypt: React.FC = () => {
   };
   
   return (
-    <Card className="encrypt-card" style={{ maxWidth: '800px', margin: '0 auto' }}>
+    <Card className="encrypt-card" style={{ maxWidth: '95%', margin: '0 auto', background: 'rgba(255, 255, 255, 0.1)', backdropFilter: 'blur(10px)', boxShadow: 'none' }}>
       <Title level={3}><LockOutlined /> 加密内容</Title>
       
       <Space direction="vertical" style={{ width: '100%' }}>
@@ -192,7 +192,7 @@ const Encrypt: React.FC = () => {
         <Row gutter={[16, 16]} style={{ marginTop: '16px' }}>
           <Col xs={24} sm={8}>
             <Select 
-              defaultValue={EncryptionType.AES} 
+              value={encryptionType}
               style={{ width: '100%' }}
               onChange={(value) => setEncryptionType(value)}
             >
@@ -206,7 +206,7 @@ const Encrypt: React.FC = () => {
           
           <Col xs={24} sm={8}>
             <Select
-              defaultValue={16}
+              value={keyLength}
               style={{ width: '100%' }}
               onChange={(value) => setKeyLength(value)}
             >
