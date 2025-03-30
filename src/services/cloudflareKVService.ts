@@ -4,13 +4,6 @@
  * 直接使用Cloudflare Pages的KV绑定功能
  */
 
-// 导入必要的类型
-interface KVNamespacePutOptions {
-  expiration?: number;
-  expirationTtl?: number;
-  metadata?: Record<string, unknown>;
-}
-
 const KV_PREFIX = 'qingyun_';
 
 /**
@@ -33,7 +26,7 @@ export async function storeToKV(key: string, value: string, expirationTtl?: numb
       options.expirationTtl = expirationTtl;
     }
 
-    // 使用类型断言解决globalThis.password的类型问题
+    // 使用类型断言解决TS7017错误
     await (globalThis as any).password.put(KV_PREFIX + key, value, options);
     // 本地存储备份
     try {
@@ -55,6 +48,7 @@ export async function storeToKV(key: string, value: string, expirationTtl?: numb
  */
 export async function getFromKV(key: string): Promise<KVOperationResult> {
   try {
+    // 使用类型断言解决TS7017错误
     const value = await (globalThis as any).password.get(KV_PREFIX + key);
     if (value === null) {
       // KV中不存在，尝试从本地存储获取
@@ -93,6 +87,7 @@ export async function getFromKV(key: string): Promise<KVOperationResult> {
  */
 export async function deleteFromKV(key: string): Promise<KVOperationResult> {
   try {
+    // 使用类型断言解决TS7017错误
     await (globalThis as any).password.delete(KV_PREFIX + key);
     // 同步删除本地存储
     try {
