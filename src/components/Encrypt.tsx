@@ -65,7 +65,7 @@ const Encrypt: React.FC = () => {
       // 显示加密成功和存储模式提示
       message.success(`加密成功！${expirationMessage}`);
       setTimeout(() => {
-        message.info(storageMessage);
+        message.info(storageMessage, 5); // 设置5秒显示时间
       }, 1000); // 延迟1秒显示存储模式提示
       
       // 将解密链接和密钥复制到剪贴板
