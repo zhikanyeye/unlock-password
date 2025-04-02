@@ -45,17 +45,17 @@ interface KVNamespace {
 
 // 声明全局变量，这些变量会在Cloudflare Pages环境中自动绑定
 declare global {
-  const password: KVNamespace;
+  const PASSWORD_STORE: KVNamespace;
   
   // 扩展GlobalThis接口
   interface GlobalThis {
-    password: KVNamespace;
+    PASSWORD_STORE: KVNamespace;
     [key: string]: any; // 添加索引签名以解决TS7017错误
   }
 }
 
 declare module '@cloudflare/workers-types' {
   interface Env {
-    password: KVNamespace;
+    PASSWORD_STORE: KVNamespace;
   }
 }

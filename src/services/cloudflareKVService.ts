@@ -27,7 +27,8 @@ export async function storeToKV(key: string, value: string, expirationTtl?: numb
     }
 
     // 使用类型断言解决TS7017错误
-    await (globalThis as any).password.put(KV_PREFIX + key, value, options);
+    // 确保使用正确的KV绑定名称（PASSWORD_STORE）
+    await (globalThis as any).PASSWORD_STORE.put(KV_PREFIX + key, value, options);
     // 本地存储备份
     try {
       localStorage.setItem(KV_PREFIX + key, value);
@@ -49,7 +50,8 @@ export async function storeToKV(key: string, value: string, expirationTtl?: numb
 export async function getFromKV(key: string): Promise<KVOperationResult> {
   try {
     // 使用类型断言解决TS7017错误
-    const value = await (globalThis as any).password.get(KV_PREFIX + key);
+    // 确保使用正确的KV绑定名称（PASSWORD_STORE）
+    const value = await (globalThis as any).PASSWORD_STORE.get(KV_PREFIX + key);
     if (value === null) {
       // KV中不存在，尝试从本地存储获取
       try {
@@ -88,7 +90,8 @@ export async function getFromKV(key: string): Promise<KVOperationResult> {
 export async function deleteFromKV(key: string): Promise<KVOperationResult> {
   try {
     // 使用类型断言解决TS7017错误
-    await (globalThis as any).password.delete(KV_PREFIX + key);
+    // 确保使用正确的KV绑定名称（PASSWORD_STORE）
+    await (globalThis as any).PASSWORD_STORE.delete(KV_PREFIX + key);
     // 同步删除本地存储
     try {
       localStorage.removeItem(KV_PREFIX + key);
