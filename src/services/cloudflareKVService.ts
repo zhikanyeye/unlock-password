@@ -26,9 +26,18 @@ export async function storeToKV(key: string, value: string, expirationTtl?: numb
       options.expirationTtl = expirationTtl;
     }
 
+    // 检查KV绑定是否存在
+    if (!(globalThis as any).PASSWORD_STORE) {
+      console.error('KV绑定不存在: PASSWORD_STORE未定义');
+      return { success: false, error: 'KV绑定不存在' };
+    }
+
+    console.log(`正在存储数据到KV: ${KV_PREFIX + key}`);
     // 使用类型断言解决TS7017错误
     // 确保使用正确的KV绑定名称（PASSWORD_STORE）
     await (globalThis as any).PASSWORD_STORE.put(KV_PREFIX + key, value, options);
+    console.log(`KV存储成功: ${KV_PREFIX + key}`);
+    
     // 本地存储备份
     try {
       localStorage.setItem(KV_PREFIX + key, value);
@@ -49,14 +58,23 @@ export async function storeToKV(key: string, value: string, expirationTtl?: numb
  */
 export async function getFromKV(key: string): Promise<KVOperationResult> {
   try {
+    // 检查KV绑定是否存在
+    if (!(globalThis as any).PASSWORD_STORE) {
+      console.error('KV绑定不存在: PASSWORD_STORE未定义');
+      return { success: false, error: 'KV绑定不存在' };
+    }
+
+    console.log(`正在从KV获取数据: ${KV_PREFIX + key}`);
     // 使用类型断言解决TS7017错误
     // 确保使用正确的KV绑定名称（PASSWORD_STORE）
     const value = await (globalThis as any).PASSWORD_STORE.get(KV_PREFIX + key);
     if (value === null) {
+      console.warn(`KV中不存在数据: ${KV_PREFIX + key}`);
       // KV中不存在，尝试从本地存储获取
       try {
         const localValue = localStorage.getItem(KV_PREFIX + key);
         if (localValue !== null) {
+          console.log(`从本地存储获取数据成功: ${KV_PREFIX + key}`);
           return { success: true, data: localValue };
         }
         return { success: false, error: '数据不存在' };
@@ -65,6 +83,7 @@ export async function getFromKV(key: string): Promise<KVOperationResult> {
         return { success: false, error: e instanceof Error ? e.message : '本地存储读取失败' };
       }
     }
+    console.log(`KV获取数据成功: ${KV_PREFIX + key}`);
     return { success: true, data: value };
   } catch (error) {
     console.error('KV读取失败:', error);
@@ -72,6 +91,7 @@ export async function getFromKV(key: string): Promise<KVOperationResult> {
     try {
       const localValue = localStorage.getItem(KV_PREFIX + key);
       if (localValue !== null) {
+        console.log(`KV读取失败，从本地存储获取数据成功: ${KV_PREFIX + key}`);
         return { success: true, data: localValue };
       }
       return { success: false, error: error instanceof Error ? error.message : 'KV读取失败' };
@@ -89,9 +109,18 @@ export async function getFromKV(key: string): Promise<KVOperationResult> {
  */
 export async function deleteFromKV(key: string): Promise<KVOperationResult> {
   try {
+    // 检查KV绑定是否存在
+    if (!(globalThis as any).PASSWORD_STORE) {
+      console.error('KV绑定不存在: PASSWORD_STORE未定义');
+      return { success: false, error: 'KV绑定不存在' };
+    }
+
+    console.log(`正在从KV删除数据: ${KV_PREFIX + key}`);
     // 使用类型断言解决TS7017错误
     // 确保使用正确的KV绑定名称（PASSWORD_STORE）
     await (globalThis as any).PASSWORD_STORE.delete(KV_PREFIX + key);
+    console.log(`KV删除数据成功: ${KV_PREFIX + key}`);
+    
     // 同步删除本地存储
     try {
       localStorage.removeItem(KV_PREFIX + key);

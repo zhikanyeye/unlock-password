@@ -66,6 +66,11 @@ const Encrypt: React.FC = () => {
       message.success(`加密成功！${expirationMessage}`);
       setTimeout(() => {
         message.info(storageMessage, 5); // 设置5秒显示时间
+        
+        // 如果是远程存储模式，提醒用户需要配置KV绑定
+        if (isRemoteStorage && !(globalThis as any).PASSWORD_STORE) {
+          message.warning('警告：未检测到KV绑定，请确保已正确配置Cloudflare KV，否则分享的链接可能无法被他人访问', 10);
+        }
       }, 1000); // 延迟1秒显示存储模式提示
       
       // 将解密链接和密钥复制到剪贴板

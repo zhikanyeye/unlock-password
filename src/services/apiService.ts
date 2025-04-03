@@ -154,6 +154,7 @@ export const storeEncryptedContent = async (
       // 计算过期时间（秒）
       const expirationTtl = expirationTime === NEVER_EXPIRE ? undefined : Math.floor(expirationTime / 1000);
       
+      console.log(`尝试存储加密内容到KV，ID: ${id}，过期时间: ${expirationTtl ? expirationTtl + '秒' : '永不过期'}`);
       // 存储到Cloudflare KV
       const result = await storeToKV(`qingyun_${id}`, JSON.stringify(data), expirationTtl);
       
@@ -162,9 +163,12 @@ export const storeEncryptedContent = async (
         // 如果远程存储失败，回退到本地存储
         localStorage.setItem(`qingyun_${id}`, JSON.stringify(data));
         data.isRemoteStored = false;
+      } else {
+        console.log(`成功存储加密内容到KV，ID: ${id}`);
       }
     } else {
       // 使用localStorage存储加密内容
+      console.log(`使用本地存储模式，ID: ${id}`);
       localStorage.setItem(`qingyun_${id}`, JSON.stringify(data));
     }
     
