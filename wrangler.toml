@@ -1,10 +1,10 @@
 name = "qingyun-shield"
 type = "webpack"
-account_id = "" # 请填写你的Cloudflare账户ID（在Cloudflare Dashboard右侧边栏底部的「Account ID」处可以找到）
+account_id = "${CLOUDFLARE_ACCOUNT_ID}" # 请通过环境变量CLOUDFLARE_ACCOUNT_ID设置你的Cloudflare账户ID
 
 # KV命名空间配置 - 必须正确配置此部分，否则加密链接无法被他人访问
 [[kv_namespaces]]
-id = "" # 请填写你在Cloudflare Dashboard创建的KV命名空间ID（创建步骤见下方说明）
+id = "${KV_NAMESPACE_ID}" # 请通过环境变量KV_NAMESPACE_ID设置你的KV命名空间ID
 binding = "PASSWORD_STORE" # 这个绑定名称必须与代码中使用的一致，不要修改
 
 # 重要提示：

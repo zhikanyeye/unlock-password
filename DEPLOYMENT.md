@@ -22,6 +22,8 @@ npm install
 ```
 USE_REMOTE_STORAGE=true
 ADMIN_PASSWORD=你的管理员密码
+CLOUDFLARE_ACCOUNT_ID=你的Cloudflare账户ID
+KV_NAMESPACE_ID=你的KV命名空间ID
 ```
 
 ### 4. 启动开发服务器
@@ -58,8 +60,10 @@ npm run build
 
 ### 3. 配置环境变量
 在Pages设置中添加：
-- `VITE_USE_REMOTE_STORAGE`: true
-- `VITE_ADMIN_PASSWORD`: 你的管理员密码
+- `USE_REMOTE_STORAGE`: true
+- `ADMIN_PASSWORD`: 你的管理员密码
+- `CLOUDFLARE_ACCOUNT_ID`: 你的Cloudflare账户ID
+- `KV_NAMESPACE_ID`: 你的KV命名空间ID
 
 ### 4. 访问部署
 部署完成后，访问Cloudflare Pages提供的URL即可使用。
@@ -182,10 +186,12 @@ npm run build
 
 ## 安全建议
 
-1. 使用强密码作为 `ENCRYPTION_KEY`
+1. 加密密钥是在每次加密时随机生成的，不需要配置固定的ENCRYPTION_KEY
 2. 定期更新依赖包
 3. 启用 Cloudflare 的安全功能
 4. 考虑添加访问限制和速率限制
+5. 保护 Cloudflare 账户ID和KV命名空间ID，不要泄露
+6. 使用环境变量而非硬编码存储敏感信息
 
 ## 维护建议
 
