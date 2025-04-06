@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Card, Input, Button, Typography, message, Space, Divider, Result, Tabs } from 'antd';
-import { UnlockOutlined, KeyOutlined, CopyOutlined, LinkOutlined, FileTextOutlined } from '@ant-design/icons';
-import { useLocation } from 'react-router-dom';
+import { UnlockOutlined, KeyOutlined, CopyOutlined, LinkOutlined, FileTextOutlined, HomeOutlined } from '@ant-design/icons';
+import { useLocation, Link } from 'react-router-dom';
 import { decrypt, parseFullKey, EncryptionType } from '../utils/cryptoUtils';
 import { getEncryptedContent } from '../services/apiService';
 
@@ -163,7 +163,12 @@ const Decrypt: React.FC = () => {
   
   return (
     <Card className="decrypt-card" style={{ maxWidth: '800px', margin: '0 auto' }}>
-      <Title level={3}><UnlockOutlined /> 解密内容</Title>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
+        <Title level={3}><UnlockOutlined /> 解密内容</Title>
+        <Link to="/">
+          <Button type="primary" icon={<HomeOutlined />}>返回首页</Button>
+        </Link>
+      </div>
       
       {error && isExpired ? (
         <Result

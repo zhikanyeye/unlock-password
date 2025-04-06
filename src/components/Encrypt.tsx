@@ -1,6 +1,7 @@
 import React, { useState, useRef } from 'react';
+import { Link } from 'react-router-dom';
 import { Card, Input, Button, Select, Typography, message, Space, Radio, Tooltip, Divider, Row, Col } from 'antd';
-import { CopyOutlined, LockOutlined, LinkOutlined, QrcodeOutlined, DownloadOutlined, KeyOutlined } from '@ant-design/icons';
+import { CopyOutlined, LockOutlined, LinkOutlined, QrcodeOutlined, DownloadOutlined, KeyOutlined, HomeOutlined } from '@ant-design/icons';
 import { encrypt, generateRandomKey, generateFullKey, EncryptionType } from '../utils/cryptoUtils';
 import { storeEncryptedContent } from '../services/apiService';
 import { QRCodeSVG } from 'qrcode.react';
@@ -283,7 +284,12 @@ const Encrypt: React.FC = () => {
   
   return (
     <Card className="encrypt-card" style={{ maxWidth: '95%', margin: '0 auto', background: 'rgba(255, 255, 255, 0.1)', backdropFilter: 'blur(10px)', boxShadow: 'none' }}>
-      <Title level={3}><LockOutlined /> 加密内容</Title>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
+        <Title level={3}><LockOutlined /> 加密内容</Title>
+        <Link to="/">
+          <Button type="primary" icon={<HomeOutlined />}>返回首页</Button>
+        </Link>
+      </div>
       
       <Space direction="vertical" style={{ width: '100%' }}>
         <div>
