@@ -287,7 +287,7 @@ const Encrypt: React.FC = () => {
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
         <Title level={3}><LockOutlined /> 加密内容</Title>
         <Link to="/">
-          <Button type="primary" icon={<HomeOutlined />}>返回首页</Button>
+          <Button type="primary" icon={<HomeOutlined />} style={{ background: 'var(--primary-color)', borderColor: 'var(--primary-color)' }}>返回首页</Button>
         </Link>
       </div>
       
