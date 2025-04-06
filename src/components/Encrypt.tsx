@@ -57,7 +57,8 @@ const Encrypt: React.FC = () => {
       setDecryptUrl(newDecryptUrl);
       
       // 根据存储模式显示不同的提示信息
-      const isRemoteStorage = localStorage.getItem('qingyun_storage_mode') === 'true';
+      // 使用apiService中的getStorageMode函数获取当前存储模式
+      const isRemoteStorage = await import('../services/apiService').then(module => module.getStorageMode());
       const storageMessage = isRemoteStorage
         ? '密文链接已保存在KV数据库，可分享给他人链接和密钥解码'
         : '密文链接已保存在本地浏览器，请勿随意清理浏览器';

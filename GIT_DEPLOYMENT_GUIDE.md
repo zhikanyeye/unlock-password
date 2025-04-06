@@ -58,8 +58,30 @@
    - Build output directory: `dist`
    - Environment variables:
      - NODE_VERSION: 18
+     - VITE_APP_TITLE: 青云盾加密宝
+     - VITE_APP_DESCRIPTION: 安全的文本加密分享工具
+     - VITE_USE_REMOTE_STORAGE: true
+     - VITE_ADMIN_PASSWORD: 你的管理员密码（用于管理永久不过期的加密内容）
+     
 
-### 5. 部署确认
+### 5. 创建和配置 KV 命名空间
+
+1. 在 Cloudflare Dashboard 中创建一个新的 KV 命名空间
+   - 登录 [Cloudflare Dashboard](https://dash.cloudflare.com)
+   - 点击「Workers & Pages」
+   - 在左侧菜单选择「KV」
+   - 点击「Create namespace」
+   - 输入命名空间名称（如：qingyun-shield-kv）
+   
+
+2. 配置KV绑定：
+   - 在Pages项目中，点击「Settings」>「Functions」
+   - 找到「KV namespace bindings」部分
+   - 点击「Add binding」
+   - Variable name设置为`PASSWORD_STORE`（必须与代码中一致）
+   - 选择你之前创建的KV命名空间
+
+### 6. 部署确认
 
 1. 点击「Save and Deploy」
 2. Cloudflare Pages 将自动开始构建和部署你的项目
@@ -83,6 +105,8 @@
 1. 确保 .gitignore 文件正确配置，避免提交不必要的文件
 2. 部署前最好在本地运行 `npm run build` 确保构建正常
 3. 如果遇到部署问题，可以在 Cloudflare Pages 的部署日志中查看详细信息
+4. **KV命名空间配置是必须的**，如果未正确配置KV，分享的加密链接将无法被他人访问
+5. 确保环境变量正确设置，特别是`VITE_USE_REMOTE_STORAGE`必须设为`true`才能启用远程存储
 
 ## 常见问题解决
 
@@ -94,6 +118,12 @@
 2. 如果部署后网站无法访问，检查：
    - 构建输出目录是否正确设置为 `dist`
    - 是否有必要的环境变量未设置
+
+3. 如果加密内容无法被他人访问，检查：
+   - 是否正确创建了KV命名空间
+   - KV绑定是否正确设置（变量名必须为`PASSWORD_STORE`）
+   - 是否启用了远程存储（`VITE_USE_REMOTE_STORAGE=true`）
+   - 在Functions设置中是否启用了Node.js兼容性
 
 需要更多帮助，请参考：
 - [Cloudflare Pages 文档](https://developers.cloudflare.com/pages)

@@ -2,6 +2,11 @@ import { EncryptionType } from '../utils/cryptoUtils';
 import pako from 'pako';
 import { storeToKV, getFromKV, deleteFromKV } from './cloudflareKVService';
 
+// API基础URL配置 - 自动使用当前域名
+export const API_BASE_URL = import.meta.env.MODE === 'production'
+  ? window.location.origin
+  : 'http://localhost:8787';
+
 interface StoredData {
   text: string;
   type: EncryptionType;
@@ -18,11 +23,11 @@ const DEFAULT_EXPIRATION_TIME = 180 * 24 * 60 * 60 * 1000;
 const NEVER_EXPIRE = -1;
 
 // 从环境变量获取管理员密码
-const ADMIN_PASSWORD = import.meta.env.ADMIN_PASSWORD;
+const VITE_ADMIN_PASSWORD = import.meta.env.VITE_ADMIN_PASSWORD;
 
 // 是否使用远程存储
 // 默认值从环境变量获取，但可以通过用户设置进行覆盖
-let USE_REMOTE_STORAGE = import.meta.env.USE_REMOTE_STORAGE === 'true';
+let useRemoteStorage = import.meta.env.VITE_USE_REMOTE_STORAGE === 'true';
 
 /**
  * 获取当前存储模式
@@ -35,7 +40,8 @@ export const getStorageMode = (): boolean => {
     return storedMode === 'true';
   }
   // 如果没有用户设置，则使用环境变量的默认值
-  return import.meta.env.USE_REMOTE_STORAGE === 'true';
+  // 统一使用VITE_前缀的环境变量
+  return import.meta.env.VITE_USE_REMOTE_STORAGE === 'true';
 };
 
 /**
@@ -44,7 +50,7 @@ export const getStorageMode = (): boolean => {
  */
 export const setStorageMode = (useRemote: boolean): void => {
   // 更新当前运行时的存储模式
-  USE_REMOTE_STORAGE = useRemote;
+  useRemoteStorage = useRemote;
   // 将用户设置保存到localStorage
   localStorage.setItem('qingyun_storage_mode', String(useRemote));
 };
@@ -139,18 +145,18 @@ export const storeEncryptedContent = async (
     const shouldCompress = text.length > 1000;
     const processedText = shouldCompress ? compressData(text) : text;
     
-    const expirationTime = adminPassword === ADMIN_PASSWORD ? NEVER_EXPIRE : DEFAULT_EXPIRATION_TIME;
+    const expirationTime = adminPassword === VITE_ADMIN_PASSWORD ? NEVER_EXPIRE : DEFAULT_EXPIRATION_TIME;
     const data: StoredData = {
       text: processedText,
       type,
       timestamp: Date.now(),
       compressed: shouldCompress,
       expirationTime,
-      isRemoteStored: USE_REMOTE_STORAGE
+      isRemoteStored: useRemoteStorage
     };
     
     // 存储加密内容
-    if (USE_REMOTE_STORAGE) {
+    if (useRemoteStorage) {
       // 计算过期时间（秒）
       const expirationTtl = expirationTime === NEVER_EXPIRE ? undefined : Math.floor(expirationTime / 1000);
       
@@ -201,7 +207,7 @@ export const getEncryptedContent = async (id: string): Promise<StoredData> => {
       
       // 如果数据标记为远程存储，但在本地找到了，说明可能是之前存储的
       // 尝试从远程获取最新版本
-      if (parsedData.isRemoteStored && USE_REMOTE_STORAGE) {
+      if (parsedData.isRemoteStored && useRemoteStorage) {
         try {
           const remoteResult = await getFromKV(key);
           if (remoteResult?.success && remoteResult?.data) {
@@ -212,7 +218,7 @@ export const getEncryptedContent = async (id: string): Promise<StoredData> => {
           // 继续使用本地数据
         }
       }
-    } else if (USE_REMOTE_STORAGE) {
+    } else if (useRemoteStorage) {
       // 如果本地没有，尝试从远程获取
       const remoteResult = await getFromKV(key);
       
@@ -229,7 +235,7 @@ export const getEncryptedContent = async (id: string): Promise<StoredData> => {
     const now = Date.now();
     if (parsedData.expirationTime !== NEVER_EXPIRE && parsedData.timestamp && (now - parsedData.timestamp > (parsedData.expirationTime || DEFAULT_EXPIRATION_TIME))) {
       // 如果过期，从存储中删除
-      if (parsedData.isRemoteStored && USE_REMOTE_STORAGE) {
+      if (parsedData.isRemoteStored && useRemoteStorage) {
         await deleteFromKV(key);
       }
       localStorage.removeItem(key);

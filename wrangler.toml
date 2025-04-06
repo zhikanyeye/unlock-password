@@ -1,31 +1,21 @@
-name = "qingyun-shield"
-type = "webpack"
-account_id = "${CLOUDFLARE_ACCOUNT_ID}" # 请通过环境变量CLOUDFLARE_ACCOUNT_ID设置你的Cloudflare账户ID
-
-# KV命名空间配置 - 必须正确配置此部分，否则加密链接无法被他人访问
-[[kv_namespaces]]
-id = "${KV_NAMESPACE_ID}" # 请通过环境变量KV_NAMESPACE_ID设置你的KV命名空间ID
-binding = "PASSWORD_STORE" # 这个绑定名称必须与代码中使用的一致，不要修改
+# 青云盾加密宝 Cloudflare Pages 配置文件
 
 # 重要提示：
-# 1. 必须在Cloudflare Dashboard中创建KV命名空间，并将ID填写到上面的配置中
+# 1. 本项目使用Cloudflare Pages部署，不需要使用Cloudflare Workers
+# 2. 必须在Cloudflare Dashboard中创建KV命名空间，并在Pages项目设置中配置
 #    创建步骤：
 #    - 登录Cloudflare Dashboard (https://dash.cloudflare.com)
 #    - 点击「Workers & Pages」
 #    - 在左侧菜单选择「KV」
 #    - 点击「Create namespace」
 #    - 输入命名空间名称（如：qingyun-shield-kv）
-#    - 创建后，复制显示的ID填入上方id字段
-# 2. 确保绑定名称保持为"PASSWORD_STORE"，这与代码中的检查一致
-# 3. 部署后，确认在Cloudflare Pages的设置中KV绑定已正确配置
-#    - 在Pages项目设置中，找到「Functions」>「KV namespace bindings」
-#    - 添加绑定：Variable name设为PASSWORD_STORE，选择你创建的KV命名空间
+#    - 创建后，复制显示的ID
+# 3. 在Pages项目设置中配置KV绑定：
+#    - 在Pages项目设置中，找到「Settings」>「Functions」>「KV namespace bindings」
+#    - 点击「Add binding」
+#    - Variable name设置为PASSWORD_STORE（必须与代码中一致）
+#    - 选择你之前创建的KV命名空间
 # 4. 如果未正确配置KV，分享的加密链接将无法被他人访问
-
-# 环境变量配置
-[vars]
-ADMIN_PASSWORD = "" # 请设置一个强密码作为管理员密码
-USE_REMOTE_STORAGE = "true" # 设置为true启用远程KV存储，false则使用本地存储
 
 # 构建配置
 [build]
@@ -33,3 +23,26 @@ command = "npm run build"
 
 [site]
 bucket = "./dist"
+
+# 环境变量在Cloudflare Pages的项目设置中配置，不在此文件中设置
+# 需要配置的环境变量（在Pages项目中，点击「Settings」>「Environment variables」）：
+# - VITE_APP_TITLE: 青云盾加密宝
+# - VITE_APP_DESCRIPTION: 安全的文本加密分享工具
+# - VITE_USE_REMOTE_STORAGE: true
+# - VITE_ADMIN_PASSWORD: 你的管理员密码（用于管理永久不过期的加密内容）
+# 注意：所有客户端可访问的环境变量必须使用VITE_前缀
+
+# 页面函数配置
+[functions]
+node_compat = true
+
+# KV命名空间绑定
+[[kv_namespaces]]
+binding = "PASSWORD_STORE"
+
+# 注意：KV绑定也可以在Cloudflare Pages项目设置中配置
+# - 在Pages项目中，点击「Settings」>「Functions」
+# - 找到「KV namespace bindings」部分
+# - 点击「Add binding」
+# - Variable name设置为PASSWORD_STORE（必须与代码中一致）
+# - 选择你之前创建的KV命名空间

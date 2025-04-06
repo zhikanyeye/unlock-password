@@ -22,19 +22,36 @@ QingYun Shield is a secure text and URL encryption tool that allows users to enc
 
 ## Installation
 
+详细部署指南请参考 [DEPLOYMENT.md](DEPLOYMENT.md) 文件。
+
+### 基本安装步骤
 ```bash
-# Clone the repository
-git clone https://github.com/yourusername/qingyun-shield.git
+# 克隆仓库
+git clone https://github.com/your-username/unlock-password-real.git
 
-# Navigate to the project directory
-cd qingyun-shield
+# 进入项目目录
+cd unlock-password-real
 
-# Install dependencies
+# 安装依赖
 npm install
+# 或使用 pnpm
+pnpm install
 
-# Start the development server
+# 配置环境变量
+# 创建.env文件并添加以下内容：
+# VITE_APP_TITLE=青云盾加密宝
+# VITE_APP_DESCRIPTION="安全的文本加密分享工具"
+# VITE_USE_REMOTE_STORAGE=true
+# VITE_ADMIN_PASSWORD=你的管理员密码
+
+
+# 启动开发服务器
 npm run dev
+# 或使用 pnpm
+pnpm dev
 ```
+
+注意：所有客户端可访问的环境变量都必须使用VITE_前缀。
 
 ## Usage Guide
 1. Enter the text or URL you want to encrypt
@@ -48,6 +65,50 @@ npm run dev
 ## Storage Options
 - **Local Storage**: Encrypted content is stored in your browser's local storage
 - **Cloud Storage**: Encrypted content is stored in Cloudflare KV database, making it accessible from any device with the correct link and key
+
+## Deployment
+
+For detailed deployment instructions, please refer to the [DEPLOYMENT.md](DEPLOYMENT.md) file.
+
+### Quick Start with Cloudflare Pages
+1. Configure Cloudflare KV namespace
+2. Set up environment variables with VITE_ prefix
+3. Deploy to Cloudflare Pages
+
+### Git Deployment Guide
+
+#### Prerequisites
+1. Install [Git](https://git-scm.com/downloads)
+2. Have a [GitHub](https://github.com) account
+3. Have a [Cloudflare](https://dash.cloudflare.com) account
+
+#### Deployment Steps
+1. Create a new repository on GitHub
+2. Initialize Git repository locally and push to GitHub
+   ```bash
+   git init
+   git add .
+   git commit -m "Initial commit"
+   git remote add origin https://github.com/your-username/unlock-password-real.git
+   git branch -M main
+   git push -u origin main
+   ```
+3. Create a new project in Cloudflare Pages and connect to your GitHub repository
+4. Configure build settings:
+   - Build command: `npm run build`
+   - Output directory: `dist`
+   - Environment variables:
+     - NODE_VERSION: 18
+     - VITE_APP_TITLE: QingYun Shield
+     - VITE_APP_DESCRIPTION: Secure text encryption sharing tool
+     - VITE_USE_REMOTE_STORAGE: true
+     - VITE_ADMIN_PASSWORD: your-admin-password
+     - KV_NAMESPACE_ID: your-kv-namespace-id
+5. Create and configure KV namespace in Cloudflare Dashboard
+   - Create a new KV namespace
+   - Add KV binding with variable name `PASSWORD_STORE`
+
+All client-accessible environment variables must use the VITE_ prefix.
 
 ## Contributing
 We welcome contributions from the community! Here's how you can help:
@@ -85,19 +146,36 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 安装
 
+详细部署指南请参考 [DEPLOYMENT.md](DEPLOYMENT.md) 文件。
+
+### 基本安装步骤
 ```bash
 # 克隆仓库
-git clone https://github.com/yourusername/qingyun-shield.git
+git clone https://github.com/your-username/unlock-password-real.git
 
 # 进入项目目录
-cd qingyun-shield
+cd unlock-password-real
 
 # 安装依赖
 npm install
+# 或使用 pnpm
+pnpm install
+
+# 配置环境变量
+# 创建.env文件并添加以下内容：
+# VITE_APP_TITLE=青云盾加密宝
+# VITE_APP_DESCRIPTION="安全的文本加密分享工具"
+# VITE_USE_REMOTE_STORAGE=true
+# VITE_ADMIN_PASSWORD=你的管理员密码
+
 
 # 启动开发服务器
 npm run dev
+# 或使用 pnpm
+pnpm dev
 ```
+
+注意：所有客户端可访问的环境变量都必须使用VITE_前缀。
 
 ## 使用指南
 1. 输入您想要加密的文本或URL
@@ -111,6 +189,50 @@ npm run dev
 ## 存储选项
 - **本地存储**：加密内容存储在浏览器的本地存储中
 - **云端存储**：加密内容存储在Cloudflare KV数据库中，可以通过正确的链接和密钥从任何设备访问
+
+## 部署
+
+详细的部署说明请参考 [DEPLOYMENT.md](DEPLOYMENT.md) 文件。
+
+### 使用Cloudflare Pages快速开始
+1. 配置Cloudflare KV命名空间
+2. 设置带有VITE_前缀的环境变量
+3. 部署到Cloudflare Pages
+
+### Git部署指南
+
+#### 前置要求
+1. 安装 [Git](https://git-scm.com/downloads)
+2. 拥有 [GitHub](https://github.com) 账号
+3. 拥有 [Cloudflare](https://dash.cloudflare.com) 账号
+
+#### 部署步骤
+1. 在GitHub上创建新的仓库
+2. 在本地初始化Git仓库并推送到GitHub
+   ```bash
+   git init
+   git add .
+   git commit -m "Initial commit"
+   git remote add origin https://github.com/your-username/unlock-password-real.git
+   git branch -M main
+   git push -u origin main
+   ```
+3. 在Cloudflare Pages中创建新项目并连接到你的GitHub仓库
+4. 配置构建设置：
+   - 构建命令：`npm run build`
+   - 输出目录：`dist`
+   - 环境变量：
+     - NODE_VERSION: 18
+     - VITE_APP_TITLE: 青云盾加密宝
+     - VITE_APP_DESCRIPTION: 安全的文本加密分享工具
+     - VITE_USE_REMOTE_STORAGE: true
+     - VITE_ADMIN_PASSWORD: 你的管理员密码
+     - KV_NAMESPACE_ID: 你的KV命名空间ID
+5. 在Cloudflare Dashboard中创建并配置KV命名空间
+   - 创建新的KV命名空间
+   - 添加KV绑定，变量名为`PASSWORD_STORE`
+
+所有客户端可访问的环境变量必须使用VITE_前缀。
 
 ## 参与贡献
 我们欢迎社区成员参与贡献！以下是参与方式：
