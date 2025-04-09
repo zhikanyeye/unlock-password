@@ -51,15 +51,16 @@ const Decrypt: React.FC = () => {
         setExpirationTime(expireDate.getTime());
         
         // 检查是否已过期
-        if (Date.now() > expireDate.getTime()) {
+        if (Date.now() > expireDate.getTime() || data.isExpired) {
           setIsExpired(true);
-          setError('此加密内容已过期');
+          setError('此加密内容已过期，但您仍然可以尝试解密');
         }
       } else {
         // 永不过期
         setExpirationTime(-1);
       }
     } catch (error) {
+      console.error('获取加密内容失败:', error);
       setError((error as Error).message);
       setIsExpired(true);
     } finally {

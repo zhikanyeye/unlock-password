@@ -1,6 +1,6 @@
 import { EncryptionType } from '../utils/cryptoUtils';
 import pako from 'pako';
-import { storeToKV, getFromKV, deleteFromKV } from './cloudflareKVService';
+import { storeToKV, getFromKV } from './cloudflareKVService';
 
 // API基础URL配置 - 自动使用当前域名
 export const API_BASE_URL = import.meta.env.MODE === 'production'
@@ -14,6 +14,7 @@ interface StoredData {
   compressed?: boolean;
   expirationTime: number;
   isRemoteStored: boolean;
+  isExpired?: boolean;
 }
 
 // 默认过期时间：180天（以毫秒为单位）
@@ -219,12 +220,19 @@ export const getEncryptedContent = async (id: string): Promise<StoredData> => {
       parsedData = JSON.parse(data) as StoredData;
       
       // 如果数据标记为远程存储，但在本地找到了，说明可能是之前存储的
-      // 尝试从远程获取最新版本
+      // 尝试从远程获取最新版本，但即使远程获取失败，也会继续使用本地数据
       if (parsedData.isRemoteStored && useRemoteStorage) {
         try {
           const remoteResult = await getFromKV(key);
           if (remoteResult?.success && remoteResult?.data) {
-            parsedData = JSON.parse(remoteResult.data) as StoredData;
+            // 尝试解析远程数据
+            try {
+              const remoteParsedData = JSON.parse(remoteResult.data) as StoredData;
+              parsedData = remoteParsedData;
+            } catch (parseError) {
+              console.warn('远程数据解析失败，使用本地数据:', parseError);
+              // 解析失败时继续使用本地数据
+            }
           }
         } catch (e) {
           console.warn('从远程获取失败，使用本地数据:', e);
@@ -247,12 +255,10 @@ export const getEncryptedContent = async (id: string): Promise<StoredData> => {
     // 检查是否过期
     const now = Date.now();
     if (parsedData.expirationTime !== NEVER_EXPIRE && parsedData.timestamp && (now - parsedData.timestamp > (parsedData.expirationTime || DEFAULT_EXPIRATION_TIME))) {
-      // 如果过期，从存储中删除
-      if (parsedData.isRemoteStored && useRemoteStorage) {
-        await deleteFromKV(key);
-      }
-      localStorage.removeItem(key);
-      throw new Error('内容已过期');
+      // 内容已过期，但我们不立即删除，而是先返回过期信息
+      console.warn(`内容已过期: ${key}，但仍然返回数据以便用户查看`);
+      // 标记为过期，但仍然返回数据
+      parsedData.isExpired = true;
     }
     
     // 如果数据被压缩，则解压缩
