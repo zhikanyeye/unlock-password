@@ -4,8 +4,11 @@
  * 直接使用Cloudflare Pages的KV绑定功能
  */
 
-// 导入API基础URL配置
-import { API_BASE_URL } from './apiService';
+// 避免循环依赖，不从apiService导入API_BASE_URL
+// 而是直接从环境变量获取
+const API_BASE_URL = import.meta.env.MODE === 'production'
+  ? window.location.origin
+  : 'http://localhost:8787';
 
 // KV前缀已在调用时添加，这里不需要重复定义
 const KV_PREFIX = '';

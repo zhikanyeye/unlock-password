@@ -13,7 +13,7 @@ interface StoredData {
   timestamp: number;
   compressed?: boolean;
   expirationTime: number;
-  isRemoteStored?: boolean;
+  isRemoteStored: boolean;
 }
 
 // 默认过期时间：180天（以毫秒为单位）
@@ -137,7 +137,7 @@ export const storeEncryptedContent = async (
   text: string, 
   type: EncryptionType,
   adminPassword?: string
-): Promise<{ id: string; expirationTime: number }> => {
+): Promise<{ id: string; expirationTime: number; isRemoteStored: boolean }> => {
   try {
     const id = crypto.randomUUID();
     
@@ -145,7 +145,11 @@ export const storeEncryptedContent = async (
     const shouldCompress = text.length > 1000;
     const processedText = shouldCompress ? compressData(text) : text;
     
-    const expirationTime = adminPassword === VITE_ADMIN_PASSWORD ? NEVER_EXPIRE : DEFAULT_EXPIRATION_TIME;
+    // 检查管理员密码是否有效（确保VITE_ADMIN_PASSWORD不是默认值且不为空）
+const isValidAdminPassword = VITE_ADMIN_PASSWORD && 
+    VITE_ADMIN_PASSWORD !== 'your-admin-password' && 
+    adminPassword === VITE_ADMIN_PASSWORD;
+const expirationTime = isValidAdminPassword ? NEVER_EXPIRE : DEFAULT_EXPIRATION_TIME;
     const data: StoredData = {
       text: processedText,
       type,
@@ -161,6 +165,12 @@ export const storeEncryptedContent = async (
       const expirationTtl = expirationTime === NEVER_EXPIRE ? undefined : Math.floor(expirationTime / 1000);
       
       console.log(`尝试存储加密内容到KV，ID: ${id}，过期时间: ${expirationTtl ? expirationTtl + '秒' : '永不过期'}`);
+      // 检查KV绑定是否存在
+      const kvBindingExists = typeof (globalThis as any).PASSWORD_STORE !== 'undefined';
+      if (!kvBindingExists) {
+        console.warn('KV绑定不存在，将使用本地存储作为备份');
+      }
+      
       // 存储到Cloudflare KV
       const result = await storeToKV(`qingyun_${id}`, JSON.stringify(data), expirationTtl);
       
@@ -175,13 +185,16 @@ export const storeEncryptedContent = async (
     } else {
       // 使用localStorage存储加密内容
       console.log(`使用本地存储模式，ID: ${id}`);
+      // 确保data.isRemoteStored为false
+      data.isRemoteStored = false;
       localStorage.setItem(`qingyun_${id}`, JSON.stringify(data));
     }
     
     // 清理过期内容
     cleanupExpiredContent();
     
-    return { id, expirationTime };
+    // 确保返回的isRemoteStored始终为boolean类型
+    return { id, expirationTime, isRemoteStored: Boolean(data.isRemoteStored) };
   } catch (error) {
     console.error('存储加密内容失败:', error);
     throw new Error('无法存储加密内容');
