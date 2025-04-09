@@ -98,6 +98,36 @@ npm run build
    - 点击「Create namespace」
    - 输入命名空间名称（如：qingyun-shield-kv）
    - 创建后，复制显示的ID
+
+### 2. 配置KV绑定
+
+1. 在Cloudflare Pages项目设置中配置KV绑定：
+   - 进入Pages项目设置
+   - 选择「Settings」>「Functions」
+   - 在「KV namespace bindings」部分添加绑定
+   - 变量名称填写`PASSWORD_STORE`
+   - 选择之前创建的KV命名空间
+
+3. 在Cloudflare Pages设置中添加KV绑定：
+   - 进入Pages项目设置
+   - 选择「Settings」>「Functions」
+   - 在「KV namespace bindings」部分添加绑定
+   - 变量名称填写`PASSWORD_STORE`
+   - 选择之前创建的KV命名空间
+
+### 3. 验证KV绑定
+
+1. 部署后，在浏览器控制台检查`globalThis.PASSWORD_STORE`是否存在
+2. 可以通过以下代码测试KV功能：
+```javascript
+try {
+  await PASSWORD_STORE.put('test', 'value');
+  const value = await PASSWORD_STORE.get('test');
+  console.log('KV测试成功:', value);
+} catch (error) {
+  console.error('KV测试失败:', error);
+}
+```
 2. 记录下命名空间的 ID，后续配置环境变量时需要使用
 
 ### 2. 配置环境变量

@@ -3,9 +3,7 @@ import pako from 'pako';
 import { storeToKV, getFromKV } from './cloudflareKVService';
 
 // API基础URL配置 - 自动使用当前域名
-export const API_BASE_URL = import.meta.env.MODE === 'production'
-  ? window.location.origin
-  : 'http://localhost:8787';
+export const API_BASE_URL = window.location.origin;
 
 interface StoredData {
   text: string;
