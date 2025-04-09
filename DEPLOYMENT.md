@@ -1,6 +1,6 @@
 # 青云盾加密宝 部署指南
 
-本文档提供两种部署方式：1) 通过命令行部署本地下载的代码仓库；2) 通过Fork项目使用用户界面部署。本项目使用Cloudflare Pages进行部署，不需要使用Cloudflare Workers。
+本文档提供两种部署方式：1) 通过命令行部署本地下载的代码仓库；2) 通过Fork项目使用用户界面部署。
 
 ## 方式一：命令行部署
 
@@ -24,13 +24,8 @@ npm install
 VITE_APP_TITLE=青云盾加密宝
 VITE_APP_DESCRIPTION="安全的文本加密分享工具"
 
-# 存储配置
-VITE_USE_REMOTE_STORAGE=true
-
 # 管理员配置
 VITE_ADMIN_PASSWORD=你的管理员密码
-
-# Cloudflare配置（用于wrangler部署）
 
 ```
 
@@ -72,81 +67,29 @@ npm run build
 在Pages设置中添加：
 - `VITE_APP_TITLE`: 青云盾加密宝（应用标题）
 - `VITE_APP_DESCRIPTION`: 安全的文本加密分享工具（应用描述）
-- `VITE_USE_REMOTE_STORAGE`: true（启用远程存储）
+
 - `VITE_ADMIN_PASSWORD`: 你的管理员密码（用于创建永久不过期的加密内容）
 
 
 注意：所有客户端可访问的环境变量都必须使用VITE_前缀。
 
 ### 4. 访问部署
-部署完成后，访问Cloudflare Pages提供的URL即可使用。
+部署完成后，访问提供的URL即可使用。
 
 ## 前置要求
 
-1. 注册 [Cloudflare 账号](https://dash.cloudflare.com/sign-up)
-2. 安装 Node.js (推荐 v18 或更高版本)
-3. 安装 pnpm (推荐) 或 npm
+1. 安装 Node.js (推荐 v18 或更高版本)
+2. 安装 pnpm (推荐) 或 npm
 
 ## 部署步骤
 
-### 1. 创建 KV 命名空间
+### 1. 配置环境变量
 
-1. 在 Cloudflare Dashboard 中创建一个新的 KV 命名空间
-   - 登录 [Cloudflare Dashboard](https://dash.cloudflare.com)
-   - 点击「Workers & Pages」
-   - 在左侧菜单选择「KV」
-   - 点击「Create namespace」
-   - 输入命名空间名称（如：qingyun-shield-kv）
-   - 创建后，复制显示的ID
-
-### 2. 配置KV绑定
-
-1. 在Cloudflare Pages项目设置中配置KV绑定：
-   - 进入Pages项目设置
-   - 选择「Settings」>「Functions」
-   - 在「KV namespace bindings」部分添加绑定
-   - 变量名称填写`PASSWORD_STORE`
-   - 选择之前创建的KV命名空间
-
-3. 在Cloudflare Pages设置中添加KV绑定：
-   - 进入Pages项目设置
-   - 选择「Settings」>「Functions」
-   - 在「KV namespace bindings」部分添加绑定
-   - 变量名称填写`PASSWORD_STORE`
-   - 选择之前创建的KV命名空间
-
-### 3. 验证KV绑定
-
-1. 部署后，在浏览器控制台检查`globalThis.PASSWORD_STORE`是否存在
-2. 可以通过以下代码测试KV功能：
-```javascript
-try {
-  await PASSWORD_STORE.put('test', 'value');
-  const value = await PASSWORD_STORE.get('test');
-  console.log('KV测试成功:', value);
-} catch (error) {
-  console.error('KV测试失败:', error);
-}
-```
-2. 记录下命名空间的 ID，后续配置环境变量时需要使用
-
-### 2. 配置环境变量
-
-1. 在 Cloudflare Dashboard 中设置环境变量：
-   - 在Pages项目中，点击「Settings」>「Environment variables」
+1. 设置环境变量：
    - 添加以下环境变量：
      - `VITE_APP_TITLE`: 青云盾加密宝
      - `VITE_APP_DESCRIPTION`: 安全的文本加密分享工具
-     - `VITE_USE_REMOTE_STORAGE`: true
      - `VITE_ADMIN_PASSWORD`: 你的管理员密码（用于管理永久不过期的加密内容）
-     
-
-2. 配置KV绑定：
-   - 在Pages项目中，点击「Settings」>「Functions」
-   - 找到「KV namespace bindings」部分
-   - 点击「Add binding」
-   - Variable name设置为`PASSWORD_STORE`（必须与代码中一致）
-   - 选择你之前创建的KV命名空间
 
 注意：加密密钥是在每次加密时随机生成的，不需要在此配置。所有客户端可访问的环境变量都必须使用VITE_前缀。
 
@@ -176,7 +119,7 @@ npm run build
 ```
 
 2. 将 `dist` 目录部署到你选择的静态托管服务
-3. 注意：如果使用其他托管服务，需要确保KV存储配置正确，否则加密内容可能无法被他人访问
+
 
 ## 验证部署
 
@@ -211,7 +154,7 @@ npm run build
 3. 如果加密内容无法被他人访问，检查：
    - 是否正确配置了KV命名空间
    - KV绑定是否正确设置
-   - 是否启用了远程存储（VITE_USE_REMOTE_STORAGE=true）
+   
 
 ## 安全建议
 

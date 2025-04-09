@@ -39,7 +39,7 @@ const Encrypt: React.FC = () => {
       setEncryptedText(encrypted);
       
       // 存储加密内容
-      const { id, expirationTime, isRemoteStored } = await storeEncryptedContent(encrypted, encryptionType, adminPassword);
+      const { id, expirationTime } = await storeEncryptedContent(encrypted, encryptionType, adminPassword);
       
       // 生成完整密钥（包含加密类型）
       const fullKey = generateFullKey(encryptionType, key);
@@ -57,21 +57,13 @@ const Encrypt: React.FC = () => {
       const newDecryptUrl = `${currentUrl}/decrypt?id=${id}`;
       setDecryptUrl(newDecryptUrl);
       
-      // 根据存储模式显示不同的提示信息
-      const storageMessage = isRemoteStored
-        ? '密文链接已保存在KV数据库，可分享给他人链接和密钥解码'
-        : '密文链接已保存在本地浏览器，请勿随意清理浏览器';
+      // 显示存储提示信息
+      const storageMessage = '密文链接已保存在本地浏览器，请勿随意清理浏览器';
       
-      // 显示加密成功和存储模式提示
+      // 显示加密成功提示
       message.success(`加密成功！${expirationMessage}`);
       setTimeout(() => {
         message.info(storageMessage, 5); // 设置5秒显示时间
-        
-        // 如果是远程存储模式，提醒用户需要配置KV绑定
-        if (isRemoteStored && !(globalThis as any).PASSWORD_STORE) {
-          message.warning('警告：未检测到KV绑定，请确保已正确配置Cloudflare KV，否则分享的链接可能无法被他人访问', 10);
-          console.error('KV绑定检测失败：PASSWORD_STORE未定义，远程存储可能不可用');
-        }
       }, 1000); // 延迟1秒显示存储模式提示
       
       // 将解密链接和密钥复制到剪贴板

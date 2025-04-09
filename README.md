@@ -15,7 +15,7 @@ QingYun Shield is a secure text and URL encryption tool that allows users to enc
 - Easy-to-use interface for both encryption and decryption
 - Support for both text and URL encryption
 - One-click copying of encrypted content, key, and decryption link
-- Cloud storage option with Cloudflare KV for sharing encrypted content
+- 所有加密内容仅存储在本地浏览器中，确保数据隐私和安全
 - Dark/Light theme switching for better user experience
 - Data compression for handling large text content
 - QR code generation for easy sharing of decryption links
@@ -41,7 +41,6 @@ pnpm install
 # 创建.env文件并添加以下内容：
 # VITE_APP_TITLE=青云盾加密宝
 # VITE_APP_DESCRIPTION="安全的文本加密分享工具"
-# VITE_USE_REMOTE_STORAGE=true
 # VITE_ADMIN_PASSWORD=你的管理员密码
 
 
@@ -57,14 +56,13 @@ pnpm dev
 1. Enter the text or URL you want to encrypt
 2. Select an encryption algorithm
 3. Set the key length (optional)
-4. Choose storage mode (local or cloud)
+4. 加密内容将自动保存在本地浏览器中
 5. Click "Encrypt"
 6. Share the encrypted content and key with the recipient
 7. Recipients can use the decryption link and key to access the content
 
-## Storage Options
-- **Local Storage**: Encrypted content is stored in your browser's local storage
-- **Cloud Storage**: Encrypted content is stored in Cloudflare KV database, making it accessible from any device with the correct link and key
+## 存储方式
+所有加密内容仅存储在您的浏览器本地存储中，不会上传到任何服务器
 
 ## Deployment
 
@@ -101,7 +99,7 @@ For detailed deployment instructions, please refer to the [DEPLOYMENT.md](DEPLOY
      - NODE_VERSION: 18
      - VITE_APP_TITLE: QingYun Shield
      - VITE_APP_DESCRIPTION: Secure text encryption sharing tool
-     - VITE_USE_REMOTE_STORAGE: true
+     
      - VITE_ADMIN_PASSWORD: your-admin-password
      - KV_NAMESPACE_ID: your-kv-namespace-id
 5. Create and configure KV namespace in Cloudflare Dashboard
@@ -139,7 +137,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - 简单易用的加密和解密界面
 - 支持文本和URL加密
 - 一键复制加密内容、密钥和解密链接
-- 云存储选项，使用Cloudflare KV存储加密内容
+
 - 日/夜间主题切换，提供更好的用户体验
 - 数据压缩功能，可处理大型文本内容
 - 解密链接二维码生成，方便分享
@@ -165,7 +163,6 @@ pnpm install
 # 创建.env文件并添加以下内容：
 # VITE_APP_TITLE=青云盾加密宝
 # VITE_APP_DESCRIPTION="安全的文本加密分享工具"
-# VITE_USE_REMOTE_STORAGE=true
 # VITE_ADMIN_PASSWORD=你的管理员密码
 
 
@@ -188,7 +185,6 @@ pnpm dev
 
 ## 存储选项
 - **本地存储**：加密内容存储在浏览器的本地存储中
-- **云端存储**：加密内容存储在Cloudflare KV数据库中，可以通过正确的链接和密钥从任何设备访问
 
 ## 部署
 
@@ -225,12 +221,7 @@ pnpm dev
      - NODE_VERSION: 18
      - VITE_APP_TITLE: 青云盾加密宝
      - VITE_APP_DESCRIPTION: 安全的文本加密分享工具
-     - VITE_USE_REMOTE_STORAGE: true
      - VITE_ADMIN_PASSWORD: 你的管理员密码
-     - KV_NAMESPACE_ID: 你的KV命名空间ID
-5. 在Cloudflare Dashboard中创建并配置KV命名空间
-   - 创建新的KV命名空间
-   - 添加KV绑定，变量名为`PASSWORD_STORE`
 
 所有客户端可访问的环境变量必须使用VITE_前缀。
 

@@ -1,6 +1,5 @@
 import { EncryptionType } from '../utils/cryptoUtils';
 import pako from 'pako';
-import { storeToKV, getFromKV } from './cloudflareKVService';
 
 // API基础URL配置 - 自动使用当前域名
 export const API_BASE_URL = window.location.origin;
@@ -11,7 +10,6 @@ interface StoredData {
   timestamp: number;
   compressed?: boolean;
   expirationTime: number;
-  isRemoteStored: boolean;
   isExpired?: boolean;
 }
 
@@ -24,35 +22,7 @@ const NEVER_EXPIRE = -1;
 // 从环境变量获取管理员密码
 const VITE_ADMIN_PASSWORD = import.meta.env.VITE_ADMIN_PASSWORD;
 
-// 是否使用远程存储
-// 默认值从环境变量获取，但可以通过用户设置进行覆盖
-let useRemoteStorage = import.meta.env.VITE_USE_REMOTE_STORAGE === 'true';
 
-/**
- * 获取当前存储模式
- * @returns 是否使用远程存储
- */
-export const getStorageMode = (): boolean => {
-  // 优先从localStorage中获取用户设置的存储模式
-  const storedMode = localStorage.getItem('qingyun_storage_mode');
-  if (storedMode !== null) {
-    return storedMode === 'true';
-  }
-  // 如果没有用户设置，则使用环境变量的默认值
-  // 统一使用VITE_前缀的环境变量
-  return import.meta.env.VITE_USE_REMOTE_STORAGE === 'true';
-};
-
-/**
- * 设置存储模式
- * @param useRemote 是否使用远程存储
- */
-export const setStorageMode = (useRemote: boolean): void => {
-  // 更新当前运行时的存储模式
-  useRemoteStorage = useRemote;
-  // 将用户设置保存到localStorage
-  localStorage.setItem('qingyun_storage_mode', String(useRemote));
-};
 
 /**
  * 压缩文本数据
@@ -126,7 +96,7 @@ export const cleanupExpiredContent = (): void => {
 };
 
 /**
- * 将内容加密并存储到本地存储或远程KV存储
+ * 将内容加密并存储到本地存储
  * @param text 要加密的文本
  * @param type 加密类型
  * @param adminPassword 管理员密码（可选）
@@ -136,7 +106,7 @@ export const storeEncryptedContent = async (
   text: string, 
   type: EncryptionType,
   adminPassword?: string
-): Promise<{ id: string; expirationTime: number; isRemoteStored: boolean }> => {
+): Promise<{ id: string; expirationTime: number }> => {
   try {
     const id = crypto.randomUUID();
     
@@ -147,7 +117,8 @@ export const storeEncryptedContent = async (
     // 检查管理员密码是否有效（确保VITE_ADMIN_PASSWORD不是默认值且不为空）
 const isValidAdminPassword = VITE_ADMIN_PASSWORD && 
     VITE_ADMIN_PASSWORD !== 'your-admin-password' && 
-    adminPassword === VITE_ADMIN_PASSWORD;
+    VITE_ADMIN_PASSWORD.trim() !== '' && 
+    adminPassword && adminPassword.trim() === VITE_ADMIN_PASSWORD;
 const expirationTime = isValidAdminPassword ? NEVER_EXPIRE : DEFAULT_EXPIRATION_TIME;
     const data: StoredData = {
       text: processedText,
@@ -155,45 +126,17 @@ const expirationTime = isValidAdminPassword ? NEVER_EXPIRE : DEFAULT_EXPIRATION_
       timestamp: Date.now(),
       compressed: shouldCompress,
       expirationTime,
-      isRemoteStored: useRemoteStorage
+    
     };
     
-    // 存储加密内容
-    if (useRemoteStorage) {
-      // 计算过期时间（秒）
-      const expirationTtl = expirationTime === NEVER_EXPIRE ? undefined : Math.floor(expirationTime / 1000);
-      
-      console.log(`尝试存储加密内容到KV，ID: ${id}，过期时间: ${expirationTtl ? expirationTtl + '秒' : '永不过期'}`);
-      // 检查KV绑定是否存在
-      const kvBindingExists = typeof (globalThis as any).PASSWORD_STORE !== 'undefined';
-      if (!kvBindingExists) {
-        console.warn('KV绑定不存在，将使用本地存储作为备份');
-      }
-      
-      // 存储到Cloudflare KV
-      const result = await storeToKV(`qingyun_${id}`, JSON.stringify(data), expirationTtl);
-      
-      if (!result?.success) {
-        console.warn('远程存储失败，回退到本地存储:', result?.error);
-        // 如果远程存储失败，回退到本地存储
-        localStorage.setItem(`qingyun_${id}`, JSON.stringify(data));
-        data.isRemoteStored = false;
-      } else {
-        console.log(`成功存储加密内容到KV，ID: ${id}`);
-      }
-    } else {
-      // 使用localStorage存储加密内容
-      console.log(`使用本地存储模式，ID: ${id}`);
-      // 确保data.isRemoteStored为false
-      data.isRemoteStored = false;
-      localStorage.setItem(`qingyun_${id}`, JSON.stringify(data));
-    }
+    // 存储加密内容到本地存储
+    console.log(`使用本地存储模式，ID: ${id}`);
+    localStorage.setItem(`qingyun_${id}`, JSON.stringify(data));
     
     // 清理过期内容
     cleanupExpiredContent();
     
-    // 确保返回的isRemoteStored始终为boolean类型
-    return { id, expirationTime, isRemoteStored: Boolean(data.isRemoteStored) };
+    return { id, expirationTime };
   } catch (error) {
     console.error('存储加密内容失败:', error);
     throw new Error('无法存储加密内容');
@@ -201,7 +144,7 @@ const expirationTime = isValidAdminPassword ? NEVER_EXPIRE : DEFAULT_EXPIRATION_
 };
 
 /**
- * 从本地存储或远程KV存储获取加密内容
+ * 从本地存储获取加密内容
  * @param id 内容ID
  * @returns 返回存储的数据
  */
@@ -216,36 +159,6 @@ export const getEncryptedContent = async (id: string): Promise<StoredData> => {
     
     if (data) {
       parsedData = JSON.parse(data) as StoredData;
-      
-      // 如果数据标记为远程存储，但在本地找到了，说明可能是之前存储的
-      // 尝试从远程获取最新版本，但即使远程获取失败，也会继续使用本地数据
-      if (parsedData.isRemoteStored && useRemoteStorage) {
-        try {
-          const remoteResult = await getFromKV(key);
-          if (remoteResult?.success && remoteResult?.data) {
-            // 尝试解析远程数据
-            try {
-              const remoteParsedData = JSON.parse(remoteResult.data) as StoredData;
-              parsedData = remoteParsedData;
-            } catch (parseError) {
-              console.warn('远程数据解析失败，使用本地数据:', parseError);
-              // 解析失败时继续使用本地数据
-            }
-          }
-        } catch (e) {
-          console.warn('从远程获取失败，使用本地数据:', e);
-          // 继续使用本地数据
-        }
-      }
-    } else if (useRemoteStorage) {
-      // 如果本地没有，尝试从远程获取
-      const remoteResult = await getFromKV(key);
-      
-      if (!remoteResult?.success || !remoteResult?.data) {
-        throw new Error(remoteResult?.error || '内容不存在或已过期');
-      }
-      
-      parsedData = JSON.parse(remoteResult.data) as StoredData;
     } else {
       throw new Error('内容不存在或已过期');
     }
