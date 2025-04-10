@@ -15,63 +15,62 @@ QingYun Shield is a secure text and URL encryption tool that allows users to enc
 - Easy-to-use interface for both encryption and decryption
 - Support for both text and URL encryption
 - One-click copying of encrypted content, key, and decryption link
-- 所有加密内容仅存储在本地浏览器中，确保数据隐私和安全
+- All encrypted content is stored only in the local browser, ensuring data privacy and security
 - Dark/Light theme switching for better user experience
 - Data compression for handling large text content
 - QR code generation for easy sharing of decryption links
 
 ## Installation
 
-详细部署指南请参考 [DEPLOYMENT.md](DEPLOYMENT.md) 文件。
+For detailed deployment instructions, please refer to the [DEPLOYMENT.md](DEPLOYMENT.md) file.
 
 ### 基本安装步骤
 ```bash
-# 克隆仓库
+# Clone repository
 git clone https://github.com/your-username/unlock-password-real.git
 
-# 进入项目目录
+# Enter project directory
 cd unlock-password-real
 
-# 安装依赖
+# Install dependencies
 npm install
-# 或使用 pnpm
+# or use pnpm
 pnpm install
 
-# 配置环境变量
-# 创建.env文件并添加以下内容：
-# VITE_APP_TITLE=青云盾加密宝
-# VITE_APP_DESCRIPTION="安全的文本加密分享工具"
-# VITE_ADMIN_PASSWORD=你的管理员密码
+# Configure environment variables
+# Create .env file and add the following content:
+# VITE_APP_TITLE=QingYun Shield
+# VITE_APP_DESCRIPTION="Secure text encryption sharing tool"
+# VITE_ADMIN_PASSWORD=your-admin-password
 
 
-# 启动开发服务器
+# Start development server
 npm run dev
-# 或使用 pnpm
+# or use pnpm
 pnpm dev
 ```
 
-注意：所有客户端可访问的环境变量都必须使用VITE_前缀。
+Note: All client-accessible environment variables must use the VITE_ prefix.
 
 ## Usage Guide
 1. Enter the text or URL you want to encrypt
 2. Select an encryption algorithm
 3. Set the key length (optional)
-4. 加密内容将自动保存在本地浏览器中
+4. The encrypted content will be automatically saved in your local browser
 5. Click "Encrypt"
 6. Share the encrypted content and key with the recipient
 7. Recipients can use the decryption link and key to access the content
 
-## 存储方式
-所有加密内容仅存储在您的浏览器本地存储中，不会上传到任何服务器
+## Storage Method
+All encrypted content is stored only in your browser's local storage and will not be uploaded to any server
 
 ## Deployment
 
 For detailed deployment instructions, please refer to the [DEPLOYMENT.md](DEPLOYMENT.md) file.
 
 ### Quick Start with Cloudflare Pages
-1. Configure Cloudflare KV namespace
-2. Set up environment variables with VITE_ prefix
-3. Deploy to Cloudflare Pages
+1. Set up environment variables with VITE_ prefix
+2. Deploy to Cloudflare Pages
 
 ### Git Deployment Guide
 
@@ -99,12 +98,7 @@ For detailed deployment instructions, please refer to the [DEPLOYMENT.md](DEPLOY
      - NODE_VERSION: 18
      - VITE_APP_TITLE: QingYun Shield
      - VITE_APP_DESCRIPTION: Secure text encryption sharing tool
-     
      - VITE_ADMIN_PASSWORD: your-admin-password
-     - KV_NAMESPACE_ID: your-kv-namespace-id
-5. Create and configure KV namespace in Cloudflare Dashboard
-   - Create a new KV namespace
-   - Add KV binding with variable name `PASSWORD_STORE`
 
 All client-accessible environment variables must use the VITE_ prefix.
 
@@ -148,52 +142,50 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ### 基本安装步骤
 ```bash
-# 克隆仓库
+# Clone repository
 git clone https://github.com/your-username/unlock-password-real.git
 
-# 进入项目目录
+# Enter project directory
 cd unlock-password-real
 
-# 安装依赖
+# Install dependencies
 npm install
-# 或使用 pnpm
+# or use pnpm
 pnpm install
 
-# 配置环境变量
-# 创建.env文件并添加以下内容：
-# VITE_APP_TITLE=青云盾加密宝
-# VITE_APP_DESCRIPTION="安全的文本加密分享工具"
-# VITE_ADMIN_PASSWORD=你的管理员密码
+# Configure environment variables
+# Create .env file and add the following content:
+# VITE_APP_TITLE=QingYun Shield
+# VITE_APP_DESCRIPTION="Secure text encryption sharing tool"
+# VITE_ADMIN_PASSWORD=your-admin-password
 
 
-# 启动开发服务器
+# Start development server
 npm run dev
-# 或使用 pnpm
+# or use pnpm
 pnpm dev
 ```
 
-注意：所有客户端可访问的环境变量都必须使用VITE_前缀。
+Note: All client-accessible environment variables must use the VITE_ prefix.
 
 ## 使用指南
 1. 输入您想要加密的文本或URL
 2. 选择加密算法
 3. 设置密钥长度（可选）
-4. 选择存储模式（本地或云端）
-5. 点击"加密"
-6. 与接收者分享加密内容和密钥
-7. 接收者可以使用解密链接和密钥访问内容
+4. 点击"加密"
+5. 与接收者分享加密内容和密钥
+6. 接收者可以使用解密链接和密钥访问内容
 
-## 存储选项
-- **本地存储**：加密内容存储在浏览器的本地存储中
+## 存储方式
+所有加密内容仅存储在浏览器的本地存储中，确保数据隐私和安全
 
 ## 部署
 
 详细的部署说明请参考 [DEPLOYMENT.md](DEPLOYMENT.md) 文件。
 
 ### 使用Cloudflare Pages快速开始
-1. 配置Cloudflare KV命名空间
-2. 设置带有VITE_前缀的环境变量
-3. 部署到Cloudflare Pages
+1. 设置带有VITE_前缀的环境变量
+2. 部署到Cloudflare Pages
 
 ### Git部署指南
 
