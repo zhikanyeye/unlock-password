@@ -4,6 +4,7 @@ import { Card, Input, Button, Select, Typography, message, Space, Radio, Tooltip
 import { CopyOutlined, LockOutlined, LinkOutlined, QrcodeOutlined, DownloadOutlined, KeyOutlined, HomeOutlined } from '@ant-design/icons';
 import { encrypt, generateRandomKey, generateFullKey, EncryptionType } from '../utils/cryptoUtils';
 import { storeEncryptedContent } from '../services/apiService';
+import { copyToClipboard } from '../utils/clipboard';
 import { QRCodeSVG } from 'qrcode.react';
 
 const { Title, Text, Paragraph } = Typography;
@@ -67,34 +68,11 @@ const Encrypt: React.FC = () => {
       }, 1000); // 延迟1秒显示存储模式提示
       
       // 将解密链接和密钥复制到剪贴板
-      navigator.clipboard.writeText(`解密链接: ${newDecryptUrl}\n解密密钥: ${fullKey}`)
-        .then(() => message.info('解密链接和密钥已复制到剪贴板'))
-        .catch(err => {
-          console.error('复制到剪贴板失败:', err);
-          // 备用方法：创建临时文本区域
-          const textArea = document.createElement('textarea');
-          textArea.value = `解密链接: ${newDecryptUrl}\n解密密钥: ${fullKey}`;
-          textArea.style.position = 'fixed';
-          textArea.style.left = '-999999px';
-          textArea.style.top = '-999999px';
-          document.body.appendChild(textArea);
-          textArea.focus();
-          textArea.select();
-          
-          try {
-            const successful = document.execCommand('copy');
-            if (successful) {
-              message.info('解密链接和密钥已复制到剪贴板');
-            } else {
-              message.warning('自动复制失败，请手动复制解密链接和密钥');
-            }
-          } catch (err) {
-            console.error('execCommand复制失败:', err);
-            message.warning('自动复制失败，请手动复制解密链接和密钥');
-          }
-          
-          document.body.removeChild(textArea);
-        });
+      copyToClipboard(
+        `解密链接: ${newDecryptUrl}\n解密密钥: ${fullKey}`,
+        '解密链接和密钥已复制到剪贴板',
+        '自动复制失败，请手动复制解密链接和密钥'
+      );
         
     } catch (error) {
       message.error('加密失败: ' + (error as Error).message);
@@ -107,35 +85,7 @@ const Encrypt: React.FC = () => {
       message.warning('没有可复制的加密内容');
       return;
     }
-    
-    navigator.clipboard.writeText(encryptedText)
-      .then(() => message.success('加密内容已复制到剪贴板'))
-      .catch(err => {
-        console.error('复制到剪贴板失败:', err);
-        // 备用方法：创建临时文本区域
-        const textArea = document.createElement('textarea');
-        textArea.value = encryptedText;
-        textArea.style.position = 'fixed';
-        textArea.style.left = '-999999px';
-        textArea.style.top = '-999999px';
-        document.body.appendChild(textArea);
-        textArea.focus();
-        textArea.select();
-        
-        try {
-          const successful = document.execCommand('copy');
-          if (successful) {
-            message.success('加密内容已复制到剪贴板');
-          } else {
-            message.error('复制失败，请手动复制');
-          }
-        } catch (err) {
-          console.error('execCommand复制失败:', err);
-          message.error('复制失败，请手动复制');
-        }
-        
-        document.body.removeChild(textArea);
-      });
+    copyToClipboard(encryptedText, '加密内容已复制到剪贴板');
   };
   
   // 复制密钥
@@ -146,34 +96,7 @@ const Encrypt: React.FC = () => {
     }
     
     const fullKey = generateFullKey(encryptionType, secretKey);
-    navigator.clipboard.writeText(fullKey)
-      .then(() => message.success('密钥已复制到剪贴板'))
-      .catch(err => {
-        console.error('复制到剪贴板失败:', err);
-        // 备用方法：创建临时文本区域
-        const textArea = document.createElement('textarea');
-        textArea.value = fullKey;
-        textArea.style.position = 'fixed';
-        textArea.style.left = '-999999px';
-        textArea.style.top = '-999999px';
-        document.body.appendChild(textArea);
-        textArea.focus();
-        textArea.select();
-        
-        try {
-          const successful = document.execCommand('copy');
-          if (successful) {
-            message.success('密钥已复制到剪贴板');
-          } else {
-            message.error('复制失败，请手动复制');
-          }
-        } catch (err) {
-          console.error('execCommand复制失败:', err);
-          message.error('复制失败，请手动复制');
-        }
-        
-        document.body.removeChild(textArea);
-      });
+    copyToClipboard(fullKey, '密钥已复制到剪贴板');
   };
   
   // 复制解密链接
@@ -182,36 +105,7 @@ const Encrypt: React.FC = () => {
       message.warning('请先加密内容');
       return;
     }
-    
-    // 尝试使用clipboard API
-    navigator.clipboard.writeText(decryptUrl)
-      .then(() => message.success('解密链接已复制到剪贴板'))
-      .catch(err => {
-        console.error('复制到剪贴板失败:', err);
-        // 备用方法：创建临时文本区域
-        const textArea = document.createElement('textarea');
-        textArea.value = decryptUrl;
-        textArea.style.position = 'fixed';
-        textArea.style.left = '-999999px';
-        textArea.style.top = '-999999px';
-        document.body.appendChild(textArea);
-        textArea.focus();
-        textArea.select();
-        
-        try {
-          const successful = document.execCommand('copy');
-          if (successful) {
-            message.success('解密链接已复制到剪贴板');
-          } else {
-            message.error('复制失败，请手动复制');
-          }
-        } catch (err) {
-          console.error('execCommand复制失败:', err);
-          message.error('复制失败，请手动复制');
-        }
-        
-        document.body.removeChild(textArea);
-      });
+    copyToClipboard(decryptUrl, '解密链接已复制到剪贴板');
   };
   
   // 生成并显示二维码

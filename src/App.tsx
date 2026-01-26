@@ -5,7 +5,8 @@ import './theme.css';
 import Home from './components/Home';
 import Encrypt from './components/Encrypt';
 import Decrypt from './components/Decrypt';
-
+import NotFound from './components/NotFound';
+import ErrorBoundary from './components/ErrorBoundary';
 import ThemeToggle from './components/ThemeToggle';
 import { ThemeProvider } from './contexts/ThemeContext';
 
@@ -35,6 +36,7 @@ const AppContent = () => {
           <Route path="/" element={<Home />} />
           <Route path="/encrypt" element={<Encrypt />} />
           <Route path="/decrypt" element={<Decrypt />} />
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </Content>
     </Layout>
@@ -43,11 +45,13 @@ const AppContent = () => {
 
 function App() {
   return (
-    <ThemeProvider>
-      <Router>
-        <AppContent />
-      </Router>
-    </ThemeProvider>
+    <ErrorBoundary>
+      <ThemeProvider>
+        <Router>
+          <AppContent />
+        </Router>
+      </ThemeProvider>
+    </ErrorBoundary>
   );
 }
 

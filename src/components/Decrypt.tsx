@@ -4,6 +4,7 @@ import { UnlockOutlined, KeyOutlined, CopyOutlined, LinkOutlined, FileTextOutlin
 import { useLocation, Link } from 'react-router-dom';
 import { decrypt, parseFullKey, EncryptionType } from '../utils/cryptoUtils';
 import { getEncryptedContent } from '../services/apiService';
+import { copyToClipboard } from '../utils/clipboard';
 
 const { Title, Text, Paragraph } = Typography;
 const { TextArea } = Input;
@@ -111,35 +112,7 @@ const Decrypt: React.FC = () => {
       message.warning('没有可复制的解密内容');
       return;
     }
-    
-    navigator.clipboard.writeText(decryptedText)
-      .then(() => message.success('解密内容已复制到剪贴板'))
-      .catch(err => {
-        console.error('复制到剪贴板失败:', err);
-        // 备用方法：创建临时文本区域
-        const textArea = document.createElement('textarea');
-        textArea.value = decryptedText;
-        textArea.style.position = 'fixed';
-        textArea.style.left = '-999999px';
-        textArea.style.top = '-999999px';
-        document.body.appendChild(textArea);
-        textArea.focus();
-        textArea.select();
-        
-        try {
-          const successful = document.execCommand('copy');
-          if (successful) {
-            message.success('解密内容已复制到剪贴板');
-          } else {
-            message.error('复制失败，请手动复制');
-          }
-        } catch (err) {
-          console.error('execCommand复制失败:', err);
-          message.error('复制失败，请手动复制');
-        }
-        
-        document.body.removeChild(textArea);
-      });
+    copyToClipboard(decryptedText, '解密内容已复制到剪贴板');
   };
   
   // 检查解密后的文本是否是URL
@@ -147,7 +120,7 @@ const Decrypt: React.FC = () => {
     try {
       new URL(text);
       return true;
-    } catch (e) {
+    } catch {
       return false;
     }
   };
