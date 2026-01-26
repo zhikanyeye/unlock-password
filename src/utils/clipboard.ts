@@ -41,7 +41,6 @@ const fallbackCopyToClipboard = (
 
   try {
     const successful = document.execCommand('copy');
-    document.body.removeChild(textArea);
     if (successful) {
       message.success(successMessage);
       return true;
@@ -51,8 +50,9 @@ const fallbackCopyToClipboard = (
     }
   } catch (err) {
     console.error('execCommand复制失败:', err);
-    document.body.removeChild(textArea);
     message.error(errorMessage);
     return false;
+  } finally {
+    document.body.removeChild(textArea);
   }
 };
