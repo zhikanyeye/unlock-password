@@ -79,7 +79,7 @@ export const cleanupExpiredContent = (): void => {
           if (data.timestamp && (now - data.timestamp > DEFAULT_EXPIRATION_TIME)) {
             keysToRemove.push(key);
           }
-        } catch (e) {
+        } catch {
           // 如果解析失败，也将其视为需要清理的项
           keysToRemove.push(key);
         }
