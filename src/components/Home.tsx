@@ -1,6 +1,6 @@
 import React from 'react';
 import { Card, Typography, Button, Space, Row, Col } from 'antd';
-import { LockOutlined, UnlockOutlined, SafetyOutlined, HistoryOutlined } from '@ant-design/icons';
+import { CameraOutlined, LockOutlined, UnlockOutlined, SafetyOutlined, HistoryOutlined } from '@ant-design/icons';
 import { Link } from 'react-router-dom';
 
 const { Title, Paragraph } = Typography;
@@ -11,7 +11,7 @@ const Home: React.FC = () => {
       <Card>
         <Title level={2}>青云盾加密宝</Title>
         <Paragraph>
-          青云盾加密宝使用 QYS1 AES-GCM 加密文本和链接。默认仅保存在当前浏览器；如需跨设备分享，请明确选择云端存储，并单独传递密钥。
+          一站式加密文本、链接和图片。自动识别链接类型，二维码可保存、下载并扫码解密；密钥始终单独传递。
         </Paragraph>
         
         <Row gutter={[24, 24]} style={{ marginTop: '24px' }}>
@@ -21,7 +21,7 @@ const Home: React.FC = () => {
                 <LockOutlined style={{ fontSize: '48px', color: 'var(--primary-color)' }} />
                 <Title level={4}>加密内容</Title>
                 <Paragraph>
-                  加密文本或链接。本地保存时可手动分享密文；选择云端时可生成不含密钥的链接。
+                  加密文本、链接或图片；选择云端时可生成不含密钥的解密二维码。
                 </Paragraph>
                 <Link to="/encrypt">
                   <Button type="primary" size="large">
@@ -38,7 +38,7 @@ const Home: React.FC = () => {
                 <UnlockOutlined style={{ fontSize: '48px', color: 'var(--accent-color)' }} />
                 <Title level={4}>解密内容</Title>
                 <Paragraph>
-                  使用提供的密钥解密加密内容，只有拥有正确密钥的人才能查看原始信息。
+                  通过链接、二维码或密文解密，图片会自动恢复并支持下载。
                 </Paragraph>
                 <Link to="/decrypt">
                   <Button type="primary" size="large" style={{ background: 'var(--accent-color)', borderColor: 'var(--accent-color)' }}>
@@ -51,7 +51,10 @@ const Home: React.FC = () => {
         </Row>
         
         <div style={{ textAlign: 'center', marginTop: 24 }}>
-          <Link to="/history"><Button icon={<HistoryOutlined />}>查看本地历史记录</Button></Link>
+          <Space wrap>
+            <Link to="/scan"><Button icon={<CameraOutlined />}>扫码解密</Button></Link>
+            <Link to="/history"><Button icon={<HistoryOutlined />}>查看本地历史记录</Button></Link>
+          </Space>
         </div>
 
         <div style={{ marginTop: '32px' }}>

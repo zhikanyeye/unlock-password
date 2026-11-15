@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Alert, Button, Card, Divider, Input, message, Select, Space, Tabs, Typography } from 'antd';
-import { CopyOutlined, FileTextOutlined, HomeOutlined, KeyOutlined, LinkOutlined, ReloadOutlined, UnlockOutlined } from '@ant-design/icons';
+import { CameraOutlined, CopyOutlined, DownloadOutlined, FileTextOutlined, HomeOutlined, KeyOutlined, LinkOutlined, ReloadOutlined, UnlockOutlined } from '@ant-design/icons';
 import { Link, useLocation } from 'react-router-dom';
 import { decrypt, decryptContent, EncryptionType, parseFullKey } from '../utils/cryptoUtils';
 import { getEncryptedContent } from '../services/apiService';
@@ -119,11 +119,24 @@ const Decrypt: React.FC = () => {
     }
   };
 
+  const isImageDataUrl = (text: string): boolean => /^data:image\/[a-z0-9.+-]+;base64,/i.test(text);
+
+  const downloadImage = () => {
+    if (!decryptedText || !isImageDataUrl(decryptedText)) return;
+    const link = document.createElement('a');
+    link.href = decryptedText;
+    link.download = '青云盾解密图片';
+    link.click();
+  };
+
   return (
     <Card className="decrypt-card" style={{ maxWidth: 800, margin: '0 auto' }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
         <Title level={3}><UnlockOutlined /> 解密内容</Title>
-        <Link to="/"><Button type="primary" icon={<HomeOutlined />}>返回首页</Button></Link>
+        <Space>
+          <Link to="/scan"><Button icon={<CameraOutlined />}>扫码</Button></Link>
+          <Link to="/"><Button type="primary" icon={<HomeOutlined />}>返回首页</Button></Link>
+        </Space>
       </div>
       <Space direction="vertical" style={{ width: '100%' }}>
         <Tabs activeKey={activeTab} onChange={key => { setActiveTab(key); setDecryptedText(null); }} items={[
@@ -187,7 +200,11 @@ const Decrypt: React.FC = () => {
               {isHttpUrl(decryptedText) && (
                 <Button icon={<LinkOutlined />} onClick={() => window.open(decryptedText, '_blank', 'noopener,noreferrer')}>打开链接</Button>
               )}
+              {isImageDataUrl(decryptedText) && (
+                <Button icon={<DownloadOutlined />} onClick={downloadImage}>下载图片</Button>
+              )}
             </Space>
+            {isImageDataUrl(decryptedText) && <img className="decrypted-image" src={decryptedText} alt="解密后的图片" />}
           </>
         )}
       </Space>

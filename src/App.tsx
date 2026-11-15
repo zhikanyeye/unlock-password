@@ -5,6 +5,7 @@ import './theme.css';
 import Home from './components/Home';
 import Encrypt from './components/Encrypt';
 import Decrypt from './components/Decrypt';
+import Scan from './components/Scan';
 import History from './components/History';
 import NotFound from './components/NotFound';
 import ErrorBoundary from './components/ErrorBoundary';
@@ -37,6 +38,7 @@ const AppContent = () => {
           <Route path="/" element={<Home />} />
           <Route path="/encrypt" element={<Encrypt />} />
           <Route path="/decrypt" element={<Decrypt />} />
+          <Route path="/scan" element={<Scan />} />
           <Route path="/history" element={<History />} />
           <Route path="*" element={<NotFound />} />
         </Routes>

@@ -1,7 +1,7 @@
 import React, { useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Alert, Button, Card, Col, Divider, Input, message, Popconfirm, Radio, Row, Select, Space, Tooltip, Typography } from 'antd';
-import { CopyOutlined, DownloadOutlined, HomeOutlined, KeyOutlined, LinkOutlined, LockOutlined, QrcodeOutlined } from '@ant-design/icons';
+import { CopyOutlined, DownloadOutlined, FileImageOutlined, HomeOutlined, KeyOutlined, LinkOutlined, LockOutlined, QrcodeOutlined } from '@ant-design/icons';
 import { encrypt, encryptContent, EncryptionType, generateFullKey, generateRandomKey } from '../utils/cryptoUtils';
 import { CloudUploadUncertainError, EXPIRATION_OPTIONS, storeEncryptedContent } from '../services/apiService';
 import { copyToClipboard } from '../utils/clipboard';
@@ -17,7 +17,8 @@ type PendingAttempt = EncryptedAttempt & { retry: { revokeToken: string; created
 
 const Encrypt: React.FC = () => {
   const [inputText, setInputText] = useState('');
-  const [inputType, setInputType] = useState<'text' | 'url'>('text');
+  const [contentMode, setContentMode] = useState<'text' | 'image'>('text');
+  const [imageName, setImageName] = useState('');
   const [encryptionType, setEncryptionType] = useState<EncryptionType>(EncryptionType.QYS1);
   const [keyLength, setKeyLength] = useState(16);
   const [storageMode, setStorageMode] = useState<StorageMode>('local');
@@ -47,25 +48,46 @@ const Encrypt: React.FC = () => {
     });
     setPendingAttempt(null);
     setInputText('');
+    setImageName('');
     setAdminPassword('');
     message.success('加密并保存成功');
     if (!cached) message.warning('云端已保存，但本地缓存失败；请另行保存密文和密钥');
   };
 
-  const handleEncrypt = async () => {
-    if (loading || pendingAttempt) return;
-    if (!inputText.trim()) {
-      message.error('请输入需要加密的内容');
+  const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+    if (!file.type.startsWith('image/')) {
+      message.error('请选择图片文件');
       return;
     }
-    if (inputType === 'url') {
-      try {
-        const url = new URL(inputText);
-        if (!['http:', 'https:'].includes(url.protocol)) throw new Error();
-      } catch {
-        message.error('请输入有效的 http(s) 链接');
+    const reader = new FileReader();
+    reader.onload = () => {
+      if (typeof reader.result !== 'string') {
+        message.error('图片读取失败');
         return;
       }
+      setInputText(reader.result);
+      setImageName(file.name);
+      setStorageError('');
+    };
+    reader.onerror = () => message.error('图片读取失败');
+    reader.readAsDataURL(file);
+  };
+
+  const isHttpUrl = (value: string): boolean => {
+    try {
+      return ['http:', 'https:'].includes(new URL(value).protocol);
+    } catch {
+      return false;
+    }
+  };
+
+  const handleEncrypt = async () => {
+    if (loading || pendingAttempt) return;
+    if (!inputText) {
+      message.error(contentMode === 'image' ? '请先选择图片' : '请输入需要加密的内容');
+      return;
     }
 
     if (requestedExpirationTime === -1 && (storageMode !== 'cloud' || !adminPassword.trim())) {
@@ -170,14 +192,26 @@ const Encrypt: React.FC = () => {
         <Link to="/"><Button type="primary" icon={<HomeOutlined />}>返回首页</Button></Link>
       </div>
       <Space direction="vertical" style={{ width: '100%' }}>
-        <Radio.Group value={inputType} onChange={(e) => setInputType(e.target.value)}>
-          <Radio.Button value="text">文本</Radio.Button>
-          <Radio.Button value="url">链接</Radio.Button>
+        <Radio.Group value={contentMode} onChange={(e) => {
+          setContentMode(e.target.value);
+          setInputText('');
+          setImageName('');
+          setResult(null);
+        }}>
+          <Radio.Button value="text">文本 / 链接</Radio.Button>
+          <Radio.Button value="image"><FileImageOutlined /> 图片</Radio.Button>
         </Radio.Group>
-        {inputType === 'text' ? (
-          <TextArea rows={4} value={inputText} onChange={(e) => setInputText(e.target.value)} placeholder="请输入需要加密的文本内容" />
+        {contentMode === 'text' ? (
+          <>
+            <TextArea rows={5} value={inputText} onChange={(e) => setInputText(e.target.value)} placeholder="请输入文本，或直接粘贴 http(s) 链接，系统会自动识别" />
+            {inputText.trim() && <Text type="secondary">{isHttpUrl(inputText.trim()) ? '已识别为 HTTP(S) 链接' : '已识别为普通文本'}</Text>}
+          </>
         ) : (
-          <Input prefix={<LinkOutlined />} value={inputText} onChange={(e) => setInputText(e.target.value)} placeholder="请输入 http(s) 链接" />
+          <>
+            <input type="file" accept="image/*" onChange={handleImageChange} />
+            {imageName && <Text type="secondary">已选择：{imageName}</Text>}
+            {inputText.startsWith('data:image/') && <img className="image-preview" src={inputText} alt="待加密图片预览" />}
+          </>
         )}
         <Row gutter={[16, 16]} style={{ marginTop: 16 }}>
           <Col xs={24} sm={8}>
