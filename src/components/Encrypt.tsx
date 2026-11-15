@@ -61,6 +61,10 @@ const Encrypt: React.FC = () => {
       message.error('请选择图片文件');
       return;
     }
+    if (file.size > 10 * 1024 * 1024) {
+      message.error('图片不能超过 10 MiB');
+      return;
+    }
     const reader = new FileReader();
     reader.onload = () => {
       if (typeof reader.result !== 'string') {

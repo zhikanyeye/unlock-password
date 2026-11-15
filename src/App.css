@@ -105,6 +105,28 @@ body::before {
   border-radius: 12px;
 }
 
+.scan-upload-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  width: fit-content;
+  padding: 8px 16px;
+  color: var(--text-primary);
+  background: rgba(16, 36, 59, 0.8);
+  border: 1px solid rgba(0, 195, 255, 0.3);
+  border-radius: var(--border-radius);
+  cursor: pointer;
+}
+
+.scan-upload-button:hover {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 12px rgba(0, 195, 255, 0.3);
+}
+
+.scan-upload-button input {
+  display: none;
+}
+
 .ant-card::before {
   content: '';
   position: absolute;

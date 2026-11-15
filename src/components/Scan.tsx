@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { Alert, Button, Card, Input, Space, Typography } from 'antd';
-import { CameraOutlined, HomeOutlined, LinkOutlined } from '@ant-design/icons';
+import { CameraOutlined, HomeOutlined, LinkOutlined, UploadOutlined } from '@ant-design/icons';
 import { Html5Qrcode } from 'html5-qrcode';
 import { Link, useNavigate } from 'react-router-dom';
 
@@ -57,6 +57,30 @@ const Scan: React.FC = () => {
     }
   };
 
+  const scanImage = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    event.target.value = '';
+    if (!file) return;
+    if (!file.type.startsWith('image/')) {
+      setError('请选择包含二维码的图片文件');
+      return;
+    }
+    setError('');
+    if (scanning) await stopScanner();
+    const scanner = new Html5Qrcode('qr-reader');
+    scannerRef.current = scanner;
+    try {
+      const decodedText = await scanner.scanFile(file, true);
+      openResult(decodedText);
+    } catch (scanError) {
+      setError(scanError instanceof Error ? `图片中未识别到有效二维码：${scanError.message}` : '图片中未识别到有效二维码');
+    } finally {
+      scanner.clear();
+      if (scannerRef.current === scanner) scannerRef.current = null;
+      setScanning(false);
+    }
+  };
+
   return (
     <Card className="decrypt-card">
       <div className="page-heading">
@@ -68,6 +92,11 @@ const Scan: React.FC = () => {
         <div id="qr-reader" className="qr-reader" />
         {!scanning && <Button type="primary" icon={<CameraOutlined />} onClick={() => void startScanner()}>启动摄像头扫码</Button>}
         {scanning && <Button danger onClick={() => void stopScanner()}>停止扫码</Button>}
+        <label className="scan-upload-button">
+          <UploadOutlined /> 上传二维码图片
+          <input type="file" accept="image/*" onChange={event => void scanImage(event)} />
+        </label>
+        <Text type="secondary">也可以上传已保存的二维码截图或图片进行识别。</Text>
         <Input placeholder="也可以粘贴解密链接" prefix={<LinkOutlined />} value={manualValue} onChange={e => setManualValue(e.target.value)} onPressEnter={() => openResult(manualValue)} />
         <Button onClick={() => openResult(manualValue)} disabled={!manualValue.trim()}>打开解密链接</Button>
         {error && <Alert type="error" showIcon message={error} />}

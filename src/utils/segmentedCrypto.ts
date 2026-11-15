@@ -1,14 +1,14 @@
 export const SEGMENTED_TYPE = 'QYS1-AES-GCM' as const;
 
 const SEGMENT_SIZE = 16 * 1024;
-const MAX_MESSAGE_BYTES = 200 * 1024;
+const MAX_MESSAGE_BYTES = 16 * 1024 * 1024;
 const TAG_BYTES = 16;
 const SALT_BYTES = 16;
 const NONCE_PREFIX_BYTES = 8;
 const KEY_BYTES = 32;
 const MAX_CHUNKS = Math.ceil(MAX_MESSAGE_BYTES / SEGMENT_SIZE);
-// Bound JSON parsing before validating the fields (200 KiB plus tags and base64url overhead).
-const MAX_ENVELOPE_LENGTH = 300_000;
+// Allow 10 MiB images after Base64 conversion, plus encryption and JSON overhead.
+const MAX_ENVELOPE_LENGTH = 20 * 1024 * 1024;
 const encoder = new TextEncoder();
 
 interface Envelope {
@@ -122,7 +122,7 @@ function parseEnvelope(ciphertext: string): Envelope {
 
 export async function encryptSegmented(text: string): Promise<{ ciphertext: string; key: string }> {
   if (typeof text !== 'string' || text.length > MAX_MESSAGE_BYTES) {
-    throw new Error('Message exceeds the 200 KiB limit');
+    throw new Error('Message exceeds the 16 MiB limit');
   }
   // TextEncoder silently replaces lone UTF-16 surrogates, which would change the round-trip text.
   for (let index = 0; index < text.length; index++) {
@@ -138,7 +138,7 @@ export async function encryptSegmented(text: string): Promise<{ ciphertext: stri
   }
   const plaintext = encoder.encode(text);
   if (plaintext.length > MAX_MESSAGE_BYTES) {
-    throw new Error('Message exceeds the 200 KiB limit');
+    throw new Error('Message exceeds the 16 MiB limit');
   }
 
   const rawKey = crypto.getRandomValues(new Uint8Array(KEY_BYTES));
