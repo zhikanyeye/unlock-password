@@ -21,6 +21,7 @@ const Decrypt: React.FC = () => {
   const [fetching, setFetching] = useState(false);
   const [decrypting, setDecrypting] = useState(false);
   const [fetchError, setFetchError] = useState('');
+  const [decryptionError, setDecryptionError] = useState('');
   const [retryCount, setRetryCount] = useState(0);
   const [expirationTime, setExpirationTime] = useState<number | null>(null);
   const [isExpired, setIsExpired] = useState(false);
@@ -31,6 +32,7 @@ const Decrypt: React.FC = () => {
     setActiveTab(searchParams.get('tab') === 'manual' ? 'manual' : 'link');
     setSecretKey('');
     setManualEncryptedText('');
+    setDecryptionError('');
   }, [location.search]);
 
   useEffect(() => {
@@ -40,6 +42,7 @@ const Decrypt: React.FC = () => {
     setEncryptedText('');
     setDecryptedText(null);
     setFetchError('');
+    setDecryptionError('');
     setExpirationTime(null);
     setIsExpired(false);
     if (!id) {
@@ -82,10 +85,12 @@ const Decrypt: React.FC = () => {
     }
     const fullKey = secretKey.trim();
     if (!fullKey) {
+      setDecryptionError('请输入解密密钥。密钥是唯一的解密方式，系统不会保存或恢复。');
       message.error('请输入解密密钥');
       return;
     }
     setDecryptedText(null);
+    setDecryptionError('');
     setDecrypting(true);
     try {
       let type = linkTab ? encryptionType : manualType;
@@ -105,7 +110,14 @@ const Decrypt: React.FC = () => {
       setDecryptedText(decrypted);
       message.success('解密成功！');
     } catch (error) {
-      message.error('解密失败: ' + (error instanceof Error ? error.message : '未知错误'));
+      const detail = error instanceof Error ? error.message : '未知错误';
+      const friendlyMessage = detail.includes('无效的密钥') || detail.includes('密钥算法')
+        ? detail
+        : detail.includes('密钥不能为空')
+          ? '请输入有效的解密密钥'
+          : '解密失败：密钥错误，或密文已损坏/被篡改';
+      setDecryptionError(friendlyMessage);
+      message.error(friendlyMessage);
     } finally {
       setDecrypting(false);
     }
@@ -139,7 +151,7 @@ const Decrypt: React.FC = () => {
         </Space>
       </div>
       <Space direction="vertical" style={{ width: '100%' }}>
-        <Tabs activeKey={activeTab} onChange={key => { setActiveTab(key); setDecryptedText(null); }} items={[
+        <Tabs activeKey={activeTab} onChange={key => { setActiveTab(key); setDecryptedText(null); setDecryptionError(''); }} items={[
           {
             key: 'link', label: <span><LinkOutlined /> 通过链接解密</span>,
             children: (
@@ -166,7 +178,7 @@ const Decrypt: React.FC = () => {
                     />
                     <Alert type="warning" showIcon message="解密密钥不会被保存" description="密钥是唯一的解密方式，请从创建者处单独获取并妥善保存；历史记录只能找回密文。" />
                     <Text strong>密钥（不在链接中）：</Text>
-                    <Input.Password prefix={<KeyOutlined />} placeholder="请输入单独收到的解密密钥" value={secretKey} onChange={e => { setSecretKey(e.target.value); setDecryptedText(null); }} />
+                    <Input.Password prefix={<KeyOutlined />} placeholder="请输入单独收到的解密密钥" value={secretKey} onChange={e => { setSecretKey(e.target.value); setDecryptedText(null); setDecryptionError(''); }} />
                   </>
                 )}
                 {expirationTime === -1 && <Text type="secondary">此加密内容永久有效</Text>}
@@ -179,9 +191,9 @@ const Decrypt: React.FC = () => {
             children: (
               <Space direction="vertical" style={{ width: '100%' }}>
                 <Text strong>加密内容：</Text>
-                <TextArea rows={4} value={manualEncryptedText} onChange={e => { setManualEncryptedText(e.target.value); setDecryptedText(null); }} placeholder="请输入需要解密的密文" />
+                <TextArea rows={4} value={manualEncryptedText} onChange={e => { setManualEncryptedText(e.target.value); setDecryptedText(null); setDecryptionError(''); }} placeholder="请输入需要解密的密文" />
                 <Text strong>加密算法（输入完整密钥时自动识别）：</Text>
-                <Select value={manualType} onChange={value => { setManualType(value); setDecryptedText(null); }} options={[
+                <Select value={manualType} onChange={value => { setManualType(value); setDecryptedText(null); setDecryptionError(''); }} options={[
                   { value: EncryptionType.QYS1, label: 'QYS1 · AES-GCM' },
                   { value: EncryptionType.AES, label: 'AES（旧版）' },
                   { value: EncryptionType.DES, label: 'DES（旧版）' },
@@ -192,12 +204,13 @@ const Decrypt: React.FC = () => {
                 {manualType !== EncryptionType.QYS1 && <Alert type="warning" showIcon message="旧版算法不安全，仅供兼容旧密文。" />}
                 <Text strong>密钥：</Text>
                 <Alert type="warning" showIcon message="请妥善保存解密密钥" description="密钥是唯一的解密方式，系统不会保存或恢复；丢失密钥将无法解密。" />
-                <Input.Password prefix={<KeyOutlined />} placeholder="请输入解密密钥（如 QYS1-AES-GCM:…）" value={secretKey} onChange={e => { setSecretKey(e.target.value); setDecryptedText(null); }} />
+                <Input.Password prefix={<KeyOutlined />} placeholder="请输入解密密钥（如 QYS1-AES-GCM:…）" value={secretKey} onChange={e => { setSecretKey(e.target.value); setDecryptedText(null); setDecryptionError(''); }} />
               </Space>
             ),
           },
         ]} />
         <Button type="primary" onClick={handleDecrypt} loading={decrypting} disabled={activeTab === 'link' && (fetching || isExpired)} block>解密</Button>
+        {decryptionError && <Alert type="error" showIcon message="无法解密" description={decryptionError} />}
         {decryptedText !== null && (
           <>
             <Divider />
