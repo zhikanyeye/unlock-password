@@ -1,4 +1,8 @@
-# Cloudflare Pages 部署
+# Cloudflare Pages 部署指南
+
+> 返回项目主页：[README.md](README.md)
+
+本指南用于将青云盾加密宝部署为 **Cloudflare Pages 静态站点 + Pages Functions + Workers KV**。如果只需要本地模式，可以跳过本指南；`npm run dev` 不会启动云端 API。
 
 本项目使用 **Cloudflare Pages 静态站点 + Pages Functions（运行于 Cloudflare Workers）+ Workers KV**。纯静态托管或 `npm run dev` 仅能使用本地模式，无法生成跨设备分享链接。
 

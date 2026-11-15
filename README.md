@@ -1,28 +1,80 @@
+<div align="center">
+
 # 青云盾加密宝
 
-青云盾加密宝是一个运行在浏览器中的文本与链接加密分享工具。明文和解密密钥默认只在浏览器内存中处理；需要跨设备分享时，可以选择将密文保存到 Cloudflare KV。
+**在浏览器中安全加密文本与链接，按需生成跨设备分享。**
 
-## 主要功能
+明文和解密密钥只在浏览器中处理；云端模式只保存加密后的密文。
+
+<a href="https://dash.cloudflare.com/?to=/:account/pages/new/provider/github">
+  <img src="https://img.shields.io/badge/%E9%83%A8%E7%BD%B2%E5%88%B0-Cloudflare%20Pages-f38020?style=for-the-badge&logo=cloudflare&logoColor=white" alt="部署到 Cloudflare Pages">
+</a>
+<a href="DEPLOYMENT.md">
+  <img src="https://img.shields.io/badge/%E9%98%85%E8%AF%BB-%E9%83%A8%E7%BD%B2%E6%8C%87%E5%8D%97-2563eb?style=for-the-badge" alt="阅读部署指南">
+</a>
+
+<br>
+
+![React](https://img.shields.io/badge/React-19-149eca?logo=react&logoColor=white)
+![Vite](https://img.shields.io/badge/Vite-6-646cff?logo=vite&logoColor=white)
+![Cloudflare Pages](https://img.shields.io/badge/Cloudflare-Pages-f38020?logo=cloudflare&logoColor=white)
+![License](https://img.shields.io/badge/license-ISC-64748b)
+
+</div>
+
+## ✨ 为什么选择青云盾
+
+| 场景 | 处理方式 |
+| --- | --- |
+| 只在本机使用 | 密文保存在当前浏览器，不上传服务器 |
+| 跨设备分享 | 上传密文到 Cloudflare KV，生成链接和二维码 |
+| 保护分享内容 | 解密密钥不写入链接，也不会发送到 API |
+| 管理已分享内容 | 支持有效期、历史记录和独立撤销凭据 |
+
+## 🔐 核心能力
 
 - **QYS1 分段加密**：基于 Web Crypto API 的 AES-256-GCM、HKDF-SHA-256 和随机密钥。
-- **本地模式**：密文保存在当前浏览器，不上传服务器。
-- **云端模式**：只上传密文、算法和有效期，不上传明文或解密密钥。
-- **安全分享**：生成解密链接和二维码，解密密钥需要通过其他渠道单独发送。
-- **分享管理**：支持有效期、历史记录和使用独立撤销凭据撤销云端分享。
-- **旧格式兼容**：保留 AES、DES、3DES、Rabbit 和 RC4 的历史密文解密能力。旧算法安全性较低，不建议用于新内容。
+- **两种工作模式**：本地加密无需后端，云端模式支持跨设备解密。
+- **安全分享流程**：链接或二维码只携带分享 ID，解密密钥需要通过其他渠道发送。
+- **可靠上传重试**：网络中断导致响应不明确时，可在限定时间内重试同一次上传。
+- **历史格式兼容**：支持 AES、DES、3DES、Rabbit 和 RC4 历史密文解密。旧算法安全性较低，不建议用于新内容。
 
-## 快速开始
+## 🚀 快速开始
 
 需要 Node.js 20.9 或更高版本，推荐 Node.js 22。
 
 ```bash
+git clone -b real https://github.com/zhikanyeye/unlock-password.git
+cd unlock-password
 npm ci
 npm run dev
 ```
 
-开发服务器默认只提供前端页面。打开页面后可以直接使用本地加密、解密和历史记录功能。
+开发服务器默认只提供前端页面。无需配置后端即可使用本地加密、解密和历史记录功能。
 
-## 构建与检查
+## ☁️ 部署到 Cloudflare Pages
+
+点击上方 **部署到 Cloudflare Pages** 按钮，选择 GitHub 仓库后填写：
+
+| 配置项 | 值 |
+| --- | --- |
+| 构建命令 | `npm run build` |
+| 输出目录 | `dist` |
+| Node.js | `22` |
+
+> **注意**：Cloudflare Pages 目前没有将 Pages、Functions 和 KV 完全自动配置好的官方一键按钮。按钮会打开 Pages Git 部署入口；要启用跨设备分享，还需要绑定 `CIPHERTEXT_KV`。请按 [完整部署指南](DEPLOYMENT.md) 完成 KV、`ADMIN_TOKEN`、限流和验证配置。
+
+### 云端部署必需项
+
+1. 在 Pages 项目中绑定名为 `CIPHERTEXT_KV` 的 Workers KV 命名空间。
+2. 生产和预览环境分别配置绑定，并重新部署。
+3. 为公开 API 配置 Cloudflare WAF 或 Rate Limiting。
+
+### 可选的永久内容
+
+在 Pages 服务端配置 `ADMIN_TOKEN` 后，管理员可以创建不过期内容。它只能作为服务端 Secret 配置，禁止放入 `VITE_` 环境变量或提交到仓库。
+
+## 🧪 本地检查
 
 ```bash
 npm run build
@@ -30,36 +82,23 @@ npm run lint
 npm run preview
 ```
 
-## 云端部署
+## 🛡️ 安全边界
 
-云端分享需要 Cloudflare Pages、Pages Functions 和 Workers KV。完整的创建、绑定、限流和验证步骤请参阅 [部署指南](DEPLOYMENT.md)。
-
-部署时需要：
-
-1. 使用 `npm run build` 构建，输出目录为 `dist`。
-2. 在 Cloudflare Pages 绑定名为 `CIPHERTEXT_KV` 的 KV 命名空间。
-3. 如需创建永久内容，在 Pages 服务端配置 `ADMIN_TOKEN`。
-4. 为公开 API 配置 WAF 或 Rate Limiting。
-
-`ADMIN_TOKEN` 只能配置在服务端，禁止放入 `VITE_` 环境变量或提交到仓库。
-
-## 安全说明
-
-- 应用不会把明文或解密密钥写入 localStorage、KV 或 API 请求。
+- 明文和解密密钥不会写入 `localStorage`、KV 或 API 请求。
 - 解密密钥不包含在分享链接或二维码中，必须单独传递。
 - QYS1 单条明文限制为 200 KiB。
-- 过期和撤销只能阻止后续从 KV 获取密文，无法收回已经下载或保存的内容。
+- 过期和撤销只能阻止后续从 KV 获取密文，不能收回已下载或保存的内容。
 - 浏览器扩展、恶意脚本和剪贴板仍可能造成信息泄露，请在可信环境中使用。
 
-## 项目结构
+## 📁 项目结构
 
 ```text
-src/                 前端应用、页面组件和加密逻辑
-functions/            Cloudflare Pages Functions API
+src/                  前端应用、页面组件和加密逻辑
+functions/             Cloudflare Pages Functions API
 public/                静态资源和单页路由配置
-DEPLOYMENT.md         Cloudflare Pages 部署说明
+DEPLOYMENT.md          Cloudflare Pages 完整部署指南
 ```
 
-## 许可证
+## 📄 许可证
 
 详见 [LICENSE](LICENSE)。
