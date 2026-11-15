@@ -300,6 +300,7 @@ const Encrypt: React.FC = () => {
             <TextArea rows={3} value={result.text} readOnly />
             <Button icon={<CopyOutlined />} onClick={() => copyToClipboard(result.text, '密文已复制')} >复制密文</Button>
             <Text strong>解密密钥（请单独保存和发送，不要放进链接）：</Text>
+            <Alert type="warning" showIcon message="请立即保存解密密钥" description="解密密钥是唯一的解锁方式，系统不会保存、备份或恢复它。历史记录只能找回密文，不能找回密钥。" />
             <Input.Password value={result.fullKey} readOnly aria-label="解密密钥" />
             <Button icon={<CopyOutlined />} onClick={() => copyToClipboard(result.fullKey, '密钥已复制')}>复制密钥</Button>
             {result.url ? (

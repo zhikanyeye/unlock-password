@@ -164,6 +164,7 @@ const Decrypt: React.FC = () => {
                       message="加密密文已自动加载"
                       description="无需再次粘贴密文，只需输入单独保存的解密密钥即可解锁。"
                     />
+                    <Alert type="warning" showIcon message="解密密钥不会被保存" description="密钥是唯一的解密方式，请从创建者处单独获取并妥善保存；历史记录只能找回密文。" />
                     <Text strong>密钥（不在链接中）：</Text>
                     <Input.Password prefix={<KeyOutlined />} placeholder="请输入单独收到的解密密钥" value={secretKey} onChange={e => { setSecretKey(e.target.value); setDecryptedText(null); }} />
                   </>
@@ -190,6 +191,7 @@ const Decrypt: React.FC = () => {
                 ]} />
                 {manualType !== EncryptionType.QYS1 && <Alert type="warning" showIcon message="旧版算法不安全，仅供兼容旧密文。" />}
                 <Text strong>密钥：</Text>
+                <Alert type="warning" showIcon message="请妥善保存解密密钥" description="密钥是唯一的解密方式，系统不会保存或恢复；丢失密钥将无法解密。" />
                 <Input.Password prefix={<KeyOutlined />} placeholder="请输入解密密钥（如 QYS1-AES-GCM:…）" value={secretKey} onChange={e => { setSecretKey(e.target.value); setDecryptedText(null); }} />
               </Space>
             ),
