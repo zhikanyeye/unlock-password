@@ -15,6 +15,7 @@ const Decrypt: React.FC = () => {
   const [secretKey, setSecretKey] = useState('');
   const [encryptedText, setEncryptedText] = useState('');
   const [manualEncryptedText, setManualEncryptedText] = useState('');
+  const [manualSource, setManualSource] = useState('');
   const [decryptedText, setDecryptedText] = useState<string | null>(null);
   const [encryptionType, setEncryptionType] = useState<EncryptionType>(EncryptionType.QYS1);
   const [manualType, setManualType] = useState<EncryptionType>(EncryptionType.QYS1);
@@ -32,6 +33,7 @@ const Decrypt: React.FC = () => {
     setActiveTab(searchParams.get('tab') === 'manual' ? 'manual' : 'link');
     setSecretKey('');
     setManualEncryptedText('');
+    setManualSource('');
     setDecryptionError('');
   }, [location.search]);
 
@@ -78,7 +80,42 @@ const Decrypt: React.FC = () => {
       message.warning('链接中的内容已过期，请使用已保存的密文手动解密');
       return;
     }
-    const text = linkTab ? encryptedText : manualEncryptedText;
+    let text = linkTab ? encryptedText : manualEncryptedText;
+    let type = linkTab ? encryptionType : manualType;
+    if (!linkTab) {
+      const source = manualSource.trim();
+      if (!source) {
+        setDecryptionError('请输入来源 ID 或完整解密链接，以验证本地/云端有效期和撤销状态');
+        message.error('请提供来源 ID 或解密链接');
+        return;
+      }
+      let sourceId = source;
+      try {
+        sourceId = new URL(source, window.location.origin).searchParams.get('id') || source;
+      } catch {
+        setDecryptionError('来源 ID 或解密链接格式无效');
+        message.error('来源 ID 或解密链接格式无效');
+        return;
+      }
+      try {
+        const sourceData = await getEncryptedContent(sourceId);
+        const sourceExpired = sourceData.expirationTime !== -1 &&
+          (sourceData.isExpired === true || Date.now() >= sourceData.timestamp + sourceData.expirationTime);
+        if (sourceExpired) throw new Error('来源内容已过期');
+        if (manualEncryptedText.trim() && manualEncryptedText.trim() !== sourceData.text) {
+          throw new Error('输入的密文与来源记录不一致');
+        }
+        text = sourceData.text;
+        type = sourceData.type;
+        setManualEncryptedText(sourceData.text);
+        setManualType(sourceData.type);
+      } catch (error) {
+        const detail = error instanceof Error ? error.message : '无法验证来源记录';
+        setDecryptionError(`无法通过有效性验证：${detail}`);
+        message.error(`无法通过有效性验证：${detail}`);
+        return;
+      }
+    }
     if (!text.trim()) {
       message.error('没有可解密的密文，请输入密文或检查链接');
       return;
@@ -93,7 +130,6 @@ const Decrypt: React.FC = () => {
     setDecryptionError('');
     setDecrypting(true);
     try {
-      let type = linkTab ? encryptionType : manualType;
       let key = fullKey;
       if (fullKey.includes(':')) {
         const parsed = parseFullKey(fullKey);
@@ -191,6 +227,7 @@ const Decrypt: React.FC = () => {
             children: (
               <Space direction="vertical" style={{ width: '100%' }}>
                 <Text strong>加密内容：</Text>
+                <Input placeholder="来源 ID 或完整解密链接（用于验证有效期和撤销状态）" value={manualSource} onChange={e => { setManualSource(e.target.value); setDecryptedText(null); setDecryptionError(''); }} />
                 <TextArea rows={4} value={manualEncryptedText} onChange={e => { setManualEncryptedText(e.target.value); setDecryptedText(null); setDecryptionError(''); }} placeholder="请输入需要解密的密文" />
                 <Text strong>加密算法（输入完整密钥时自动识别）：</Text>
                 <Select value={manualType} onChange={value => { setManualType(value); setDecryptedText(null); setDecryptionError(''); }} options={[
