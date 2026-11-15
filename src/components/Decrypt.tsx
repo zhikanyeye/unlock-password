@@ -158,6 +158,12 @@ const Decrypt: React.FC = () => {
                 {isExpired && <Alert type="warning" showIcon message="链接中的内容已过期；如已保存密文，可切换到手动输入解密。" />}
                 {encryptedText && (
                   <>
+                    <Alert
+                      type="success"
+                      showIcon
+                      message="加密密文已自动加载"
+                      description="无需再次粘贴密文，只需输入单独保存的解密密钥即可解锁。"
+                    />
                     <Text strong>密钥（不在链接中）：</Text>
                     <Input.Password prefix={<KeyOutlined />} placeholder="请输入单独收到的解密密钥" value={secretKey} onChange={e => { setSecretKey(e.target.value); setDecryptedText(null); }} />
                   </>

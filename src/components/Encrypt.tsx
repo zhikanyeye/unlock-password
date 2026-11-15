@@ -1,7 +1,7 @@
 import React, { useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Alert, Button, Card, Col, Divider, Input, message, Popconfirm, Radio, Row, Select, Space, Tooltip, Typography } from 'antd';
-import { CopyOutlined, DownloadOutlined, FileImageOutlined, HomeOutlined, KeyOutlined, LinkOutlined, LockOutlined, QrcodeOutlined } from '@ant-design/icons';
+import { Alert, Button, Card, Col, Divider, Input, message, Modal, Popconfirm, Radio, Row, Select, Space, Tooltip, Typography } from 'antd';
+import { CopyOutlined, DownloadOutlined, FileImageOutlined, HomeOutlined, KeyOutlined, LockOutlined, QrcodeOutlined } from '@ant-design/icons';
 import { encrypt, encryptContent, EncryptionType, generateFullKey, generateRandomKey } from '../utils/cryptoUtils';
 import { CloudUploadUncertainError, EXPIRATION_OPTIONS, storeEncryptedContent } from '../services/apiService';
 import { copyToClipboard } from '../utils/clipboard';
@@ -39,13 +39,14 @@ const Encrypt: React.FC = () => {
     setResult({
       text: attempt.text,
       fullKey: attempt.fullKey,
-      url: attempt.mode === 'cloud' ? `${window.location.origin}/decrypt?id=${encodeURIComponent(id)}` : '',
+      url: `${window.location.origin}/decrypt?id=${encodeURIComponent(id)}`,
       mode: attempt.mode,
       expiration,
       cached,
       canRevoke,
       revokeToken,
     });
+    setShowQrCode(Boolean(id));
     setPendingAttempt(null);
     setInputText('');
     setImageName('');
@@ -301,27 +302,41 @@ const Encrypt: React.FC = () => {
             <Text strong>解密密钥（请单独保存和发送，不要放进链接）：</Text>
             <Input.Password value={result.fullKey} readOnly aria-label="解密密钥" />
             <Button icon={<CopyOutlined />} onClick={() => copyToClipboard(result.fullKey, '密钥已复制')}>复制密钥</Button>
-            {result.mode === 'cloud' && result.url ? (
+            {result.url ? (
               <>
-                <Text type="secondary">云端解密链接和二维码仅包含内容 ID，不包含密钥。请单独传递密钥。{result.canRevoke ? '可在本浏览器的历史记录中撤销云端分享。' : '本机未保存撤销凭据，请复制下方凭据备份。'}</Text>
-                {result.revokeToken && <>
+                <Text type="secondary">
+                  {result.mode === 'cloud'
+                    ? <>云端解密链接和二维码仅包含内容 ID，不包含密钥。请单独传递密钥。{result.canRevoke ? '可在本浏览器的历史记录中撤销云端分享。' : '本机未保存撤销凭据，请复制下方凭据备份。'}</>
+                    : '本地解密链接和二维码仅在保存这条记录的浏览器中有效，不包含密钥；跨设备请使用云端模式。'}
+                </Text>
+                {result.mode === 'cloud' && result.revokeToken && <>
                   <Text strong>撤销凭据（只用于删除云端副本，不可解密；不要分享给接收者）：</Text>
                   <Input.Password value={result.revokeToken} readOnly aria-label="撤销凭据" />
                   <Button icon={<CopyOutlined />} onClick={() => copyToClipboard(result.revokeToken!, '撤销凭据已复制')}>备份撤销凭据</Button>
                 </>}
-                <Row gutter={[16, 16]}>
-                  <Col xs={24} sm={12}><Button type="primary" icon={<LinkOutlined />} block onClick={() => copyToClipboard(result.url, '解密链接已复制')}>复制解密链接</Button></Col>
-                  <Col xs={24} sm={12}><Button type="primary" icon={<QrcodeOutlined />} block onClick={() => setShowQrCode(true)}>生成二维码</Button></Col>
-                </Row>
-                {showQrCode && (
-                  <div style={{ textAlign: 'center', marginTop: 16 }}>
-                    <Text strong>解密链接二维码（不含密钥）</Text>
-                    <div ref={qrCodeRef} style={{ margin: '16px auto' }}><QRCodeSVG value={result.url} size={200} level="H" includeMargin /></div>
-                    <Button icon={<DownloadOutlined />} onClick={downloadQRCode}>下载二维码</Button>
-                  </div>
-                )}
+                <Button type="primary" icon={<QrcodeOutlined />} onClick={() => setShowQrCode(true)} block>查看解密链接和二维码</Button>
+                <Modal
+                  title="加密完成：保存解密链接或二维码"
+                  open={showQrCode}
+                  onCancel={() => setShowQrCode(false)}
+                  footer={null}
+                  centered
+                >
+                  <Space direction="vertical" style={{ width: '100%' }} size="middle">
+                    <Text type="secondary">
+                      {result.mode === 'cloud'
+                        ? '打开二维码或链接后，密文会自动加载；其中不包含解密密钥，请将密钥通过其他渠道单独发送。'
+                        : '在当前浏览器打开二维码或链接后，密文会自动加载；二维码不包含解密密钥，只需输入密钥即可解锁。'}
+                    </Text>
+                    <Input value={result.url} readOnly addonAfter={<Button type="link" onClick={() => copyToClipboard(result.url, '解密链接已复制')}>复制链接</Button>} />
+                    <div ref={qrCodeRef} style={{ textAlign: 'center' }}>
+                      <QRCodeSVG value={result.url} size={240} level="H" includeMargin />
+                    </div>
+                    <Button icon={<DownloadOutlined />} onClick={downloadQRCode} block>保存下载二维码</Button>
+                  </Space>
+                </Modal>
               </>
-            ) : <Alert type="info" showIcon message="仅本地保存：此浏览器可在历史记录中查看元数据；跨设备请手动传递密文与密钥。" />}
+            ) : <Alert type="info" showIcon message="已保存加密内容；请保留密文和解密密钥。" />}
           </>
         )}
       </Space>
